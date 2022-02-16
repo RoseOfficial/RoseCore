@@ -1,6 +1,0 @@
-[Module]
-Name=RoseCore
-Dependencies=minionlib
-Version=1
-Files=RoseCore.lua
-enabled=1
