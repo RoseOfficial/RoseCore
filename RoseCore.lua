@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.3.01"
+RoseCore.version = "0.3.02"
 
 RoseCore.GUI = {
     open = false,
@@ -2598,13 +2598,13 @@ end
 function RoseCore.Updater(k,v)
 	if RoseCore.Data.UpdateTick == nil then 
 		if k == "reactions" and v == "check" then
-			io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/Heal/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\RVersion.txt' -Value $json[0].tag_name; stop-process -Id $PID"]]):close()
+			io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/RoseReactions/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\RVersion.txt' -Value $json[0].tag_name; stop-process -Id $PID"]]):close()
 			RoseCore.Data.UpdateTick = true
 			RoseCore.Data.LastCheckVerR = Now()
 			RoseCore.Data.CheckVerR = true
 		end
 		if k == "reactions" and v == "update" then
-			io.popen([[start /b powershell -Command "Compress-Archive -Path ']] ..LuaPath.. [[TensorReactions\GeneralTriggers', ']] ..LuaPath.. [[TensorReactions\TimelineTriggers' -DestinationPath ]] ..LuaPath.. [[\TensorReactions\GeneralTriggers\Rose\TensorReactions_$((Get-Date).ToString('MM_dd_HHmm')).zip -Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/Heal/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; Invoke-WebRequest https://github.com/RoseOfficial/Heal/releases/download/$tag/TensorReactions.zip -Out ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip'; Expand-Archive ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -DestinationPath ]] ..LuaPath.. [[ -Force; Remove-Item ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -Force; stop-process -Id $PID"]]):close()
+			io.popen([[start /b powershell -Command "Compress-Archive -Path ']] ..LuaPath.. [[TensorReactions\GeneralTriggers', ']] ..LuaPath.. [[TensorReactions\TimelineTriggers' -DestinationPath ]] ..LuaPath.. [[\TensorReactions\GeneralTriggers\Rose\TensorReactions_$((Get-Date).ToString('MM_dd_HHmm')).zip -Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/RoseReactions/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; Invoke-WebRequest https://github.com/RoseOfficial/RoseReactions/releases/download/$tag/TensorReactions.zip -Out ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip'; Expand-Archive ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -DestinationPath ]] ..LuaPath.. [[ -Force; Remove-Item ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -Force; stop-process -Id $PID"]]):close()
 			io.popen([[start /b powershell -Command "Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\RStatus.txt' -Value 'Done'; stop-process -Id $PID"]]):close() 
 			RoseCore.Data.UpdateTick = true
 			RoseCore.Data.UpdateVerR = true
