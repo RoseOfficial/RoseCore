@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.3.03"
+RoseCore.version = "0.03.05"
 
 RoseCore.GUI = {
     open = false,
@@ -6676,7 +6676,7 @@ function RoseCore.DrawCall()
 			-- AST
 			if (Player.Job == 33) then
 				if RoseCore.Settings.AstEvHotbarEnabled then
-					if GeneralProfile ~= nil and string.find(GeneralProfile, "everywhere", 1, true) and string.find(GeneralProfile, "AST", 1, true) then
+					if GeneralProfile ~= nil and string.find(GeneralProfile, "Everywhere", 1, true) and string.find(GeneralProfile, "AST", 1, true) then
 						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
 						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.AstEvHotbarBgT/255)
 						GUI:Begin("RoseAstEvHotbar", true, (function() if RoseCore.Settings.AstEvHotbarLocked then
@@ -6723,7 +6723,7 @@ function RoseCore.DrawCall()
 					end
 				end
 				if RoseCore.Settings.AstSavHotbarEnabled then
-					if GeneralProfile ~= nil and string.find(GeneralProfile, "savage", 1, true) and string.find(GeneralProfile, "AST", 1, true) then
+					if GeneralProfile ~= nil and string.find(GeneralProfile, "Savage", 1, true) and string.find(GeneralProfile, "AST", 1, true) then
 						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
 						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.AstSavHotbarBgT/255)
 						GUI:Begin("RoseAstSavHotbar", true, (function() if RoseCore.Settings.AstSavHotbarLocked then
@@ -6774,7 +6774,7 @@ function RoseCore.DrawCall()
 			--SCH
 			if (Player.Job == 28 or Player.Job == 26) then
 				if RoseCore.Settings.SchEvHotbarEnabled then
-					if GeneralProfile ~= nil and string.find(GeneralProfile, "everywhere", 1, true) and string.find(GeneralProfile, "SCH", 1, true) then
+					if GeneralProfile ~= nil and string.find(GeneralProfile, "Everywhere", 1, true) and string.find(GeneralProfile, "SCH", 1, true) then
 						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
 						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.SchEvHotbarBgT/255)
 						GUI:Begin("RoseSchEvHotbar", true, (function() if RoseCore.Settings.SchEvHotbarLocked then
@@ -6821,7 +6821,7 @@ function RoseCore.DrawCall()
 					end
 				end
 				if RoseCore.Settings.SchSavHotbarEnabled then
-					if GeneralProfile ~= nil and string.find(GeneralProfile, "savage", 1, true) and string.find(GeneralProfile, "SCH", 1, true) then
+					if GeneralProfile ~= nil and string.find(GeneralProfile, "Savage", 1, true) and string.find(GeneralProfile, "SCH", 1, true) then
 						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
 						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.SchSavHotbarBgT/255)
 						GUI:Begin("RoseSchSavHotbar", true, (function() if RoseCore.Settings.SchSavHotbarLocked then
@@ -6872,7 +6872,7 @@ function RoseCore.DrawCall()
 			--WHM
 			if (Player.Job == 24 or Player.Job == 6) then
 				if RoseCore.Settings.WhmEvHotbarEnabled then
-					if GeneralProfile ~= nil and string.find(GeneralProfile, "everywhere", 1, true) and string.find(GeneralProfile, "WHM", 1, true) then
+					if GeneralProfile ~= nil and string.find(GeneralProfile, "Everywhere", 1, true) and string.find(GeneralProfile, "WHM", 1, true) then
 						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
 						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.WhmEvHotbarBgT/255)
 						GUI:Begin("RoseWhmEvHotbar", true, (function() if RoseCore.Settings.WhmEvHotbarLocked then
@@ -6919,7 +6919,7 @@ function RoseCore.DrawCall()
 					end
 				end		
 				if RoseCore.Settings.WhmSavHotbarEnabled then		
-					if GeneralProfile ~= nil and string.find(GeneralProfile, "savage", 1, true) and string.find(GeneralProfile, "WHM", 1, true) then
+					if GeneralProfile ~= nil and string.find(GeneralProfile, "Savage", 1, true) and string.find(GeneralProfile, "WHM", 1, true) then
 						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
 						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.WhmSavHotbarBgT/255)
 						GUI:Begin("RoseWhmSavHotbar", true, (function() if RoseCore.Settings.WhmSavHotbarLocked then
