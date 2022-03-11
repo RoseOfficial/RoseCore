@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.03.06"
+RoseCore.version = "0.03.11"
 
 RoseCore.GUI = {
     open = false,
@@ -1235,6 +1235,19 @@ RoseCore.Settings = {
 			bool = true,
 			menu = "Prepull",
 			tooltip = "Enable/Disable prepull abilities",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		Expedient = {
+			index = 27,
+			name = "Expedient",
+			visible = false,
+			bool = true,
+			menu = "Expedient",
+			tooltip = "Enable/Disable Expedient",
 			key = -1,
 			keyname = "None",
 			modifierC = false,
@@ -2591,7 +2604,7 @@ end
 
 function RoseCore.Init()
     RoseCore.log("Initializing RoseCore v" .. tostring(RoseCore.version))
-    ml_gui.ui_mgr:AddMember({ id = "FFXIVMINION##MENU_RoseCore", name = "RoseCore", onClick = function() RoseCore.GUI.open = not RoseCore.GUI.open end, tooltip = "test"},"FFXIVMINION##MENU_HEADER")
+    ml_gui.ui_mgr:AddMember({ id = "FFXIVMINION##MENU_RoseCore", name = "RoseCore", onClick = function() RoseCore.GUI.open = not RoseCore.GUI.open end, tooltip = "Complete Healing Reactions"},"FFXIVMINION##MENU_HEADER")
 	RoseCore.LoadSettings()
 end
 
@@ -2689,7 +2702,7 @@ function RoseCore.DrawCall()
 			local windowPadding = Style.windowpadding
 			for k,v in pairs(RoseCore.WindowStyle) do if v[4] ~= 0 then c = c + 1 loadstring([[GUI:PushStyleColor(GUI.Col_]]..k..[[, ]]..(v[1]/255)..[[, ]]..(v[2]/255)..[[, ]]..(v[3]/255)..[[, ]]..v[4]..[[)]])() end end
 			GUI:SetNextWindowSize(WindowSizeX, WindowSizeY, GUI.SetCond_Always)
-			RoseCore.GUI.visible, RoseCore.GUI.open = GUI:Begin("RoseCore v" .. tostring(RoseCore.version), RoseCore.GUI.open, GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysUseWindowPadding + GUI.WindowFlags_NoCollapse)
+			RoseCore.GUI.visible, RoseCore.GUI.open = GUI:Begin("RoseCore v" .. tostring(RoseCore.version), RoseCore.GUI.open, GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysUseWindowPadding)
 			GUI:SetWindowFontSize(1.05)
 			if (RoseCore.GUI.visible) then
 				local Tabs = RoseCore.Tabs
