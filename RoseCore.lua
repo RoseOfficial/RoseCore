@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.03.11"
+RoseCore.version = "0.03.16"
 
 RoseCore.GUI = {
     open = false,
@@ -2617,7 +2617,7 @@ function RoseCore.Updater(k,v)
 			RoseCore.Data.CheckVerR = true
 		end
 		if k == "reactions" and v == "update" then
-			io.popen([[start /b powershell -Command "Compress-Archive -Path ']] ..LuaPath.. [[TensorReactions\GeneralTriggers', ']] ..LuaPath.. [[TensorReactions\TimelineTriggers' -DestinationPath ]] ..LuaPath.. [[\TensorReactions\GeneralTriggers\Rose\TensorReactions_$((Get-Date).ToString('MM_dd_HHmm')).zip -Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/RoseReactions/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; Invoke-WebRequest https://github.com/RoseOfficial/RoseReactions/releases/download/$tag/TensorReactions.zip -Out ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip'; Expand-Archive ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -DestinationPath ]] ..LuaPath.. [[ -Force; Remove-Item ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -Force; stop-process -Id $PID"]]):close()
+			io.popen([[start /b powershell -Command "Compress-Archive -Path ']] ..LuaPath.. [[TensorReactions\GeneralReactions', ']] ..LuaPath.. [[TensorReactions\TimelineReactions' -DestinationPath ]] ..LuaPath.. [[\TensorReactions\GeneralReactions\Rose\TensorReactions_$((Get-Date).ToString('MM_dd_HHmm')).zip -Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/RoseReactions/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; Invoke-WebRequest https://github.com/RoseOfficial/RoseReactions/releases/download/$tag/TensorReactions.zip -Out ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip'; Expand-Archive ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -DestinationPath ]] ..LuaPath.. [[ -Force; Remove-Item ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -Force; stop-process -Id $PID"]]):close()
 			io.popen([[start /b powershell -Command "Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\RStatus.txt' -Value 'Done'; stop-process -Id $PID"]]):close() 
 			RoseCore.Data.UpdateTick = true
 			RoseCore.Data.UpdateVerR = true
@@ -2854,7 +2854,7 @@ function RoseCore.DrawCall()
 							if GUI:BeginPopupModal("Download Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
 								GUI:PushTextWrapPos(500)
 								GUI:Text(GetString("This will overwrite your current healer reactions.\n"))
-								GUI:Text(GetString("A backup of your files will be created in ..LuaMods/TensorReactions/GeneralTriggers/Rose.\n")) 								
+								GUI:Text(GetString("A backup of your files will be created in ..LuaMods/TensorReactions/GeneralReactions/Rose.\n")) 								
 								GUI:TextColored(1,0,0,1,GetString("Do you still want to update?"))
 								if GUI:Button(GetString("Yes") ,30 ,20) then
 									RoseCore.Data.UpdateTaskR = true
@@ -6684,7 +6684,7 @@ function RoseCore.DrawCall()
 		
 		--Hotbar
 		if (RoseCore.Settings.DrawHotbar) then
-			local GeneralProfile = TensorCore.API.TensorReactions.getGeneralTriggerProfileName()
+			local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionsProfileName()
 			
 			-- AST
 			if (Player.Job == 33) then
@@ -6987,7 +6987,7 @@ function RoseCore.OnUpdate()
 	-- Grab Current Version
 	if RoseCore.Data.VersionCheckerR == nil then RoseCore.Data.VersionCheckerR = Now() end
 	if TimeSince(RoseCore.Data.VersionCheckerR) >= 30000 and RoseCore.Settings.ReactionVerLocal == "0.0.0" then
-		RoseCore.VersionChecker(tostring(LuaPath).."TensorReactions/GeneralTriggers/Rose/Version.txt")
+		RoseCore.VersionChecker(tostring(LuaPath).."TensorReactions/GeneralReactions/Rose/Version.txt")
 	end
 	
 	-- Check Version Reactions
@@ -7047,10 +7047,10 @@ function RoseCore.OnUpdate()
 			if output == "Done" then 
 				--Reload
 				table.clear(RoseCore.Data)
-				RoseCore.VersionChecker(tostring(LuaPath).."TensorReactions/GeneralTriggers/Rose/Version.txt")
+				RoseCore.VersionChecker(tostring(LuaPath).."TensorReactions/GeneralReactions/Rose/Version.txt")
 				if TensorCore ~= nil then
-					TensorCore.API.TensorReactions.reloadGeneralTriggers()
-					TensorCore.API.TensorReactions.reloadTimelineTriggers()
+					TensorCore.API.TensorReactions.reloadGeneralReactions()
+					TensorCore.API.TensorReactions.reloadTimelineReactions()
 				end
 			else
 				RoseCore.Data.UpdateTimerR = Now()
@@ -7080,6 +7080,17 @@ function RoseCore.OnUpdate()
 		end
 	end
 end
+
+RoseCore.Data.PartyBuff = 1
+RoseCore.Data.HealingMagicPotency1 = 2409
+RoseCore.Data.HealingMagicPotency2 = (569 * ((RoseCore.Data.HealingMagicPotency1 * RoseCore.Data.PartyBuff) - 390) / 1522) + 100
+RoseCore.Data.Potency = 800
+RoseCore.Data.Determination1 = 1507
+RoseCore.Data.Determination2 = (140 * (RoseCore.Data.Determination1 -390) / 1900 + 1000)
+RoseCore.Data.Healing1 = (((RoseCore.Data.Potency * RoseCore.Data.HealingMagicPotency2 * RoseCore.Data.Determination2) / 100) / 1000)
+RoseCore.Data.WeaponDamage1 = 115
+RoseCore.Data.WeaponDamage2 = ((390 * 115 / 1000) + RoseCore.Data.WeaponDamage1)
+RoseCore.Data.Healing2 = (((((RoseCore.Data.Healing1 * 1000) / 1000) * RoseCore.Data.WeaponDamage2) / 100) * 130) / 100
 
 RegisterEventHandler("Module.Initalize", RoseCore.Init, "RoseCore.Init")
 RegisterEventHandler("Gameloop.Draw", RoseCore.DrawCall, "RoseCore.DrawCall")
