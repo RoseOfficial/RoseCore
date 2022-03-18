@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.03.16"
+RoseCore.version = "0.03.17"
 
 RoseCore.GUI = {
     open = false,
@@ -6684,7 +6684,7 @@ function RoseCore.DrawCall()
 		
 		--Hotbar
 		if (RoseCore.Settings.DrawHotbar) then
-			local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionsProfileName()
+			local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
 			
 			-- AST
 			if (Player.Job == 33) then
