@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.03.17"
+RoseCore.version = "0.03.20"
 
 RoseCore.GUI = {
     open = false,
