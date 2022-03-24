@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.03.20"
+RoseCore.version = "0.03.23"
 
 RoseCore.GUI = {
     open = false,
@@ -299,7 +299,7 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
-		PartyHeals = {
+		PartyHeal = {
 			index = 9,
 			name = "Heals (P)",
 			visible = false,
@@ -628,7 +628,7 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
-		PartyHeals = {
+		PartyHeal = {
 			index = 9,
 			name = "Heals (P)",
 			visible = false,
@@ -7081,16 +7081,16 @@ function RoseCore.OnUpdate()
 	end
 end
 
-RoseCore.Data.PartyBuff = 1
-RoseCore.Data.HealingMagicPotency1 = 2409
-RoseCore.Data.HealingMagicPotency2 = (569 * ((RoseCore.Data.HealingMagicPotency1 * RoseCore.Data.PartyBuff) - 390) / 1522) + 100
-RoseCore.Data.Potency = 800
-RoseCore.Data.Determination1 = 1507
-RoseCore.Data.Determination2 = (140 * (RoseCore.Data.Determination1 -390) / 1900 + 1000)
-RoseCore.Data.Healing1 = (((RoseCore.Data.Potency * RoseCore.Data.HealingMagicPotency2 * RoseCore.Data.Determination2) / 100) / 1000)
-RoseCore.Data.WeaponDamage1 = 115
-RoseCore.Data.WeaponDamage2 = ((390 * 115 / 1000) + RoseCore.Data.WeaponDamage1)
-RoseCore.Data.Healing2 = (((((RoseCore.Data.Healing1 * 1000) / 1000) * RoseCore.Data.WeaponDamage2) / 100) * 130) / 100
+--PartyBuff = 1
+--HealingMagicPotency1 = Player:GetStats(34)
+--HealingMagicPotency2 = (569 * ((HealingMagicPotency1 * PartyBuff) - 390) / 1522) + 100
+--Potency = 250
+--Determination1 = Player:GetStats(44)
+--Determination2 = (140 * (Determination1 - 390) / 1900 + 1000)
+--Healing1 = (((Potency * HealingMagicPotency2 * Determination2) / 100) / 1000)
+--WeaponDamage1 = Inventory:Get(1000):GetList()[1]:GetStat(12, true)
+--WeaponDamage2 = ((390 * 115 / 1000) + WeaponDamage1)
+--Healing2 = (((((Healing1 * 1000) / 1000) * WeaponDamage2) / 100) * 130) / 100
 
 RegisterEventHandler("Module.Initalize", RoseCore.Init, "RoseCore.Init")
 RegisterEventHandler("Gameloop.Draw", RoseCore.DrawCall, "RoseCore.DrawCall")
