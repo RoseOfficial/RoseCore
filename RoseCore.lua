@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.03.23"
+RoseCore.version = "0.04.01"
 
 RoseCore.GUI = {
     open = false,
@@ -468,8 +468,60 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
-		UsePrepull = {
+		Lightspeed = {
 			index = 22,
+			name = "Lightspeed",
+			visible = false,
+			bool = true,
+			menu = "Lightspeed",
+			tooltip = "Enable/Disable Lightspeed",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		Macrocosmos = {
+			index = 23,
+			name = "Macrocosmos",
+			visible = false,
+			bool = true,
+			menu = "Macrocosmos",
+			tooltip = "Enable/Disable Macrocosmos",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		Exaltation = {
+			index = 24,
+			name = "Exaltation",
+			visible = false,
+			bool = true,
+			menu = "Exaltation",
+			tooltip = "Enable/Disable Exaltation",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		Synastry = {
+			index = 25,
+			name = "Synastry",
+			visible = false,
+			bool = true,
+			menu = "Synastry",
+			tooltip = "Enable/Disable Synastry",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		UsePrepull = {
+			index = 26,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -482,7 +534,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		UseNSPrepull = {
-			index = 23,
+			index = 27,
 			name = "NS Prepull",
 			visible = false,
 			bool = true,
@@ -516,12 +568,9 @@ RoseCore.Settings = {
 	AstEvHotbarLocked = false,
 	AstEvHotbarEnabled = true,	
 
-	AstEvTankOverhealCi = 5,
-	AstEvTankOverhealEd = 5,
-	AstEvTankOverhealSingle = 5,
-	AstEvPartyOverhealEd = 5,
-	AstEvPartyOverhealAoe = 5,
-	AstEvPartyOverhealSingle = 5,
+	AstEvTankOverhealSingle = 90,
+	AstEvPartyOverhealAOE = 75,
+	AstEvPartyOverhealSingle = 75,
 
 	AstEvHotbar = {
 		Heal = {
@@ -823,8 +872,60 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
-		UsePrepull = {
+		Lightspeed = {
 			index = 24,
+			name = "Lightspeed",
+			visible = false,
+			bool = true,
+			menu = "Lightspeed",
+			tooltip = "Enable/Disable Lightspeed",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		Macrocosmos = {
+			index = 25,
+			name = "Macrocosmos",
+			visible = false,
+			bool = true,
+			menu = "Macrocosmos",
+			tooltip = "Enable/Disable Macrocosmos",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		Exaltation = {
+			index = 26,
+			name = "Exaltation",
+			visible = false,
+			bool = true,
+			menu = "Exaltation",
+			tooltip = "Enable/Disable Exaltation",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		Synastry = {
+			index = 27,
+			name = "Synastry",
+			visible = false,
+			bool = true,
+			menu = "Synastry",
+			tooltip = "Enable/Disable Synastry",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		UsePrepull = {
+			index = 28,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -1020,8 +1121,21 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
-		PartyHeal = {
+		TankProtraction = {
 			index = 10,
+			name = "Protraction (T)",
+			visible = false,
+			bool = true,
+			menu = "Protraction",
+			tooltip = "Enable/Disable Protraction for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		PartyHeal = {
+			index = 11,
 			name = "Heal (P)",
 			visible = false,
 			bool = true,
@@ -1034,7 +1148,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyGcd = {
-			index = 11,
+			index = 12,
 			name = "GCD (P)",
 			visible = false,
 			bool = true,
@@ -1047,7 +1161,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyConsolation = {
-			index = 12,
+			index = 13,
 			name = "Consolation (P)",
 			visible = false,
 			bool = true,
@@ -1060,7 +1174,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyIndom = {
-			index = 13,
+			index = 14,
 			name = "Indom (P)",
 			visible = false,
 			bool = true,
@@ -1073,7 +1187,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyWhisp = {
-			index = 14,
+			index = 15,
 			name = "WD (P)",
 			visible = false,
 			bool = true,
@@ -1086,7 +1200,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyFeyB = {
-			index = 15,
+			index = 16,
 			name = "FB (P)",
 			visible = false,
 			bool = true,
@@ -1099,7 +1213,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartySuccor = {
-			index = 16,
+			index = 17,
 			name = "Succor (P)",
 			visible = false,
 			bool = true,
@@ -1112,7 +1226,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyAp = {
-			index = 17,
+			index = 18,
 			name = "Ap (P)",
 			visible = false,
 			bool = true,
@@ -1125,7 +1239,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyLustrate = {
-			index = 18,
+			index = 19,
 			name = "Lustrate (P)",
 			visible = false,
 			bool = true,
@@ -1138,7 +1252,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyAdlo = {
-			index = 19,
+			index = 20,
 			name = "Adlo (P)",
 			visible = false,
 			bool = true,
@@ -1151,7 +1265,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyPhysick = {
-			index = 20,
+			index = 21,
 			name = "Physick (P)",
 			visible = false,
 			bool = true,
@@ -1164,7 +1278,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Seraph = {
-			index = 21,
+			index = 22,
 			name = "Seraph",
 			visible = false,
 			bool = true,
@@ -1177,7 +1291,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Soil = {
-			index = 22,
+			index = 23,
 			name = "Sacred Soil",
 			visible = false,
 			bool = true,
@@ -1190,7 +1304,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		FeyIllu = {
-			index = 23,
+			index = 24,
 			name = "Illumination",
 			visible = false,
 			bool = true,
@@ -1203,7 +1317,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		DeploymentTact = {
-			index = 24,
+			index = 25,
 			name = "D. Tactics",
 			visible = false,
 			bool = true,
@@ -1216,7 +1330,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},		
 		PlacePet = {
-			index = 25,
+			index = 26,
 			name = "Place Pet",
 			visible = false,
 			bool = true,
@@ -1229,7 +1343,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		UsePrepull = {
-			index = 26,
+			index = 27,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -1242,7 +1356,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Expedient = {
-			index = 27,
+			index = 28,
 			name = "Expedient",
 			visible = false,
 			bool = true,
@@ -1276,9 +1390,9 @@ RoseCore.Settings = {
 	SchEvHotbarLocked = false,
 	SchEvHotbarEnabled = true,
 
-	SchEvTankOverhealSingle = 6,
-	SchEvPartyOverhealAoe = 2,
-	SchEvPartyOverhealSingle = 6,
+	SchEvTankOverhealSingle = 90,
+	SchEvPartyOverhealAOE = 75,
+	SchEvPartyOverhealSingle = 75,
 
 	SchEvHotbar = {
 		Heal = {
@@ -1398,8 +1512,21 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
-		PartyHeal = {
+		TankProtraction = {
 			index = 10,
+			name = "Protraction (T)",
+			visible = false,
+			bool = true,
+			menu = "Protraction",
+			tooltip = "Enable/Disable Protraction for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		PartyHeal = {
+			index = 11,
 			name = "Heal (P)",
 			visible = false,
 			bool = true,
@@ -1412,7 +1539,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyGcd = {
-			index = 11,
+			index = 12,
 			name = "GCD (P)",
 			visible = false,
 			bool = true,
@@ -1425,7 +1552,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyConsolation = {
-			index = 12,
+			index = 13,
 			name = "Consolation (P)",
 			visible = false,
 			bool = true,
@@ -1438,7 +1565,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyIndom = {
-			index = 13,
+			index = 14,
 			name = "Indom (P)",
 			visible = false,
 			bool = true,
@@ -1451,7 +1578,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyWhisp = {
-			index = 14,
+			index = 15,
 			name = "WD (P)",
 			visible = false,
 			bool = true,
@@ -1464,7 +1591,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyFeyB = {
-			index = 15,
+			index = 16,
 			name = "FB (P)",
 			visible = false,
 			bool = true,
@@ -1477,7 +1604,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartySuccor = {
-			index = 16,
+			index = 17,
 			name = "Succor (P)",
 			visible = false,
 			bool = true,
@@ -1490,7 +1617,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyAp = {
-			index = 17,
+			index = 18,
 			name = "Ap (P)",
 			visible = false,
 			bool = true,
@@ -1503,7 +1630,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyLustrate = {
-			index = 18,
+			index = 19,
 			name = "Lustrate (P)",
 			visible = false,
 			bool = true,
@@ -1516,7 +1643,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyAdlo = {
-			index = 19,
+			index = 20,
 			name = "Adlo (P)",
 			visible = false,
 			bool = true,
@@ -1529,7 +1656,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyPhysick = {
-			index = 20,
+			index = 21,
 			name = "Physick (P)",
 			visible = false,
 			bool = true,
@@ -1542,7 +1669,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Dungeon = {
-			index = 21,
+			index = 22,
 			name = "Dungeon",
 			visible = false,
 			bool = true,
@@ -1555,7 +1682,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Seraph = {
-			index = 22,
+			index = 23,
 			name = "Seraph",
 			visible = false,
 			bool = true,
@@ -1568,7 +1695,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Soil = {
-			index = 23,
+			index = 24,
 			name = "Sacred Soil",
 			visible = false,
 			bool = true,
@@ -1581,7 +1708,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Esuna = {
-			index = 24,
+			index = 25,
 			name = "Esuna",
 			visible = false,
 			bool = true,
@@ -1593,8 +1720,47 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
+		Expedient = {
+			index = 26,
+			name = "Expedient",
+			visible = false,
+			bool = true,
+			menu = "Expedient",
+			tooltip = "Enable/Disable Expedient",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		FeyIllumination = {
+			index = 27,
+			name = "Illumination",
+			visible = false,
+			bool = true,
+			menu = "Illumination",
+			tooltip = "Enable/Disable Fey Illumination",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		DeploymentTactics = {
+			index = 28,
+			name = "Deployment Tactics",
+			visible = false,
+			bool = true,
+			menu = "D. Tactics",
+			tooltip = "Enable/Disable Deployment Tactics",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
 		UsePrepull = {
-			index = 25,
+			index = 29,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -1982,9 +2148,9 @@ RoseCore.Settings = {
 	WhmEvHotbarLocked = false,
 	WhmEvHotbarEnabled = true,
 
-	WhmEvTankOverhealSingle = 6,
-	WhmEvPartyOverhealAoe = 2,
-	WhmEvPartyOverhealSingle = 6,
+	WhmEvTankOverhealSingle = 90,
+	WhmEvPartyOverhealAOE = 75,
+	WhmEvPartyOverhealSingle = 75,
 	
 	WhmEvHotbar = {
 		Heal = {
@@ -2104,8 +2270,21 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
-		PartyHeal = {
+		TankAquaveil = {
 			index = 10,
+			name = "Aquaveil (T)",
+			visible = false,
+			bool = true,
+			menu = "Aquaveil",
+			tooltip = "Enable/Disable Aquaveil for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		PartyHeal = {
+			index = 11,
 			name = "Heal (P)",
 			visible = false,
 			bool = true,
@@ -2118,7 +2297,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyGcd = {
-			index = 11,
+			index = 12,
 			name = "Gcd (P)",
 			visible = false,
 			bool = true,
@@ -2131,7 +2310,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyRap = {
-			index = 12,
+			index = 13,
 			name = "Rapture (P)",
 			visible = false,
 			bool = true,
@@ -2144,7 +2323,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyCureIII = {
-			index = 13,
+			index = 14,
 			name = "Cure III (P)",
 			visible = false,
 			bool = true,
@@ -2157,7 +2336,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyMedII = {
-			index = 14,
+			index = 15,
 			name = "Medica II (P)",
 			visible = false,
 			bool = true,
@@ -2170,7 +2349,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyMed = {
-			index = 15,
+			index = 16,
 			name = "Medica (P)",
 			visible = false,
 			bool = true,
@@ -2183,7 +2362,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyBene = {
-			index = 16,
+			index = 17,
 			name = "Benediction (P)",
 			visible = false,
 			bool = true,
@@ -2196,7 +2375,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartySol = {
-			index = 17,
+			index = 18,
 			name = "Solace (P)",
 			visible = false,
 			bool = true,
@@ -2209,7 +2388,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyTetra = {
-			index = 18,
+			index = 19,
 			name = "Tetra (P)",
 			visible = false,
 			bool = true,
@@ -2222,7 +2401,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyRegen = {
-			index = 19,
+			index = 20,
 			name = "Regen (P)",
 			visible = false,
 			bool = true,
@@ -2235,7 +2414,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyCureII = {
-			index = 20,
+			index = 21,
 			name = "Cure II (P)",
 			visible = false,
 			bool = true,
@@ -2248,7 +2427,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		PartyCure = {
-			index = 21,
+			index = 22,
 			name = "Cure (P)",
 			visible = false,
 			bool = true,
@@ -2261,7 +2440,7 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Temperance = {
-			index = 22,
+			index = 23,
 			name = "Temperance",
 			visible = false,
 			bool = true,
@@ -2274,25 +2453,12 @@ RoseCore.Settings = {
 			modifierA = false,
 		},
 		Asylum = {
-			index = 23,
+			index = 24,
 			name = "Asylum",
 			visible = false,
 			bool = true,
 			menu = "Asylum",
 			tooltip = "Enable/Disable Asylum",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Dungeon = {
-			index = 24,
-			name = "Dungeon",
-			visible = false,
-			bool = true,
-			menu = "Dungeon",
-			tooltip = "Enable/Disable Regen and Divine Benison usage on Tank between pulls",
 			key = -1,
 			keyname = "None",
 			modifierC = false,
@@ -2325,8 +2491,21 @@ RoseCore.Settings = {
 			modifierS = false,
 			modifierA = false,
 		},
-		UsePrepull = {
+		LiturgyOfTheBell = {
 			index = 27,
+			name = "Liturgy of the Bell",
+			visible = false,
+			bool = true,
+			menu = "Liturgy of the Bell",
+			tooltip = "Enable/Disable Liturgy of the Bell",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+		},
+		UsePrepull = {
+			index = 28,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -2604,7 +2783,7 @@ end
 
 function RoseCore.Init()
     RoseCore.log("Initializing RoseCore v" .. tostring(RoseCore.version))
-    ml_gui.ui_mgr:AddMember({ id = "FFXIVMINION##MENU_RoseCore", name = "RoseCore", onClick = function() RoseCore.GUI.open = not RoseCore.GUI.open end, tooltip = "Complete Healing Reactions"},"FFXIVMINION##MENU_HEADER")
+    ml_gui.ui_mgr:AddMember({ id = "FFXIVMINION##MENU_RoseCore", name = "RoseCore", onClick = function() RoseCore.GUI.open = not RoseCore.GUI.open end, tooltip = "Complete Healing Reactions", texture = ModulePath.."Icons\\icon.png"},"FFXIVMINION##MENU_HEADER")
 	RoseCore.LoadSettings()
 end
 
@@ -3205,49 +3384,15 @@ function RoseCore.DrawCall()
 							
 							-- Overheal Slider
 							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Tank Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring tank to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstEvTankOverhealSingle,changed = GUI:SliderInt("##AstEvTankOverhealSingle", RoseCore.Settings.AstEvTankOverhealSingle,0,30)
-							if changed then
-								save(true)
-							end
-							GUI:PopItemWidth()
-							GUI:NextColumn()
-							
-							-- Overheal Slider (Ed)
-							GUI:Separator()
-							local Str = "Essential Dignity Overheal"
-							local StrLength = GUI:CalcTextSize(Str)
-							GUI:Text(Str)
-							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
-							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstEvTankOverhealEd,changed = GUI:SliderInt("##AstEvTankOverhealEd", RoseCore.Settings.AstEvTankOverhealEd,0,30)
-							if changed then
-								save(true)
-							end
-							GUI:PopItemWidth()
-							GUI:NextColumn()
-							
-							-- Overheal Slider (Ci)
-							GUI:Separator()
-							local Str = "C. Intersection Overheal"
-							local StrLength = GUI:CalcTextSize(Str)
-							GUI:Text(Str)
-							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
-							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstEvTankOverhealCi,changed = GUI:SliderInt("##AstEvTankOverhealCi", RoseCore.Settings.AstEvTankOverhealCi,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.AstEvTankOverhealSingle,changed = GUI:SliderInt("##AstEvTankOverhealSingle", RoseCore.Settings.AstEvTankOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
@@ -3280,17 +3425,17 @@ function RoseCore.DrawCall()
 								end
 							end	
 
-							-- Overheal Slider (Aoe)
+							-- Overheal Slider (AOE)
 							GUI:Separator()
-							local Str = "Aoe Overheal"
+							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring AOE to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstEvPartyOverhealAoe,changed = GUI:SliderInt("##AstEvPartyOverhealAoe", RoseCore.Settings.AstEvPartyOverhealAoe,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.AstEvPartyOverhealAOE,changed = GUI:SliderInt("##AstEvPartyOverhealAOE", RoseCore.Settings.AstEvPartyOverhealAOE,50,100)
 							if changed then
 								save(true)
 							end
@@ -3299,32 +3444,15 @@ function RoseCore.DrawCall()
 
 							-- Overheal Slider (ST)
 							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Target Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring target to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstEvPartyOverhealSingle,changed = GUI:SliderInt("##AstEvPartyOverhealSingle", RoseCore.Settings.AstEvPartyOverhealSingle,0,30)
-							if changed then
-								save(true)
-							end
-							GUI:PopItemWidth()
-							GUI:NextColumn()
-							
-							-- Overheal Slider (Ed)
-							GUI:Separator()
-							local Str = "Essential Dignity Overheal"
-							local StrLength = GUI:CalcTextSize(Str)
-							GUI:Text(Str)
-							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
-							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstEvPartyOverhealEd,changed = GUI:SliderInt("##AstEvPartyOverhealEd", RoseCore.Settings.AstEvPartyOverhealEd,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.AstEvPartyOverhealSingle,changed = GUI:SliderInt("##AstEvPartyOverhealSingle", RoseCore.Settings.AstEvPartyOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
@@ -4576,15 +4704,15 @@ function RoseCore.DrawCall()
 							
 							-- Overheal Slider
 							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Tank Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring tank to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.SchEvTankOverhealSingle,changed = GUI:SliderInt("##SchEvTankOverhealSingle", RoseCore.Settings.SchEvTankOverhealSingle,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SchEvTankOverhealSingle,changed = GUI:SliderInt("##SchEvTankOverhealSingle", RoseCore.Settings.SchEvTankOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
@@ -4620,15 +4748,15 @@ function RoseCore.DrawCall()
 
 							-- Overheal Slider (Aoe)
 							GUI:Separator()
-							local Str = "Aoe Overheal"
+							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring AOE to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.SchEvPartyOverhealAoe,changed = GUI:SliderInt("##SchEvPartyOverhealAoe", RoseCore.Settings.SchEvPartyOverhealAoe,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SchEvPartyOverhealAOE,changed = GUI:SliderInt("##SchEvPartyOverhealAOE", RoseCore.Settings.SchEvPartyOverhealAOE,50,100)
 							if changed then
 								save(true)
 							end
@@ -4637,15 +4765,15 @@ function RoseCore.DrawCall()
 
 							-- Overheal Slider (ST)
 							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Single Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring target to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.SchEvPartyOverhealSingle,changed = GUI:SliderInt("##SchEvPartyOverhealSingle", RoseCore.Settings.SchEvPartyOverhealSingle,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SchEvPartyOverhealSingle,changed = GUI:SliderInt("##SchEvPartyOverhealSingle", RoseCore.Settings.SchEvPartyOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
@@ -5837,15 +5965,15 @@ function RoseCore.DrawCall()
 							
 							-- Overheal Slider
 							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Tank Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring tank to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.WhmEvTankOverhealSingle,changed = GUI:SliderInt("##WhmEvTankOverhealSingle", RoseCore.Settings.WhmEvTankOverhealSingle,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.WhmEvTankOverhealSingle,changed = GUI:SliderInt("##WhmEvTankOverhealSingle", RoseCore.Settings.WhmEvTankOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
@@ -5881,15 +6009,15 @@ function RoseCore.DrawCall()
 
 							-- Overheal Slider (Aoe)
 							GUI:Separator()
-							local Str = "Aoe Overheal"
+							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring AOE to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.WhmEvPartyOverhealAoe,changed = GUI:SliderInt("##WhmEvPartyOverhealAoe", RoseCore.Settings.WhmEvPartyOverhealAoe,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.WhmEvPartyOverhealAOE,changed = GUI:SliderInt("##WhmEvPartyOverhealAOE", RoseCore.Settings.WhmEvPartyOverhealAOE,50,100)
 							if changed then
 								save(true)
 							end
@@ -5898,15 +6026,15 @@ function RoseCore.DrawCall()
 
 							-- Overheal Slider (ST)
 							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Single Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring target to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.WhmEvPartyOverhealSingle,changed = GUI:SliderInt("##WhmEvPartyOverhealSingle", RoseCore.Settings.WhmEvPartyOverhealSingle,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.WhmEvPartyOverhealSingle,changed = GUI:SliderInt("##WhmEvPartyOverhealSingle", RoseCore.Settings.WhmEvPartyOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
@@ -7080,17 +7208,6 @@ function RoseCore.OnUpdate()
 		end
 	end
 end
-
---PartyBuff = 1
---HealingMagicPotency1 = Player:GetStats(34)
---HealingMagicPotency2 = (569 * ((HealingMagicPotency1 * PartyBuff) - 390) / 1522) + 100
---Potency = 250
---Determination1 = Player:GetStats(44)
---Determination2 = (140 * (Determination1 - 390) / 1900 + 1000)
---Healing1 = (((Potency * HealingMagicPotency2 * Determination2) / 100) / 1000)
---WeaponDamage1 = Inventory:Get(1000):GetList()[1]:GetStat(12, true)
---WeaponDamage2 = ((390 * 115 / 1000) + WeaponDamage1)
---Healing2 = (((((Healing1 * 1000) / 1000) * WeaponDamage2) / 100) * 130) / 100
 
 RegisterEventHandler("Module.Initalize", RoseCore.Init, "RoseCore.Init")
 RegisterEventHandler("Gameloop.Draw", RoseCore.DrawCall, "RoseCore.DrawCall")
