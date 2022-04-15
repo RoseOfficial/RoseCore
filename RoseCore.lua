@@ -1,6 +1,6 @@
 RoseCore = {}
 
-RoseCore.version = "0.04.08"
+RoseCore.version = "0.04.15"
 
 RoseCore.GUI = {
     open = false,
@@ -94,7 +94,7 @@ RoseCore.Settings = {
 	ReactionVerLocal = "0.0.0",
 
 	--Active
-	Active == true,
+	Active = true,
 
 	--General
 	DrawHotbar = true,
@@ -2570,11 +2570,11 @@ RoseCore.KeyCodes =
 	[169] =  { key = 95, name = "Computer Sleep", },
 	[170] =  { key = 79, name = "O", },
 }
-	
-local MinionPath = GetStartupPath()
+
 local LuaPath = GetLuaModsPath()
 local ModulePath = LuaPath .. [[RoseCore\]]
 local ModuleSettings = ModulePath .. [[Settings.lua]]
+local ImageFolder = ModulePath .. [[Icons\]]
 
 local v = table.valid
 function RoseCore.valid(...)
@@ -2795,7 +2795,8 @@ function RoseCore.DrawCall()
 					-- Tab Contents
 					-- General Tab
 					if Tabs.CurrentTab == 1 then
-						-- Update Group
+
+						-- Heal Active Group
 						local str = GetString("Heal Active ON/OFF")
 						local strX,strY = GUI:CalcTextSize(str)
 						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
@@ -2804,18 +2805,40 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()
-							GUI:Separator()
-							local Str = "Active"
-							local StrLength = GUI:CalcTextSize(Str)
-							GUI:Text(Str)
-							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Enable/Disable Healing")
+						GUI:Separator()
+						local Str = "Active"
+						local StrLength = GUI:CalcTextSize(Str)
+						GUI:Image(ImageFolder..[[icon.png]],10,10)
+						GUI:SameLine()
+						GUI:Text(Str)
+						if (GUI:IsItemHovered()) then
+							GUI:SetTooltip("Enable/Disable Healing")
+						end
+						GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength +10--[[-15]])
+						if RoseCore.Settings.WhmEvHotbar.TankCure.bool == true then
+							GUI:Image(ImageFolder..[[icon.png]],25,25)
+							if GUI:IsItemHovered() then
+								if GUI:IsItemClicked(0) then
+									RoseCore.Settings.WhmEvHotbar.TankCure.bool = not RoseCore.Settings.WhmEvHotbar.TankCure.bool
+									save(true)--Necessary if you want to save your settings.
+								end
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-							RoseCore.Settings.Active,changed = GUI:Checkbox("##Active", RoseCore.Settings.Active)
-							if changed then
-								save(true)
+						elseif RoseCore.Settings.WhmEvHotbar.TankCure.bool == false then
+							GUI:Image(ImageFolder..[[icon2.png]],25,25)
+							if GUI:IsItemHovered() then
+								if GUI:IsItemClicked(0) then
+									RoseCore.Settings.WhmEvHotbar.TankCure.bool = not RoseCore.Settings.WhmEvHotbar.TankCure.bool
+									save(true)--Necessary if you want to save your settings.
+								end
 							end
+						end
+						GUI:SameLine()----If side by side, it is necessary
+					RoseCore.Settings.Active,changed = GUI:Checkbox("##Active", RoseCore.Settings.Active)
+						if changed then
+							save(true)
+						end
+
+						-- Update Group
 						local str = "Updates"
 						local strX,strY = GUI:CalcTextSize(str)
 						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
