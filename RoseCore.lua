@@ -1,42 +1,26 @@
 RoseCore = {}
 
-RoseCore.version = "0.04.15"
+RoseCore.version = "0.04.29"
 
 RoseCore.GUI = {
-    open = false,
+    open = true,
     visible = true,
 }
 
 RoseCore.Data = {}
 
 RoseCore.Tabs = {
-	["CurrentTab"] = 1,
-	["HoveredTab"] = 0,
-	["TabData"] = {
-		"General",
-		"AST",
-		"SCH",
-		"WHM",
-		"SGE",
-	},
-	["ColourCurrent"] = {
-		["r"] = 255/255,
-		["g"] = 255/255,
-		["b"] = 255/255,
-		["a"] = 255/255, 
-	},
-	["ColourDefault"] = { 
-		["r"] = 255/255, 
-		["g"] = 255/255, 
-		["b"] = 255/255, 
-		["a"] = 204/255,
-	},
-	["ColourHovered"] = { 
-		["r"] = 255/255, 
-		["g"] = 255/255, 
-		["b"] = 255/255, 
-		["a"] = 204/255,
-	},
+	["General"] = true,
+	["Ast"] = false,
+	["Sch"] = false,
+	["Whm"] = false,
+	["Sge"] = false,
+}
+
+local RoseCoreLinks = {
+	discord = [[https://discord.gg/BM9MBERbA9]],
+	trello = [[https://trello.com/b/jiAMiYGM/project-remedy]],
+	kofi = [[https://ko-fi.com/rosecore1000]],
 }
 
 RoseCore.WindowStyle = {
@@ -49,9 +33,9 @@ RoseCore.WindowStyle = {
 	["FrameBg"] = { [1] = 100, [2] = 100, [3] = 100, [4] = 0.8 },
 	["FrameBgHovered"] = { [1] = 100, [2] = 100, [3] = 100, [4] = 0.8 },
 	["FrameBgActive"] = { [1] = 100, [2] = 100, [3] = 100, [4] = 0.8 },
-	["TitleBg"] = { [1] = 100, [2] = 0, [3] = 0, [4] = 1 },
-	["TitleBgCollapsed"] = { [1] = 100, [2] = 0, [3] = 0, [4] = 1 },
-	["TitleBgActive"] = { [1] = 100, [2] = 0, [3] = 0, [4] = 1 },
+	["TitleBg"] = { [1] = 135, [2] = 117, [3] = 0, [4] = 1 },
+	["TitleBgCollapsed"] = { [1] = 135, [2] = 117, [3] = 0, [4] = 1 },
+	["TitleBgActive"] = { [1] = 135, [2] = 117, [3] = 0, [4] = 1 },
 	["MenuBarBg"] = { [1] = 0, [2] = 0, [3] = 0, [4] = 0 },
 	["ScrollbarBg"] = { [1] = 100, [2] = 100, [3] = 100, [4] = 0.8 },
 	["ScrollbarGrab"] = { [1] = 255, [2] = 255, [3] = 255, [4] = 0.8 },
@@ -61,9 +45,9 @@ RoseCore.WindowStyle = {
 	["CheckMark"] = { [1] = 255, [2] = 255, [3] = 255, [4] = 0.8 },
 	["SliderGrab"] = { [1] = 255, [2] = 255, [3] = 255, [4] = 0.8 },
 	["SliderGrabActive"] = { [1] = 255, [2] = 255, [3] = 255, [4] = 1 },
-	["Button"] =  { [1] = 100, [2] = 0, [3] = 0, [4] = 1 },
-	["ButtonHovered"] = { [1] = 100, [2] = 0, [3] = 0, [4] = 1 },
-	["ButtonActive"] = { [1] = 100, [2] = 0, [3] = 0, [4] = 1 },
+	["Button"] =  { [1] = 135, [2] = 117, [3] = 0, [4] = 1 },
+	["ButtonHovered"] = { [1] = 135, [2] = 117, [3] = 0, [4] = 1 },
+	["ButtonActive"] = { [1] = 135, [2] = 117, [3] = 0, [4] = 1 },
 	["Header"] = { [1] = 0, [2] = 0, [3] = 0, [4] = 0 },
 	["HeaderHovered"] = { [1] = 100, [2] = 100, [3] = 100, [4] = 0.8 },
 	["HeaderActive"] = { [1] = 100, [2] = 100, [3] = 100, [4] = 0.8 },
@@ -88,6 +72,13 @@ RoseCore.WindowStyle = {
 	["DragDropTarget"] = { [1] = 0, [2] = 0, [3] = 0, [4] = 0 },
 }
 
+local LuaPath = GetLuaModsPath()
+local ModulePath = LuaPath .. [[RoseCore\]]
+local ModuleSettings = ModulePath .. [[Settings.lua]]
+local ImageFolder = ModulePath .. [[Images\]]
+local ImageSize = 55
+local ImageSpacing = 2
+
 RoseCore.Settings = {
 
 	--Reactions
@@ -96,20 +87,17 @@ RoseCore.Settings = {
 	--Active
 	Active = true,
 
-	--General
-	DrawHotbar = true,
-
 	--[AST] Savages
 	AstSavHotbarButColOn = {
-		R = 100/255,
-		G = 0/255,
+		R = 135/255,
+		G = 117/255,
 		B = 0/255,
 		T = 255/255,
 	},
 	AstSavHotbarButColOff = {
-		R = 100/255,
-		G = 100/255,
-		B = 100/255,
+		R = 50/255,
+		G = 50/255,
+		B = 50/255,
 		T = 255/255,
 	},
 	AstSavHotbarBgT = 255,
@@ -138,321 +126,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
-		},
-		TankHeal = {
-			index = 2,
-			name = "Heal (T)",
-			visible = false,
-			bool = true,
-			menu = "Heal Tank",
-			tooltip = "Enable/Disable Heals for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankGcd = {
-			index = 3,
-			name = "GCD (T)",
-			visible = false,
-			bool = true,
-			menu = "GCD Tank",
-			tooltip = "Enable/Disable GCD abilities for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankCi = {
-			index = 4,
-			name = "CI (T)",
-			visible = false,
-			bool = true,
-			menu = "C. Intersection",
-			tooltip = "Enable/Disable Celestial Intersection for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankEd = {
-			index = 5,
-			name = "ED (T)",
-			visible = false,
-			bool = true,
-			menu = "E. Dignity",
-			tooltip = "Enable/Disable Essential Dignity for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankAb = {
-			index = 6,
-			name = "AB (T)",
-			visible = false,
-			bool = true,
-			menu = "Asp. Benefic",
-			tooltip = "Enable/Disable Aspected Benefic for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankBII = {
-			index = 7,
-			name = "BII (T)",
-			visible = false,
-			bool = true,
-			menu = "Benefic II",
-			tooltip = "Enable/Disable Benefic II for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankB = {
-			index = 8,
-			name = "B (T)",
-			visible = false,
-			bool = true,
-			menu = "Benefic",
-			tooltip = "Enable/Disable Benefic for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyHeal = {
-			index = 9,
-			name = "Heals (P)",
-			visible = false,
-			bool = true,
-			menu = "Heal Party",
-			tooltip = "Enable/Disable Heals for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyGcd = {
-			index = 10,
-			name = "GCD (P)",
-			visible = false,
-			bool = true,
-			menu = "GCD Party",
-			tooltip = "Enable/Disable GCD abilities for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},		
-		PartyHo = {
-			index = 11,
-			name = "Horoscope (P)",
-			visible = false,
-			bool = true,
-			menu = "Horoscope",
-			tooltip = "Enable/Disable Horoscope",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyCu = {
-			index = 12,
-			name = "CU (P)",
-			visible = false,
-			bool = true,
-			menu = "C. Unconscious",
-			tooltip = "Enable/Disable Collective Unconscious",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyCo = {
-			index = 13,
-			name = "CO (P)",
-			visible = false,
-			bool = true,
-			menu = "C. Opposition",
-			tooltip = "Enable/Disable Celestial Opposition",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyAh = {
-			index = 14,
-			name = "AH (P)",
-			visible = false,
-			bool = true,
-			menu = "Asp. Helios",
-			tooltip = "Enable/Disable Aspected Helios",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyH = {
-			index = 15,
-			name = "Helios (P)",
-			visible = false,
-			bool = true,
-			menu = "Helios",
-			tooltip = "Enable/Disable Helios",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyEd = {
-			index = 16,
-			name = "ED (P)",
-			visible = false,
-			bool = true,
-			menu = "E. Dignity",
-			tooltip = "Enable/Disable Essential Dignity for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyAb = {
-			index = 17,
-			name = "AB (P)",
-			visible = false,
-			bool = true,
-			menu = "Asp. Benefic",
-			tooltip = "Enable/Disable Aspected Benefic for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyBII = {
-			index = 18,
-			name = "BII (P)",
-			visible = false,
-			bool = true,
-			menu = "Benefic II",
-			tooltip = "Enable/Disable Benefic II for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyB = {
-			index = 19,
-			name = "B (P)",
-			visible = false,
-			bool = true,
-			menu = "Benefic",
-			tooltip = "Enable/Disable Benefic for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyStar = {
-			index = 20,
-			name = "Earthly Star",
-			visible = false,
-			bool = true,
-			menu = "Earthly Star",
-			tooltip = "Enable/Disable Earthly Star",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyNeutral = {
-			index = 21,
-			name = "Neutral Sect",
-			visible = false,
-			bool = true,
-			menu = "Neutral Sect",
-			tooltip = "Enable/Disable Neutral Sect",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Lightspeed = {
-			index = 22,
-			name = "Lightspeed",
-			visible = false,
-			bool = true,
-			menu = "Lightspeed",
-			tooltip = "Enable/Disable Lightspeed",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Macrocosmos = {
-			index = 23,
-			name = "Macrocosmos",
-			visible = false,
-			bool = true,
-			menu = "Macrocosmos",
-			tooltip = "Enable/Disable Macrocosmos",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Exaltation = {
-			index = 24,
-			name = "Exaltation",
-			visible = false,
-			bool = true,
-			menu = "Exaltation",
-			tooltip = "Enable/Disable Exaltation",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Synastry = {
-			index = 25,
-			name = "Synastry",
-			visible = false,
-			bool = true,
-			menu = "Synastry",
-			tooltip = "Enable/Disable Synastry",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
+			imageon = ImageFolder..[[heal_on.png]],
+			imageoff = ImageFolder..[[heal_off.png]],
 		},
 		UsePrepull = {
-			index = 26,
+			index = 2,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -463,33 +141,397 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[prepull_on.png]],
+			imageoff = ImageFolder..[[prepull_off.png]],
 		},
-		UseNSPrepull = {
-			index = 27,
-			name = "NS Prepull",
+		Sprint = {
+			index = 3,
+			name = "Sprint",
 			visible = false,
 			bool = true,
-			menu = "NS Prepull",
-			tooltip = "Enable/Disable usage of neutral sect before a pull",
+			menu = "Sprint",
+			tooltip = "Enable/Disable Sprint",
 			key = -1,
 			keyname = "None",
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[sprint_on.png]],
+			imageoff = ImageFolder..[[sprint_off.png]],
+		},
+		TankHeal = {
+			index = 4,
+			name = "Heal (T)",
+			visible = false,
+			bool = true,
+			menu = "Heal Tank",
+			tooltip = "Enable/Disable Heals for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_heal_on.png]],
+			imageoff = ImageFolder..[[tank_heal_off.png]],
+		},
+		TankGcd = {
+			index = 5,
+			name = "GCD (T)",
+			visible = false,
+			bool = true,
+			menu = "GCD Tank",
+			tooltip = "Enable/Disable GCD abilities for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_gcd_on.png]],
+			imageoff = ImageFolder..[[tank_gcd_off.png]],
+		},
+		TankCi = {
+			index = 6,
+			name = "CI (T)",
+			visible = false,
+			bool = true,
+			menu = "C. Intersection",
+			tooltip = "Enable/Disable Celestial Intersection for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[celestial_intersection_on.png]],
+			imageoff = ImageFolder..[[celestial_intersection_off.png]],
+		},
+		TankEd = {
+			index = 7,
+			name = "ED (T)",
+			visible = false,
+			bool = true,
+			menu = "E. Dignity",
+			tooltip = "Enable/Disable Essential Dignity for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[essential_dignity_on.png]],
+			imageoff = ImageFolder..[[essential_dignity_off.png]],
+		},
+		TankAb = {
+			index = 8,
+			name = "AB (T)",
+			visible = false,
+			bool = true,
+			menu = "Asp. Benefic",
+			tooltip = "Enable/Disable Aspected Benefic for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[aspected_benefic_on.png]],
+			imageoff = ImageFolder..[[aspected_benefic_off.png]],
+		},
+		TankBII = {
+			index = 9,
+			name = "BII (T)",
+			visible = false,
+			bool = true,
+			menu = "Benefic II",
+			tooltip = "Enable/Disable Benefic II for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[benefic_ii_on.png]],
+			imageoff = ImageFolder..[[benefic_ii_off.png]],
+		},
+		TankB = {
+			index = 10,
+			name = "B (T)",
+			visible = false,
+			bool = true,
+			menu = "Benefic",
+			tooltip = "Enable/Disable Benefic for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[benefic_on.png]],
+			imageoff = ImageFolder..[[benefic_off.png]],
+		},
+		PartyHeal = {
+			index = 11,
+			name = "Heals (P)",
+			visible = false,
+			bool = true,
+			menu = "Heal Party",
+			tooltip = "Enable/Disable Heals for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_heal_on.png]],
+			imageoff = ImageFolder..[[party_heal_off.png]],
+		},
+		PartyGcd = {
+			index = 12,
+			name = "GCD (P)",
+			visible = false,
+			bool = true,
+			menu = "GCD Party",
+			tooltip = "Enable/Disable GCD abilities for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_gcd_on.png]],
+			imageoff = ImageFolder..[[party_gcd_off.png]],
+		},		
+		PartyHo = {
+			index = 13,
+			name = "Horoscope (P)",
+			visible = false,
+			bool = true,
+			menu = "Horoscope",
+			tooltip = "Enable/Disable Horoscope",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[horoscope_on.png]],
+			imageoff = ImageFolder..[[horoscope_off.png]],
+		},
+		PartyCu = {
+			index = 14,
+			name = "CU (P)",
+			visible = false,
+			bool = true,
+			menu = "C. Unconscious",
+			tooltip = "Enable/Disable Collective Unconscious",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[collective_unconscious_on.png]],
+			imageoff = ImageFolder..[[collective_unconscious_off.png]],
+		},
+		PartyCo = {
+			index = 15,
+			name = "CO (P)",
+			visible = false,
+			bool = true,
+			menu = "C. Opposition",
+			tooltip = "Enable/Disable Celestial Opposition",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[celestial_opposition_on.png]],
+			imageoff = ImageFolder..[[celestial_opposition_off.png]],
+		},
+		PartyAh = {
+			index = 16,
+			name = "AH (P)",
+			visible = false,
+			bool = true,
+			menu = "Asp. Helios",
+			tooltip = "Enable/Disable Aspected Helios",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[aspected_helios_on.png]],
+			imageoff = ImageFolder..[[aspected_helios_off.png]],
+		},
+		PartyH = {
+			index = 17,
+			name = "Helios (P)",
+			visible = false,
+			bool = true,
+			menu = "Helios",
+			tooltip = "Enable/Disable Helios",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[helios_on.png]],
+			imageoff = ImageFolder..[[helios_off.png]],
+		},
+		PartyEd = {
+			index = 18,
+			name = "ED (P)",
+			visible = false,
+			bool = true,
+			menu = "E. Dignity",
+			tooltip = "Enable/Disable Essential Dignity for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[essential_dignity_on.png]],
+			imageoff = ImageFolder..[[essential_dignity_off.png]],
+		},
+		PartyAb = {
+			index = 19,
+			name = "AB (P)",
+			visible = false,
+			bool = true,
+			menu = "Asp. Benefic",
+			tooltip = "Enable/Disable Aspected Benefic for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[aspected_benefic_on.png]],
+			imageoff = ImageFolder..[[aspected_benefic_off.png]],
+		},
+		PartyBII = {
+			index = 20,
+			name = "BII (P)",
+			visible = false,
+			bool = true,
+			menu = "Benefic II",
+			tooltip = "Enable/Disable Benefic II for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[benefic_ii_on.png]],
+			imageoff = ImageFolder..[[benefic_ii_off.png]],
+		},
+		PartyB = {
+			index = 21,
+			name = "B (P)",
+			visible = false,
+			bool = true,
+			menu = "Benefic",
+			tooltip = "Enable/Disable Benefic for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[benefic_on.png]],
+			imageoff = ImageFolder..[[benefic_off.png]],
+		},
+		PartyStar = {
+			index = 22,
+			name = "Earthly Star",
+			visible = false,
+			bool = true,
+			menu = "Earthly Star",
+			tooltip = "Enable/Disable Earthly Star",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[earthly_star_on.png]],
+			imageoff = ImageFolder..[[earthly_star_off.png]],
+		},
+		PartyNeutral = {
+			index = 23,
+			name = "Neutral Sect",
+			visible = false,
+			bool = true,
+			menu = "Neutral Sect",
+			tooltip = "Enable/Disable Neutral Sect",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[neutral_sect_on.png]],
+			imageoff = ImageFolder..[[neutral_sect_off.png]],
+		},
+		Lightspeed = {
+			index = 24,
+			name = "Lightspeed",
+			visible = false,
+			bool = true,
+			menu = "Lightspeed",
+			tooltip = "Enable/Disable Lightspeed",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[lightspeed_on.png]],
+			imageoff = ImageFolder..[[lightspeed_off.png]],
+		},
+		Macrocosmos = {
+			index = 25,
+			name = "Macrocosmos",
+			visible = false,
+			bool = true,
+			menu = "Macrocosmos",
+			tooltip = "Enable/Disable Macrocosmos",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[macrocosmos_on.png]],
+			imageoff = ImageFolder..[[macrocosmos_off.png]],
+		},
+		Exaltation = {
+			index = 26,
+			name = "Exaltation",
+			visible = false,
+			bool = true,
+			menu = "Exaltation",
+			tooltip = "Enable/Disable Exaltation",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[exaltation_on.png]],
+			imageoff = ImageFolder..[[exaltation_off.png]],
+		},
+		Synastry = {
+			index = 27,
+			name = "Synastry",
+			visible = false,
+			bool = true,
+			menu = "Synastry",
+			tooltip = "Enable/Disable Synastry",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[synastry_on.png]],
+			imageoff = ImageFolder..[[synastry_off.png]],
 		},
 	},
 	
 	--[AST] Everywhere
 	AstEvHotbarButColOn = {
-		R = 100/255,
-		G = 0/255,
+		R = 135/255,
+		G = 117/255,
 		B = 0/255,
 		T = 255/255,
 	},
 	AstEvHotbarButColOff = {
-		R = 100/255,
-		G = 100/255,
-		B = 100/255,
+		R = 50/255,
+		G = 50/255,
+		B = 50/255,
 		T = 255/255,
 	},
 	AstEvHotbarBgT = 255,
@@ -502,6 +544,10 @@ RoseCore.Settings = {
 	AstEvTankOverhealSingle = 90,
 	AstEvPartyOverhealAOE = 75,
 	AstEvPartyOverhealSingle = 75,
+
+	AstSavTankOverhealSingle = 100,
+	AstSavPartyOverhealAOE = 100,
+	AstSavPartyOverhealSingle = 100,
 
 	AstEvHotbar = {
 		Heal = {
@@ -516,9 +562,41 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[heal_on.png]],
+			imageoff = ImageFolder..[[heal_off.png]],
+		},
+		UsePrepull = {
+			index = 2,
+			name = "Prepull",
+			visible = false,
+			bool = true,
+			menu = "Prepull",
+			tooltip = "Enable/Disable abilities before a pull (min Lvl 80)",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[prepull_on.png]],
+			imageoff = ImageFolder..[[prepull_off.png]],
+		},
+		Sprint = {
+			index = 3,
+			name = "Sprint",
+			visible = false,
+			bool = true,
+			menu = "Sprint",
+			tooltip = "Enable/Disable Sprint",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[sprint_on.png]],
+			imageoff = ImageFolder..[[sprint_off.png]],
 		},
 		TankHeal = {
-			index = 2,
+			index = 4,
 			name = "Heal (T)",
 			visible = false,
 			bool = true,
@@ -529,9 +607,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[tank_heal_on.png]],
+			imageoff = ImageFolder..[[tank_heal_off.png]],
 		},
 		TankGcd = {
-			index = 3,
+			index = 5,
 			name = "GCD (T)",
 			visible = false,
 			bool = true,
@@ -542,9 +622,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[tank_gcd_on.png]],
+			imageoff = ImageFolder..[[tank_gcd_off.png]],
 		},
 		TankCi = {
-			index = 4,
+			index = 6,
 			name = "CI (T)",
 			visible = false,
 			bool = true,
@@ -555,9 +637,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[celestial_intersection_on.png]],
+			imageoff = ImageFolder..[[celestial_intersection_off.png]],
 		},
 		TankEd = {
-			index = 5,
+			index = 7,
 			name = "ED (T)",
 			visible = false,
 			bool = true,
@@ -568,9 +652,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[essential_dignity_on.png]],
+			imageoff = ImageFolder..[[essential_dignity_off.png]],
 		},
 		TankAb = {
-			index = 6,
+			index = 8,
 			name = "AB (T)",
 			visible = false,
 			bool = true,
@@ -581,9 +667,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[aspected_benefic_on.png]],
+			imageoff = ImageFolder..[[aspected_benefic_off.png]],
 		},
 		TankBII = {
-			index = 7,
+			index = 9,
 			name = "BII (T)",
 			visible = false,
 			bool = true,
@@ -594,9 +682,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[benefic_ii_on.png]],
+			imageoff = ImageFolder..[[benefic_ii_off.png]],
 		},
 		TankB = {
-			index = 8,
+			index = 10,
 			name = "B (T)",
 			visible = false,
 			bool = true,
@@ -607,9 +697,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[benefic_on.png]],
+			imageoff = ImageFolder..[[benefic_off.png]],
 		},
 		PartyHeal = {
-			index = 9,
+			index = 11,
 			name = "Heals (P)",
 			visible = false,
 			bool = true,
@@ -620,9 +712,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[party_heal_on.png]],
+			imageoff = ImageFolder..[[party_heal_off.png]],
 		},
 		PartyGcd = {
-			index = 10,
+			index = 12,
 			name = "GCD (P)",
 			visible = false,
 			bool = true,
@@ -633,9 +727,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[party_gcd_on.png]],
+			imageoff = ImageFolder..[[party_gcd_off.png]],
 		},
 		PartyHo = {
-			index = 11,
+			index = 13,
 			name = "Horoscope (P)",
 			visible = false,
 			bool = true,
@@ -646,9 +742,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[horoscope_on.png]],
+			imageoff = ImageFolder..[[horoscope_off.png]],
 		},
 		PartyCu = {
-			index = 12,
+			index = 14,
 			name = "Cu (P)",
 			visible = false,
 			bool = true,
@@ -659,9 +757,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[collective_unconscious_on.png]],
+			imageoff = ImageFolder..[[collective_unconscious_off.png]],
 		},
 		PartyCo = {
-			index = 13,
+			index = 15,
 			name = "CO (P)",
 			visible = false,
 			bool = true,
@@ -672,9 +772,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[celestial_opposition_on.png]],
+			imageoff = ImageFolder..[[celestial_opposition_off.png]],
 		},
 		PartyAh = {
-			index = 14,
+			index = 16,
 			name = "AH (P)",
 			visible = false,
 			bool = true,
@@ -685,9 +787,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[aspected_helios_on.png]],
+			imageoff = ImageFolder..[[aspected_helios_off.png]],
 		},
 		PartyH = {
-			index = 15,
+			index = 17,
 			name = "Helios (P)",
 			visible = false,
 			bool = true,
@@ -698,9 +802,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[helios_on.png]],
+			imageoff = ImageFolder..[[helios_off.png]],
 		},
 		PartyEd = {
-			index = 16,
+			index = 18,
 			name = "ED (P)",
 			visible = false,
 			bool = true,
@@ -711,9 +817,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[essential_dignity_on.png]],
+			imageoff = ImageFolder..[[essential_dignity_off.png]],
 		},
 		PartyAb = {
-			index = 17,
+			index = 19,
 			name = "AB (P)",
 			visible = false,
 			bool = true,
@@ -724,9 +832,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[aspected_benefic_on.png]],
+			imageoff = ImageFolder..[[aspected_benefic_off.png]],
 		},
 		PartyBII = {
-			index = 18,
+			index = 20,
 			name = "BII (P)",
 			visible = false,
 			bool = true,
@@ -737,9 +847,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[benefic_ii_on.png]],
+			imageoff = ImageFolder..[[benefic_ii_off.png]],
 		},
 		PartyB = {
-			index = 19,
+			index = 21,
 			name = "B (P)",
 			visible = false,
 			bool = true,
@@ -750,22 +862,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
-		},
-		Dungeon = {
-			index = 20,
-			name = "Dungeon",
-			visible = false,
-			bool = true,
-			menu = "Dungeon",
-			tooltip = "Enable/Disable Aspected Benefic and Celestial Intersection usage on Tank between pulls",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
+			imageon = ImageFolder..[[benefic_on.png]],
+			imageoff = ImageFolder..[[benefic_off.png]],
 		},
 		Star = {
-			index = 21,
+			index = 22,
 			name = "Earthly Star",
 			visible = false,
 			bool = true,
@@ -776,9 +877,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[earthly_star_on.png]],
+			imageoff = ImageFolder..[[earthly_star_off.png]],
 		},
 		Neutral = {
-			index = 22,
+			index = 23,
 			name = "Neutral Sect",
 			visible = false,
 			bool = true,
@@ -789,9 +892,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[neutral_sect_on.png]],
+			imageoff = ImageFolder..[[neutral_sect_off.png]],
 		},
 		Esuna = {
-			index = 23,
+			index = 24,
 			name = "Esuna",
 			visible = false,
 			bool = true,
@@ -802,9 +907,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[esuna_on.png]],
+			imageoff = ImageFolder..[[esuna_off.png]],
 		},
 		Lightspeed = {
-			index = 24,
+			index = 25,
 			name = "Lightspeed",
 			visible = false,
 			bool = true,
@@ -815,9 +922,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[lightspeed_on.png]],
+			imageoff = ImageFolder..[[lightspeed_off.png]],
 		},
 		Macrocosmos = {
-			index = 25,
+			index = 26,
 			name = "Macrocosmos",
 			visible = false,
 			bool = true,
@@ -828,9 +937,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[macrocosmos_on.png]],
+			imageoff = ImageFolder..[[macrocosmos_off.png]],
 		},
 		Exaltation = {
-			index = 26,
+			index = 27,
 			name = "Exaltation",
 			visible = false,
 			bool = true,
@@ -841,6 +952,8 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[exaltation_on.png]],
+			imageoff = ImageFolder..[[exaltation_off.png]],
 		},
 		Synastry = {
 			index = 27,
@@ -854,33 +967,22 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
-		},
-		UsePrepull = {
-			index = 28,
-			name = "Prepull",
-			visible = false,
-			bool = true,
-			menu = "Prepull",
-			tooltip = "Enable/Disable abilities before a pull (min Lvl 80)",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
+			imageon = ImageFolder..[[synastry_on.png]],
+			imageoff = ImageFolder..[[synastry_off.png]],
 		},
 	},
 	
 	--[Sch] Savage
 	SchSavHotbarButColOn = {
-		R = 100/255,
-		G = 0/255,
+		R = 135/255,
+		G = 117/255,
 		B = 0/255,
 		T = 255/255,
 	},
 	SchSavHotbarButColOff = {
-		R = 100/255,
-		G = 100/255,
-		B = 100/255,
+		R = 50/255,
+		G = 50/255,
+		B = 50/255,
 		T = 255/255,
 	},
 	SchSavHotbarBgT = 255,
@@ -890,8 +992,9 @@ RoseCore.Settings = {
 	SchSavHotbarLocked = false,
 	SchSavHotbarEnabled = true,
 
-	SchSavPartyOverhealAoe = 2,
-	SchSavPartyOverhealSingle = 0,
+	SchSavTankOverhealSingle = 100,
+	SchSavPartyOverhealAOE = 100,
+	SchSavPartyOverhealSingle = 100,
 	
 	-- Fight Specific
 
@@ -908,334 +1011,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
-		},
-		TankHeal = {
-			index = 2,
-			name = "Heal (T)",
-			visible = false,
-			bool = true,
-			menu = "Heal Tank",
-			tooltip = "Enable/Disable Heals for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankGcd = {
-			index = 3,
-			name = "GCD (T)",
-			visible = false,
-			bool = true,
-			menu = "GCD",
-			tooltip = "Enable/Disable GCD abilities for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankExco = {
-			index = 4,
-			name = "Exco (T)",
-			visible = false,
-			bool = true,
-			menu = "Excogitation",
-			tooltip = "Enable/Disable Excogitation for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankAp = {
-			index = 5,
-			name = "Aetherpact (T)",
-			visible = false,
-			bool = true,
-			menu = "Aetherpact",
-			tooltip = "Enable/Disable Aetherpact for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankLustrate = {
-			index = 6,
-			name = "Lustrate (T)",
-			visible = false,
-			bool = true,
-			menu = "Lustrate",
-			tooltip = "Enable/Disable Lustrate for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankEt = {
-			index = 7,
-			name = "ET (T)",
-			visible = false,
-			bool = true,
-			menu = "E. Tactics",
-			tooltip = "Enable/Disable Emergency Tactics for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankAdlo = {
-			index = 8,
-			name = "Adlo (T)",
-			visible = false,
-			bool = true,
-			menu = "Adloquium",
-			tooltip = "Enable/Disable Adloquium for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankPhysick = {
-			index = 9,
-			name = "Physick (T)",
-			visible = false,
-			bool = true,
-			menu = "Physick",
-			tooltip = "Enable/Disable Physick for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankProtraction = {
-			index = 10,
-			name = "Protraction (T)",
-			visible = false,
-			bool = true,
-			menu = "Protraction",
-			tooltip = "Enable/Disable Protraction for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyHeal = {
-			index = 11,
-			name = "Heal (P)",
-			visible = false,
-			bool = true,
-			menu = "Heal Party",
-			tooltip = "Enable/Disable Heals for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyGcd = {
-			index = 12,
-			name = "GCD (P)",
-			visible = false,
-			bool = true,
-			menu = "GCD",
-			tooltip = "Enable/Disable GCD abilities for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyConsolation = {
-			index = 13,
-			name = "Consolation (P)",
-			visible = false,
-			bool = true,
-			menu = "Consolation",
-			tooltip = "Enable/Disable Consolation for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyIndom = {
-			index = 14,
-			name = "Indom (P)",
-			visible = false,
-			bool = true,
-			menu = "Indom",
-			tooltip = "Enable/Disable Indomitability for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyWhisp = {
-			index = 15,
-			name = "WD (P)",
-			visible = false,
-			bool = true,
-			menu = "Whisp. Dawn",
-			tooltip = "Enable/Disable Whispering Dawn for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyFeyB = {
-			index = 16,
-			name = "FB (P)",
-			visible = false,
-			bool = true,
-			menu = "Fey Blessing",
-			tooltip = "Enable/Disable Fey Blessing for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartySuccor = {
-			index = 17,
-			name = "Succor (P)",
-			visible = false,
-			bool = true,
-			menu = "Succor",
-			tooltip = "Enable/Disable Succor for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyAp = {
-			index = 18,
-			name = "Ap (P)",
-			visible = false,
-			bool = true,
-			menu = "Aetherpact",
-			tooltip = "Enable/Disable Aetherpact for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyLustrate = {
-			index = 19,
-			name = "Lustrate (P)",
-			visible = false,
-			bool = true,
-			menu = "Lustrate",
-			tooltip = "Enable/Disable Lustrate for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyAdlo = {
-			index = 20,
-			name = "Adlo (P)",
-			visible = false,
-			bool = true,
-			menu = "Adloquium",
-			tooltip = "Enable/Disable Adloquium for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyPhysick = {
-			index = 21,
-			name = "Physick (P)",
-			visible = false,
-			bool = true,
-			menu = "Physick",
-			tooltip = "Enable/Disable Physick for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Seraph = {
-			index = 22,
-			name = "Seraph",
-			visible = false,
-			bool = true,
-			menu = "Summon Seraph",
-			tooltip = "Enable/Disable Seraph",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Soil = {
-			index = 23,
-			name = "Sacred Soil",
-			visible = false,
-			bool = true,
-			menu = "Sacred Soil",
-			tooltip = "Enable/Disable Sacred Soil",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		FeyIllu = {
-			index = 24,
-			name = "Illumination",
-			visible = false,
-			bool = true,
-			menu = "Illumination",
-			tooltip = "Enable/Disable Fey Illumination",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		DeploymentTact = {
-			index = 25,
-			name = "D. Tactics",
-			visible = false,
-			bool = true,
-			menu = "D. Tactics",
-			tooltip = "Enable/Disable Deployment Tactics",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},		
-		PlacePet = {
-			index = 26,
-			name = "Place Pet",
-			visible = false,
-			bool = true,
-			menu = "Place Pet",
-			tooltip = "Enable/Disable placing pet in the middle",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
+			imageon = ImageFolder..[[heal_on.png]],
+			imageoff = ImageFolder..[[heal_off.png]],
 		},
 		UsePrepull = {
-			index = 27,
+			index = 2,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -1246,6 +1026,383 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[prepull_on.png]],
+			imageoff = ImageFolder..[[prepull_off.png]],
+		},
+		Sprint = {
+			index = 3,
+			name = "Sprint",
+			visible = false,
+			bool = true,
+			menu = "Sprint",
+			tooltip = "Enable/Disable Sprint",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[sprint_on.png]],
+			imageoff = ImageFolder..[[sprint_off.png]],
+		},
+		TankHeal = {
+			index = 4,
+			name = "Heal (T)",
+			visible = false,
+			bool = true,
+			menu = "Heal Tank",
+			tooltip = "Enable/Disable Heals for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_heal_on.png]],
+			imageoff = ImageFolder..[[tank_heal_off.png]],
+		},
+		TankGcd = {
+			index = 5,
+			name = "GCD (T)",
+			visible = false,
+			bool = true,
+			menu = "GCD",
+			tooltip = "Enable/Disable GCD abilities for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_gcd_on.png]],
+			imageoff = ImageFolder..[[tank_gcd_off.png]],
+		},
+		TankExco = {
+			index = 6,
+			name = "Exco (T)",
+			visible = false,
+			bool = true,
+			menu = "Excogitation",
+			tooltip = "Enable/Disable Excogitation for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[excogitation_on.png]],
+			imageoff = ImageFolder..[[excogitation_off.png]],
+		},
+		TankAp = {
+			index = 7,
+			name = "Aetherpact (T)",
+			visible = false,
+			bool = true,
+			menu = "Aetherpact",
+			tooltip = "Enable/Disable Aetherpact for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[aetherpact_on.png]],
+			imageoff = ImageFolder..[[aetherpact_off.png]],
+		},
+		TankLustrate = {
+			index = 8,
+			name = "Lustrate (T)",
+			visible = false,
+			bool = true,
+			menu = "Lustrate",
+			tooltip = "Enable/Disable Lustrate for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[lustrate_on.png]],
+			imageoff = ImageFolder..[[lustrate_off.png]],
+		},
+		TankEt = {
+			index = 9,
+			name = "ET (T)",
+			visible = false,
+			bool = true,
+			menu = "E. Tactics",
+			tooltip = "Enable/Disable Emergency Tactics for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[emergency_tactics_on.png]],
+			imageoff = ImageFolder..[[emergency_tactics_off.png]],
+		},
+		TankAdlo = {
+			index = 10,
+			name = "Adlo (T)",
+			visible = false,
+			bool = true,
+			menu = "Adloquium",
+			tooltip = "Enable/Disable Adloquium for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[adloquium_on.png]],
+			imageoff = ImageFolder..[[adloquium_off.png]],
+		},
+		TankPhysick = {
+			index = 11,
+			name = "Physick (T)",
+			visible = false,
+			bool = true,
+			menu = "Physick",
+			tooltip = "Enable/Disable Physick for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[physick_on.png]],
+			imageoff = ImageFolder..[[physick_off.png]],
+		},
+		TankProtraction = {
+			index = 12,
+			name = "Protraction (T)",
+			visible = false,
+			bool = true,
+			menu = "Protraction",
+			tooltip = "Enable/Disable Protraction for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[protraction_on.png]],
+			imageoff = ImageFolder..[[protraction_off.png]],
+		},
+		PartyHeal = {
+			index = 13,
+			name = "Heal (P)",
+			visible = false,
+			bool = true,
+			menu = "Heal Party",
+			tooltip = "Enable/Disable Heals for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_heal_on.png]],
+			imageoff = ImageFolder..[[party_heal_off.png]],
+		},
+		PartyGcd = {
+			index = 14,
+			name = "GCD (P)",
+			visible = false,
+			bool = true,
+			menu = "GCD",
+			tooltip = "Enable/Disable GCD abilities for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_gcd_on.png]],
+			imageoff = ImageFolder..[[party_gcd_off.png]],
+		},
+		PartyConsolation = {
+			index = 15,
+			name = "Consolation (P)",
+			visible = false,
+			bool = true,
+			menu = "Consolation",
+			tooltip = "Enable/Disable Consolation for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[consolation_on.png]],
+			imageoff = ImageFolder..[[consolation_off.png]],
+		},
+		PartyIndom = {
+			index = 16,
+			name = "Indom (P)",
+			visible = false,
+			bool = true,
+			menu = "Indom",
+			tooltip = "Enable/Disable Indomitability for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[indomitability_on.png]],
+			imageoff = ImageFolder..[[indomitability_off.png]],
+		},
+		PartyWhisp = {
+			index = 17,
+			name = "WD (P)",
+			visible = false,
+			bool = true,
+			menu = "Whisp. Dawn",
+			tooltip = "Enable/Disable Whispering Dawn for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[whispering_dawn_on.png]],
+			imageoff = ImageFolder..[[whispering_dawn_off.png]],
+		},
+		PartyFeyB = {
+			index = 18,
+			name = "FB (P)",
+			visible = false,
+			bool = true,
+			menu = "Fey Blessing",
+			tooltip = "Enable/Disable Fey Blessing for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[fey_blessing_on.png]],
+			imageoff = ImageFolder..[[fey_blessing_off.png]],
+		},
+		PartySuccor = {
+			index = 19,
+			name = "Succor (P)",
+			visible = false,
+			bool = true,
+			menu = "Succor",
+			tooltip = "Enable/Disable Succor for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[succor_on.png]],
+			imageoff = ImageFolder..[[succor_off.png]],
+		},
+		PartyAp = {
+			index = 20,
+			name = "Ap (P)",
+			visible = false,
+			bool = true,
+			menu = "Aetherpact",
+			tooltip = "Enable/Disable Aetherpact for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[aetherpact_on.png]],
+			imageoff = ImageFolder..[[aetherpact_off.png]],
+		},
+		PartyLustrate = {
+			index = 21,
+			name = "Lustrate (P)",
+			visible = false,
+			bool = true,
+			menu = "Lustrate",
+			tooltip = "Enable/Disable Lustrate for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[lustrate_on.png]],
+			imageoff = ImageFolder..[[lustrate_off.png]],
+		},
+		PartyAdlo = {
+			index = 22,
+			name = "Adlo (P)",
+			visible = false,
+			bool = true,
+			menu = "Adloquium",
+			tooltip = "Enable/Disable Adloquium for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[adloquium_on.png]],
+			imageoff = ImageFolder..[[adloquium_off.png]],
+		},
+		PartyPhysick = {
+			index = 23,
+			name = "Physick (P)",
+			visible = false,
+			bool = true,
+			menu = "Physick",
+			tooltip = "Enable/Disable Physick for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[physick_on.png]],
+			imageoff = ImageFolder..[[physick_off.png]],
+		},
+		Seraph = {
+			index = 24,
+			name = "Seraph",
+			visible = false,
+			bool = true,
+			menu = "Summon Seraph",
+			tooltip = "Enable/Disable Seraph",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[seraph_on.png]],
+			imageoff = ImageFolder..[[seraph_off.png]],
+		},
+		Soil = {
+			index = 25,
+			name = "Sacred Soil",
+			visible = false,
+			bool = true,
+			menu = "Sacred Soil",
+			tooltip = "Enable/Disable Sacred Soil",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[sacred_soil_on.png]],
+			imageoff = ImageFolder..[[sacred_soil_off.png]],
+		},
+		FeyIllu = {
+			index = 26,
+			name = "Illumination",
+			visible = false,
+			bool = true,
+			menu = "Illumination",
+			tooltip = "Enable/Disable Fey Illumination",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[fey_illumination_on.png]],
+			imageoff = ImageFolder..[[fey_illumination_off.png]],
+		},
+		DeploymentTact = {
+			index = 27,
+			name = "D. Tactics",
+			visible = false,
+			bool = true,
+			menu = "D. Tactics",
+			tooltip = "Enable/Disable Deployment Tactics",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[deployment_tactics_on.png]],
+			imageoff = ImageFolder..[[deployment_tactics_off.png]],
 		},
 		Expedient = {
 			index = 28,
@@ -1259,20 +1416,22 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[expedient_on.png]],
+			imageoff = ImageFolder..[[expedient_off.png]],
 		},
 	},
 	
 	--[Sch] Everywhere
 	SchEvHotbarButColOn = {
-		R = 100/255,
-		G = 0/255,
+		R = 135/255,
+		G = 117/255,
 		B = 0/255,
 		T = 255/255,
 	},
 	SchEvHotbarButColOff = {
-		R = 100/255,
-		G = 100/255,
-		B = 100/255,
+		R = 50/255,
+		G = 50/255,
+		B = 50/255,
 		T = 255/255,
 	},
 	SchEvHotbarBgT = 255,
@@ -1299,360 +1458,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
-		},
-		TankHeal = {
-			index = 2,
-			name = "Heal (T)",
-			visible = false,
-			bool = true,
-			menu = "Heal Tank",
-			tooltip = "Enable/Disable Heals for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankGcd = {
-			index = 3,
-			name = "GCD (T)",
-			visible = false,
-			bool = true,
-			menu = "GCD",
-			tooltip = "Enable/Disable GCD abilities for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankExco = {
-			index = 4,
-			name = "Exco (T)",
-			visible = false,
-			bool = true,
-			menu = "Excogitation",
-			tooltip = "Enable/Disable Excogitation for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankAp = {
-			index = 5,
-			name = "Aetherpact (T)",
-			visible = false,
-			bool = true,
-			menu = "Aetherpact",
-			tooltip = "Enable/Disable Aetherpact for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankLustrate = {
-			index = 6,
-			name = "Lustrate (T)",
-			visible = false,
-			bool = true,
-			menu = "Lustrate",
-			tooltip = "Enable/Disable Lustrate for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankEt = {
-			index = 7,
-			name = "ET (T)",
-			visible = false,
-			bool = true,
-			menu = "E. Tactics",
-			tooltip = "Enable/Disable Emergency Tactics for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankAdlo = {
-			index = 8,
-			name = "Adlo (T)",
-			visible = false,
-			bool = true,
-			menu = "Adloquium",
-			tooltip = "Enable/Disable Adloquium for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankPhysick = {
-			index = 9,
-			name = "Physick (T)",
-			visible = false,
-			bool = true,
-			menu = "Physick",
-			tooltip = "Enable/Disable Physick for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankProtraction = {
-			index = 10,
-			name = "Protraction (T)",
-			visible = false,
-			bool = true,
-			menu = "Protraction",
-			tooltip = "Enable/Disable Protraction for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyHeal = {
-			index = 11,
-			name = "Heal (P)",
-			visible = false,
-			bool = true,
-			menu = "Heal Party",
-			tooltip = "Enable/Disable Heals for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyGcd = {
-			index = 12,
-			name = "GCD (P)",
-			visible = false,
-			bool = true,
-			menu = "GCD",
-			tooltip = "Enable/Disable GCD abilities for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyConsolation = {
-			index = 13,
-			name = "Consolation (P)",
-			visible = false,
-			bool = true,
-			menu = "Consolation",
-			tooltip = "Enable/Disable Consolation for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyIndom = {
-			index = 14,
-			name = "Indom (P)",
-			visible = false,
-			bool = true,
-			menu = "Indom",
-			tooltip = "Enable/Disable Indomitability for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyWhisp = {
-			index = 15,
-			name = "WD (P)",
-			visible = false,
-			bool = true,
-			menu = "Whisp. Dawn",
-			tooltip = "Enable/Disable Whispering Dawn for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyFeyB = {
-			index = 16,
-			name = "FB (P)",
-			visible = false,
-			bool = true,
-			menu = "Fey Blessing",
-			tooltip = "Enable/Disable Fey Blessing for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartySuccor = {
-			index = 17,
-			name = "Succor (P)",
-			visible = false,
-			bool = true,
-			menu = "Succor",
-			tooltip = "Enable/Disable Succor for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyAp = {
-			index = 18,
-			name = "Ap (P)",
-			visible = false,
-			bool = true,
-			menu = "Aetherpact",
-			tooltip = "Enable/Disable Aetherpact for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyLustrate = {
-			index = 19,
-			name = "Lustrate (P)",
-			visible = false,
-			bool = true,
-			menu = "Lustrate",
-			tooltip = "Enable/Disable Lustrate for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyAdlo = {
-			index = 20,
-			name = "Adlo (P)",
-			visible = false,
-			bool = true,
-			menu = "Adloquium",
-			tooltip = "Enable/Disable Adloquium for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyPhysick = {
-			index = 21,
-			name = "Physick (P)",
-			visible = false,
-			bool = true,
-			menu = "Physick",
-			tooltip = "Enable/Disable Physick for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Dungeon = {
-			index = 22,
-			name = "Dungeon",
-			visible = false,
-			bool = true,
-			menu = "Dungeon",
-			tooltip = "Enable/Disable Excogitation and Adloquium usage on Tank between pulls",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Seraph = {
-			index = 23,
-			name = "Seraph",
-			visible = false,
-			bool = true,
-			menu = "Summon Seraph",
-			tooltip = "Enable/Disable Seraph",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Soil = {
-			index = 24,
-			name = "Sacred Soil",
-			visible = false,
-			bool = true,
-			menu = "Sacred Soil",
-			tooltip = "Enable/Disable Sacred Soil",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Esuna = {
-			index = 25,
-			name = "Esuna",
-			visible = false,
-			bool = true,
-			menu = "Esuna",
-			tooltip = "Enable/Disable Esuna",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Expedient = {
-			index = 26,
-			name = "Expedient",
-			visible = false,
-			bool = true,
-			menu = "Expedient",
-			tooltip = "Enable/Disable Expedient",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		FeyIllumination = {
-			index = 27,
-			name = "Illumination",
-			visible = false,
-			bool = true,
-			menu = "Illumination",
-			tooltip = "Enable/Disable Fey Illumination",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		DeploymentTactics = {
-			index = 28,
-			name = "Deployment Tactics",
-			visible = false,
-			bool = true,
-			menu = "D. Tactics",
-			tooltip = "Enable/Disable Deployment Tactics",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
+			imageon = ImageFolder..[[heal_on.png]],
+			imageoff = ImageFolder..[[heal_off.png]],
 		},
 		UsePrepull = {
-			index = 29,
+			index = 2,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -1663,20 +1473,427 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[prepull_on.png]],
+			imageoff = ImageFolder..[[prepull_off.png]],
+		},
+		Sprint = {
+			index = 3,
+			name = "Sprint",
+			visible = false,
+			bool = true,
+			menu = "Sprint",
+			tooltip = "Enable/Disable Sprint",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[sprint_on.png]],
+			imageoff = ImageFolder..[[sprint_off.png]],
+		},
+		TankHeal = {
+			index = 4,
+			name = "Heal (T)",
+			visible = false,
+			bool = true,
+			menu = "Heal Tank",
+			tooltip = "Enable/Disable Heals for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_heal_on.png]],
+			imageoff = ImageFolder..[[tank_heal_off.png]],
+		},
+		TankGcd = {
+			index = 5,
+			name = "GCD (T)",
+			visible = false,
+			bool = true,
+			menu = "GCD",
+			tooltip = "Enable/Disable GCD abilities for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_gcd_on.png]],
+			imageoff = ImageFolder..[[tank_gcd_off.png]],
+		},
+		TankExco = {
+			index = 6,
+			name = "Exco (T)",
+			visible = false,
+			bool = true,
+			menu = "Excogitation",
+			tooltip = "Enable/Disable Excogitation for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[excogitation_on.png]],
+			imageoff = ImageFolder..[[excogitation_off.png]],
+		},
+		TankAp = {
+			index = 7,
+			name = "Aetherpact (T)",
+			visible = false,
+			bool = true,
+			menu = "Aetherpact",
+			tooltip = "Enable/Disable Aetherpact for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[aetherpact_on.png]],
+			imageoff = ImageFolder..[[aetherpact_off.png]],
+		},
+		TankLustrate = {
+			index = 8,
+			name = "Lustrate (T)",
+			visible = false,
+			bool = true,
+			menu = "Lustrate",
+			tooltip = "Enable/Disable Lustrate for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[lustrate_on.png]],
+			imageoff = ImageFolder..[[lustrate_off.png]],
+		},
+		TankEt = {
+			index = 9,
+			name = "ET (T)",
+			visible = false,
+			bool = true,
+			menu = "E. Tactics",
+			tooltip = "Enable/Disable Emergency Tactics for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[emergency_tactics_on.png]],
+			imageoff = ImageFolder..[[emergency_tactics_off.png]],
+		},
+		TankAdlo = {
+			index = 10,
+			name = "Adlo (T)",
+			visible = false,
+			bool = true,
+			menu = "Adloquium",
+			tooltip = "Enable/Disable Adloquium for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[adloquium_on.png]],
+			imageoff = ImageFolder..[[adloquium_off.png]],
+		},
+		TankPhysick = {
+			index = 11,
+			name = "Physick (T)",
+			visible = false,
+			bool = true,
+			menu = "Physick",
+			tooltip = "Enable/Disable Physick for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[physick_on.png]],
+			imageoff = ImageFolder..[[physick_off.png]],
+		},
+		TankProtraction = {
+			index = 12,
+			name = "Protraction (T)",
+			visible = false,
+			bool = true,
+			menu = "Protraction",
+			tooltip = "Enable/Disable Protraction for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[protraction_on.png]],
+			imageoff = ImageFolder..[[protraction_off.png]],
+		},
+		PartyHeal = {
+			index = 13,
+			name = "Heal (P)",
+			visible = false,
+			bool = true,
+			menu = "Heal Party",
+			tooltip = "Enable/Disable Heals for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_heal_on.png]],
+			imageoff = ImageFolder..[[party_heal_off.png]],
+		},
+		PartyGcd = {
+			index = 14,
+			name = "GCD (P)",
+			visible = false,
+			bool = true,
+			menu = "GCD",
+			tooltip = "Enable/Disable GCD abilities for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_gcd_on.png]],
+			imageoff = ImageFolder..[[party_gcd_off.png]],
+		},
+		PartyConsolation = {
+			index = 15,
+			name = "Consolation (P)",
+			visible = false,
+			bool = true,
+			menu = "Consolation",
+			tooltip = "Enable/Disable Consolation for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[consolation_on.png]],
+			imageoff = ImageFolder..[[consolation_off.png]],
+		},
+		PartyIndom = {
+			index = 16,
+			name = "Indom (P)",
+			visible = false,
+			bool = true,
+			menu = "Indom",
+			tooltip = "Enable/Disable Indomitability for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[indomitability_on.png]],
+			imageoff = ImageFolder..[[indomitability_off.png]],
+		},
+		PartyWhisp = {
+			index = 17,
+			name = "WD (P)",
+			visible = false,
+			bool = true,
+			menu = "Whisp. Dawn",
+			tooltip = "Enable/Disable Whispering Dawn for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[whispering_dawn_on.png]],
+			imageoff = ImageFolder..[[whispering_dawn_off.png]],
+		},
+		PartyFeyB = {
+			index = 18,
+			name = "FB (P)",
+			visible = false,
+			bool = true,
+			menu = "Fey Blessing",
+			tooltip = "Enable/Disable Fey Blessing for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[fey_blessing_on.png]],
+			imageoff = ImageFolder..[[fey_blessing_off.png]],
+		},
+		PartySuccor = {
+			index = 19,
+			name = "Succor (P)",
+			visible = false,
+			bool = true,
+			menu = "Succor",
+			tooltip = "Enable/Disable Succor for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[succor_on.png]],
+			imageoff = ImageFolder..[[succor_off.png]],
+		},
+		PartyAp = {
+			index = 20,
+			name = "Ap (P)",
+			visible = false,
+			bool = true,
+			menu = "Aetherpact",
+			tooltip = "Enable/Disable Aetherpact for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[aetherpact_on.png]],
+			imageoff = ImageFolder..[[aetherpact_off.png]],
+		},
+		PartyLustrate = {
+			index = 21,
+			name = "Lustrate (P)",
+			visible = false,
+			bool = true,
+			menu = "Lustrate",
+			tooltip = "Enable/Disable Lustrate for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[lustrate_on.png]],
+			imageoff = ImageFolder..[[lustrate_off.png]],
+		},
+		PartyAdlo = {
+			index = 22,
+			name = "Adlo (P)",
+			visible = false,
+			bool = true,
+			menu = "Adloquium",
+			tooltip = "Enable/Disable Adloquium for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[adloquium_on.png]],
+			imageoff = ImageFolder..[[adloquium_off.png]],
+		},
+		PartyPhysick = {
+			index = 23,
+			name = "Physick (P)",
+			visible = false,
+			bool = true,
+			menu = "Physick",
+			tooltip = "Enable/Disable Physick for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[physick_on.png]],
+			imageoff = ImageFolder..[[physick_off.png]],
+		},
+		Seraph = {
+			index = 24,
+			name = "Seraph",
+			visible = false,
+			bool = true,
+			menu = "Summon Seraph",
+			tooltip = "Enable/Disable Seraph",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[seraph_on.png]],
+			imageoff = ImageFolder..[[seraph_off.png]],
+		},
+		Soil = {
+			index = 25,
+			name = "Sacred Soil",
+			visible = false,
+			bool = true,
+			menu = "Sacred Soil",
+			tooltip = "Enable/Disable Sacred Soil",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[sacred_soil_on.png]],
+			imageoff = ImageFolder..[[sacred_soil_off.png]],
+		},
+		Esuna = {
+			index = 26,
+			name = "Esuna",
+			visible = false,
+			bool = true,
+			menu = "Esuna",
+			tooltip = "Enable/Disable Esuna",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[esuna_on.png]],
+			imageoff = ImageFolder..[[esuna_off.png]],
+		},
+		Expedient = {
+			index = 27,
+			name = "Expedient",
+			visible = false,
+			bool = true,
+			menu = "Expedient",
+			tooltip = "Enable/Disable Expedient",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[expedient_on.png]],
+			imageoff = ImageFolder..[[expedient_off.png]],
+		},
+		FeyIllumination = {
+			index = 28,
+			name = "Illumination",
+			visible = false,
+			bool = true,
+			menu = "Illumination",
+			tooltip = "Enable/Disable Fey Illumination",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[fey_illumination_on.png]],
+			imageoff = ImageFolder..[[fey_illumination_off.png]],
+		},
+		DeploymentTactics = {
+			index = 29,
+			name = "Deployment Tactics",
+			visible = false,
+			bool = true,
+			menu = "D. Tactics",
+			tooltip = "Enable/Disable Deployment Tactics",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[deployment_tactics_on.png]],
+			imageoff = ImageFolder..[[deployment_tactics_off.png]],
 		},
 	},
 	
 	--[Whm] Savages
 	WhmSavHotbarButColOn = {
-		R = 100/255,
-		G = 0/255,
+		R = 135/255,
+		G = 117/255,
 		B = 0/255,
 		T = 255/255,
 	},
 	WhmSavHotbarButColOff = {
-		R = 100/255,
-		G = 100/255,
-		B = 100/255,
+		R = 50/255,
+		G = 50/255,
+		B = 50/255,
 		T = 255/255,
 	},
 	WhmSavHotbarBgT = 255,
@@ -1686,7 +1903,9 @@ RoseCore.Settings = {
 	WhmSavHotbarLocked = false,
 	WhmSavHotbarEnabled = true,	
 
-	WhmSavPartyOverhealAoe = 2,
+	WhmSavTankOverhealSingle = 100,
+	WhmSavPartyOverhealAOE = 100,
+	WhmSavPartyOverhealSingle = 100,
 	
 	-- Fight Specific
 
@@ -1703,295 +1922,12 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
-		},
-		TankHeal = {
-			index = 2,
-			name = "Heal (T)",
-			visible = false,
-			bool = true,
-			menu = "Heal Tank",
-			tooltip = "Enable/Disable Heals for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankLily = {
-			index = 3,
-			name = "Gcds (T)",
-			visible = false,
-			bool = true,
-			menu = "Gcds",
-			tooltip = "Enable/Disable GCD abilities (apart from Lily Heals) for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankBene = {
-			index = 4,
-			name = "Benediction (T)",
-			visible = false,
-			bool = true,
-			menu = "Benediction",
-			tooltip = "Enable/Disable Benediction for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankSol = {
-			index = 5,
-			name = "Solace (T)",
-			visible = false,
-			bool = true,
-			menu = "Affl. Solace",
-			tooltip = "Enable/Disable Afflatus Solace for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankTetra = {
-			index = 6,
-			name = "Tetra (T)",
-			visible = false,
-			bool = true,
-			menu = "Tetragrammaton",
-			tooltip = "Enable/Disable Tetragrammaton for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankRegen = {
-			index = 7,
-			name = "Regen (T)",
-			visible = false,
-			bool = true,
-			menu = "Regen",
-			tooltip = "Enable/Disable Regen for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankCureII = {
-			index = 8,
-			name = "Cure II (T)",
-			visible = false,
-			bool = true,
-			menu = "Cure II",
-			tooltip = "Enable/Disable Cure II for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankCure = {
-			index = 9,
-			name = "Cure (T)",
-			visible = false,
-			bool = true,
-			menu = "Cure",
-			tooltip = "Enable/Disable Cure for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyHeal = {
-			index = 10,
-			name = "Heal (P)",
-			visible = false,
-			bool = true,
-			menu = "Heal Party",
-			tooltip = "Enable/Disable Heals for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyGcd = {
-			index = 11,
-			name = "Gcds (P)",
-			visible = false,
-			bool = true,
-			menu = "Gcds",
-			tooltip = "Enable/Disable GCD abilities (apart from Lily Heals) for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyRap = {
-			index = 12,
-			name = "Rapture (P)",
-			visible = false,
-			bool = true,
-			menu = "Affl. Rapture",
-			tooltip = "Enable/Disable Afflatus Rapture for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyCureIII = {
-			index = 13,
-			name = "Cure III (P)",
-			visible = false,
-			bool = true,
-			menu = "Cure III",
-			tooltip = "Enable/Disable Cure III for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyMedII = {
-			index = 14,
-			name = "Medica II (P)",
-			visible = false,
-			bool = true,
-			menu = "Medica II",
-			tooltip = "Enable/Disable Medica II for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyMed = {
-			index = 15,
-			name = "Medica (P)",
-			visible = false,
-			bool = true,
-			menu = "Medica",
-			tooltip = "Enable/Disable Medica for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartySol = {
-			index = 16,
-			name = "Solace (P)",
-			visible = false,
-			bool = true,
-			menu = "Affl. Solace",
-			tooltip = "Enable/Disable Afflatus Solace for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyTetra = {
-			index = 17,
-			name = "Tetra (P)",
-			visible = false,
-			bool = true,
-			menu = "Tetragrammaton",
-			tooltip = "Enable/Disable Tetragrammaton for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyRegen = {
-			index = 18,
-			name = "Regen (P)",
-			visible = false,
-			bool = true,
-			menu = "Regen",
-			tooltip = "Enable/Disable Regen for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyCureII = {
-			index = 19,
-			name = "Cure II (P)",
-			visible = false,
-			bool = true,
-			menu = "Cure II",
-			tooltip = "Enable/Disable Cure II for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyCure = {
-			index = 20,
-			name = "Cure (P)",
-			visible = false,
-			bool = true,
-			menu = "Cure",
-			tooltip = "Enable/Disable Cure for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Temperance = {
-			index = 21,
-			name = "Temperance",
-			visible = false,
-			bool = true,
-			menu = "Temperance",
-			tooltip = "Enable/Disable Temperance",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Asylum = {
-			index = 22,
-			name = "Asylum",
-			visible = false,
-			bool = true,
-			menu = "Asylum",
-			tooltip = "Enable/Disable Asylum",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Plenary = {
-			index = 23,
-			name = "Plenary",
-			visible = false,
-			bool = true,
-			menu = "Plenary I.",
-			tooltip = "Enable/Disable Plenary Indulgence",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
+			imageon = ImageFolder..[[heal_on.png]],
+			imageoff = ImageFolder..[[heal_off.png]],
+
 		},
 		UsePrepull = {
-			index = 24,
+			index = 2,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -2002,20 +1938,367 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[prepull_on.png]],
+			imageoff = ImageFolder..[[prepull_off.png]],
+		},
+		Sprint = {
+			index = 3,
+			name = "Sprint",
+			visible = false,
+			bool = true,
+			menu = "Sprint",
+			tooltip = "Enable/Disable Sprint",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[sprint_on.png]],
+			imageoff = ImageFolder..[[sprint_off.png]],
+		},
+		TankHeal = {
+			index = 4,
+			name = "Heal (T)",
+			visible = false,
+			bool = true,
+			menu = "Heal Tank",
+			tooltip = "Enable/Disable Heals for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_heal_on.png]],
+			imageoff = ImageFolder..[[tank_heal_off.png]],
+		},
+		TankLily = {
+			index = 5,
+			name = "Gcds (T)",
+			visible = false,
+			bool = true,
+			menu = "Gcds",
+			tooltip = "Enable/Disable GCD abilities (apart from Lily Heals) for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_gcd_on.png]],
+			imageoff = ImageFolder..[[tank_gcd_off.png]],
+		},
+		TankBene = {
+			index = 6,
+			name = "Benediction (T)",
+			visible = false,
+			bool = true,
+			menu = "Benediction",
+			tooltip = "Enable/Disable Benediction for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[benediction_on.png]],
+			imageoff = ImageFolder..[[benediction_off.png]],
+		},
+		TankSol = {
+			index = 7,
+			name = "Solace (T)",
+			visible = false,
+			bool = true,
+			menu = "Affl. Solace",
+			tooltip = "Enable/Disable Afflatus Solace for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[afflatus_solace_on.png]],
+			imageoff = ImageFolder..[[afflatus_solace_off.png]],
+		},
+		TankTetra = {
+			index = 8,
+			name = "Tetra (T)",
+			visible = false,
+			bool = true,
+			menu = "Tetragrammaton",
+			tooltip = "Enable/Disable Tetragrammaton for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tetragrammaton_on.png]],
+			imageoff = ImageFolder..[[tetragrammaton_off.png]],
+		},
+		TankRegen = {
+			index = 9,
+			name = "Regen (T)",
+			visible = false,
+			bool = true,
+			menu = "Regen",
+			tooltip = "Enable/Disable Regen for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[regen_on.png]],
+			imageoff = ImageFolder..[[regen_off.png]],
+		},
+		TankCureII = {
+			index = 10,
+			name = "Cure II (T)",
+			visible = false,
+			bool = true,
+			menu = "Cure II",
+			tooltip = "Enable/Disable Cure II for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_ii_on.png]],
+			imageoff = ImageFolder..[[cure_ii_off.png]],
+		},
+		TankCure = {
+			index = 11,
+			name = "Cure (T)",
+			visible = false,
+			bool = true,
+			menu = "Cure",
+			tooltip = "Enable/Disable Cure for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_on.png]],
+			imageoff = ImageFolder..[[cure_off.png]],
+		},
+		PartyHeal = {
+			index = 12,
+			name = "Heal (P)",
+			visible = false,
+			bool = true,
+			menu = "Heal Party",
+			tooltip = "Enable/Disable Heals for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_heal_on.png]],
+			imageoff = ImageFolder..[[party_heal_off.png]],
+		},
+		PartyGcd = {
+			index = 13,
+			name = "Gcds (P)",
+			visible = false,
+			bool = true,
+			menu = "Gcds",
+			tooltip = "Enable/Disable GCD abilities (apart from Lily Heals) for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_gcd_on.png]],
+			imageoff = ImageFolder..[[party_gcd_off.png]],
+		},
+		PartyRap = {
+			index = 14,
+			name = "Rapture (P)",
+			visible = false,
+			bool = true,
+			menu = "Affl. Rapture",
+			tooltip = "Enable/Disable Afflatus Rapture for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[afflatus_rapture_on.png]],
+			imageoff = ImageFolder..[[afflatus_rapture_off.png]],
+		},
+		PartyCureIII = {
+			index = 15,
+			name = "Cure III (P)",
+			visible = false,
+			bool = true,
+			menu = "Cure III",
+			tooltip = "Enable/Disable Cure III for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_iii_on.png]],
+			imageoff = ImageFolder..[[cure_iii_off.png]],
+		},
+		PartyMedII = {
+			index = 16,
+			name = "Medica II (P)",
+			visible = false,
+			bool = true,
+			menu = "Medica II",
+			tooltip = "Enable/Disable Medica II for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[medica_ii_on.png]],
+			imageoff = ImageFolder..[[medica_ii_off.png]],
+		},
+		PartyMed = {
+			index = 17,
+			name = "Medica (P)",
+			visible = false,
+			bool = true,
+			menu = "Medica",
+			tooltip = "Enable/Disable Medica for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[medica_on.png]],
+			imageoff = ImageFolder..[[medica_off.png]],
+		},
+		PartySol = {
+			index = 18,
+			name = "Solace (P)",
+			visible = false,
+			bool = true,
+			menu = "Affl. Solace",
+			tooltip = "Enable/Disable Afflatus Solace for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[solace_on.png]],
+			imageoff = ImageFolder..[[solace_off.png]],
+		},
+		PartyTetra = {
+			index = 19,
+			name = "Tetra (P)",
+			visible = false,
+			bool = true,
+			menu = "Tetragrammaton",
+			tooltip = "Enable/Disable Tetragrammaton for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tetragrammaton_on.png]],
+			imageoff = ImageFolder..[[tetragrammaton_off.png]],
+		},
+		PartyRegen = {
+			index = 20,
+			name = "Regen (P)",
+			visible = false,
+			bool = true,
+			menu = "Regen",
+			tooltip = "Enable/Disable Regen for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[regen_on.png]],
+			imageoff = ImageFolder..[[regen_off.png]],
+		},
+		PartyCureII = {
+			index = 21,
+			name = "Cure II (P)",
+			visible = false,
+			bool = true,
+			menu = "Cure II",
+			tooltip = "Enable/Disable Cure II for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_ii_on.png]],
+			imageoff = ImageFolder..[[cure_ii_off.png]],
+		},
+		PartyCure = {
+			index = 22,
+			name = "Cure (P)",
+			visible = false,
+			bool = true,
+			menu = "Cure",
+			tooltip = "Enable/Disable Cure for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_on.png]],
+			imageoff = ImageFolder..[[cure_off.png]],
+		},
+		Temperance = {
+			index = 23,
+			name = "Temperance",
+			visible = false,
+			bool = true,
+			menu = "Temperance",
+			tooltip = "Enable/Disable Temperance",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[temperance_on.png]],
+			imageoff = ImageFolder..[[temperance_off.png]],
+		},
+		Asylum = {
+			index = 24,
+			name = "Asylum",
+			visible = false,
+			bool = true,
+			menu = "Asylum",
+			tooltip = "Enable/Disable Asylum",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[asylum_on.png]],
+			imageoff = ImageFolder..[[asylum_off.png]],
+		},
+		Plenary = {
+			index = 25,
+			name = "Plenary",
+			visible = false,
+			bool = true,
+			menu = "Plenary I.",
+			tooltip = "Enable/Disable Plenary Indulgence",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[plenary_indulgence_on.png]],
+			imageoff = ImageFolder..[[plenary_indulgence_off.png]],
 		},
 	},
 	
 	--[Whm] Everywhere
 	WhmEvHotbarButColOn = {
-		R = 100/255,
-		G = 0/255,
+		R = 135/255,
+		G = 117/255,
 		B = 0/255,
 		T = 255/255,
 	},
 	WhmEvHotbarButColOff = {
-		R = 100/255,
-		G = 100/255,
-		B = 100/255,
+		R = 50/255,
+		G = 50/255,
+		B = 50/255,
 		T = 255/255,
 	},
 	WhmEvHotbarBgT = 255,
@@ -2042,347 +2325,11 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
-		},
-		TankHeal = {
-			index = 2,
-			name = "Heal (T)",
-			visible = false,
-			bool = true,
-			menu = "Heal Tank",
-			tooltip = "Enable/Disable Heals for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankLily = {
-			index = 3,
-			name = "Gcd (T)",
-			visible = false,
-			bool = true,
-			menu = "Gcd ",
-			tooltip = "Enable/Disable GCD abilities (apart from Lily Heals) for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankBene = {
-			index = 4,
-			name = "Benediction (T)",
-			visible = false,
-			bool = true,
-			menu = "Benediction",
-			tooltip = "Enable/Disable Benediction for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankSol = {
-			index = 5,
-			name = "Solace (T)",
-			visible = false,
-			bool = true,
-			menu = "Affl. Solace",
-			tooltip = "Enable/Disable Afflatus Solace for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankTetra = {
-			index = 6,
-			name = "Tetra (T)",
-			visible = false,
-			bool = true,
-			menu = "Tetragrammaton",
-			tooltip = "Enable/Disable Tetragrammaton for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankRegen = {
-			index = 7,
-			name = "Regen (T)",
-			visible = false,
-			bool = true,
-			menu = "Regen",
-			tooltip = "Enable/Disable Regen for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankCureII = {
-			index = 8,
-			name = "Cure II (T)",
-			visible = false,
-			bool = true,
-			menu = "Cure II",
-			tooltip = "Enable/Disable Cure II for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankCure = {
-			index = 9,
-			name = "Cure (T)",
-			visible = false,
-			bool = true,
-			menu = "Cure",
-			tooltip = "Enable/Disable Cure for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		TankAquaveil = {
-			index = 10,
-			name = "Aquaveil (T)",
-			visible = false,
-			bool = true,
-			menu = "Aquaveil",
-			tooltip = "Enable/Disable Aquaveil for Tanks",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyHeal = {
-			index = 11,
-			name = "Heal (P)",
-			visible = false,
-			bool = true,
-			menu = "Heal Party",
-			tooltip = "Enable/Disable Heals for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyGcd = {
-			index = 12,
-			name = "Gcd (P)",
-			visible = false,
-			bool = true,
-			menu = "Gcd",
-			tooltip = "Enable/Disable GCD abilities (apart from Lily Heals) for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyRap = {
-			index = 13,
-			name = "Rapture (P)",
-			visible = false,
-			bool = true,
-			menu = "Affl. Rapture",
-			tooltip = "Enable/Disable Afflatus Rapture for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyCureIII = {
-			index = 14,
-			name = "Cure III (P)",
-			visible = false,
-			bool = true,
-			menu = "Cure III",
-			tooltip = "Enable/Disable Cure III for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyMedII = {
-			index = 15,
-			name = "Medica II (P)",
-			visible = false,
-			bool = true,
-			menu = "Medica II",
-			tooltip = "Enable/Disable Medica II for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyMed = {
-			index = 16,
-			name = "Medica (P)",
-			visible = false,
-			bool = true,
-			menu = "Medica",
-			tooltip = "Enable/Disable Medica for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyBene = {
-			index = 17,
-			name = "Benediction (P)",
-			visible = false,
-			bool = true,
-			menu = "Benediction",
-			tooltip = "Enable/Disable Benediction for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartySol = {
-			index = 18,
-			name = "Solace (P)",
-			visible = false,
-			bool = true,
-			menu = "Affl. Solace",
-			tooltip = "Enable/Disable Afflatus Solace for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyTetra = {
-			index = 19,
-			name = "Tetra (P)",
-			visible = false,
-			bool = true,
-			menu = "Tetragrammaton",
-			tooltip = "Enable/Disable Tetragrammaton for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyRegen = {
-			index = 20,
-			name = "Regen (P)",
-			visible = false,
-			bool = true,
-			menu = "Regen",
-			tooltip = "Enable/Disable Regen for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyCureII = {
-			index = 21,
-			name = "Cure II (P)",
-			visible = false,
-			bool = true,
-			menu = "Cure II",
-			tooltip = "Enable/Disable Cure II for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		PartyCure = {
-			index = 22,
-			name = "Cure (P)",
-			visible = false,
-			bool = true,
-			menu = "Cure",
-			tooltip = "Enable/Disable Cure for party members",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Temperance = {
-			index = 23,
-			name = "Temperance",
-			visible = false,
-			bool = true,
-			menu = "Temperance",
-			tooltip = "Enable/Disable Temperance",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Asylum = {
-			index = 24,
-			name = "Asylum",
-			visible = false,
-			bool = true,
-			menu = "Asylum",
-			tooltip = "Enable/Disable Asylum",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Esuna = {
-			index = 25,
-			name = "Esuna",
-			visible = false,
-			bool = true,
-			menu = "Esuna",
-			tooltip = "Enable/Disable Esuna",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		Plenary = {
-			index = 26,
-			name = "Plenary",
-			visible = false,
-			bool = true,
-			menu = "Plenary I.",
-			tooltip = "Enable/Disable Plenary Indulgence",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
-		},
-		LiturgyOfTheBell = {
-			index = 27,
-			name = "Liturgy of the Bell",
-			visible = false,
-			bool = true,
-			menu = "Liturgy of the Bell",
-			tooltip = "Enable/Disable Liturgy of the Bell",
-			key = -1,
-			keyname = "None",
-			modifierC = false,
-			modifierS = false,
-			modifierA = false,
+			imageon = ImageFolder..[[heal_on.png]],
+			imageoff = ImageFolder..[[heal_off.png]],
 		},
 		UsePrepull = {
-			index = 28,
+			index = 2,
 			name = "Prepull",
 			visible = false,
 			bool = true,
@@ -2393,6 +2340,413 @@ RoseCore.Settings = {
 			modifierC = false,
 			modifierS = false,
 			modifierA = false,
+			imageon = ImageFolder..[[prepull_on.png]],
+			imageoff = ImageFolder..[[prepull_off.png]],
+		},
+		Sprint = {
+			index = 3,
+			name = "Sprint",
+			visible = false,
+			bool = true,
+			menu = "Sprint",
+			tooltip = "Enable/Disable Sprint",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[sprint_on.png]],
+			imageoff = ImageFolder..[[sprint_off.png]],
+		},
+		TankHeal = {
+			index = 4,
+			name = "Heal (T)",
+			visible = false,
+			bool = true,
+			menu = "Heal Tank",
+			tooltip = "Enable/Disable Heals for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_heal_on.png]],
+			imageoff = ImageFolder..[[tank_heal_off.png]],
+		},
+		TankLily = {
+			index = 5,
+			name = "Gcd (T)",
+			visible = false,
+			bool = true,
+			menu = "Gcd ",
+			tooltip = "Enable/Disable GCD abilities (apart from Lily Heals) for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tank_gcd_on.png]],
+			imageoff = ImageFolder..[[tank_gcd_off.png]],
+		},
+		TankBene = {
+			index = 6,
+			name = "Benediction (T)",
+			visible = false,
+			bool = true,
+			menu = "Benediction",
+			tooltip = "Enable/Disable Benediction for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[benediction_on.png]],
+			imageoff = ImageFolder..[[benediction_off.png]],
+		},
+		TankSol = {
+			index = 7,
+			name = "Solace (T)",
+			visible = false,
+			bool = true,
+			menu = "Affl. Solace",
+			tooltip = "Enable/Disable Afflatus Solace for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[afflatus_solace_on.png]],
+			imageoff = ImageFolder..[[afflatus_solace_off.png]],
+		},
+		TankTetra = {
+			index = 8,
+			name = "Tetra (T)",
+			visible = false,
+			bool = true,
+			menu = "Tetragrammaton",
+			tooltip = "Enable/Disable Tetragrammaton for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tetragrammaton_on.png]],
+			imageoff = ImageFolder..[[tetragrammaton_off.png]],
+		},
+		TankRegen = {
+			index = 9,
+			name = "Regen (T)",
+			visible = false,
+			bool = true,
+			menu = "Regen",
+			tooltip = "Enable/Disable Regen for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[regen_on.png]],
+			imageoff = ImageFolder..[[regen_off.png]],
+		},
+		TankCureII = {
+			index = 10,
+			name = "Cure II (T)",
+			visible = false,
+			bool = true,
+			menu = "Cure II",
+			tooltip = "Enable/Disable Cure II for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_ii_on.png]],
+			imageoff = ImageFolder..[[cure_ii_off.png]],
+		},
+		TankCure = {
+			index = 11,
+			name = "Cure (T)",
+			visible = false,
+			bool = true,
+			menu = "Cure",
+			tooltip = "Enable/Disable Cure for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_on.png]],
+			imageoff = ImageFolder..[[cure_off.png]],
+		},
+		TankAquaveil = {
+			index = 12,
+			name = "Aquaveil (T)",
+			visible = false,
+			bool = true,
+			menu = "Aquaveil",
+			tooltip = "Enable/Disable Aquaveil for Tanks",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[aquaveil_on.png]],
+			imageoff = ImageFolder..[[aquaveil_off.png]],
+		},
+		PartyHeal = {
+			index = 13,
+			name = "Heal (P)",
+			visible = false,
+			bool = true,
+			menu = "Heal Party",
+			tooltip = "Enable/Disable Heals for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_heal_on.png]],
+			imageoff = ImageFolder..[[party_heal_off.png]],
+		},
+		PartyGcd = {
+			index = 14,
+			name = "Gcd (P)",
+			visible = false,
+			bool = true,
+			menu = "Gcd",
+			tooltip = "Enable/Disable GCD abilities (apart from Lily Heals) for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[party_gcd_on.png]],
+			imageoff = ImageFolder..[[party_gcd_off.png]],
+		},
+		PartyRap = {
+			index = 15,
+			name = "Rapture (P)",
+			visible = false,
+			bool = true,
+			menu = "Affl. Rapture",
+			tooltip = "Enable/Disable Afflatus Rapture for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[afflatus_rapture_on.png]],
+			imageoff = ImageFolder..[[afflatus_rapture_off.png]],
+		},
+		PartyCureIII = {
+			index = 16,
+			name = "Cure III (P)",
+			visible = false,
+			bool = true,
+			menu = "Cure III",
+			tooltip = "Enable/Disable Cure III for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_iii_on.png]],
+			imageoff = ImageFolder..[[cure_iii_off.png]],
+		},
+		PartyMedII = {
+			index = 17,
+			name = "Medica II (P)",
+			visible = false,
+			bool = true,
+			menu = "Medica II",
+			tooltip = "Enable/Disable Medica II for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[medica_ii_on.png]],
+			imageoff = ImageFolder..[[medica_ii_off.png]],
+		},
+		PartyMed = {
+			index = 18,
+			name = "Medica (P)",
+			visible = false,
+			bool = true,
+			menu = "Medica",
+			tooltip = "Enable/Disable Medica for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[medica_on.png]],
+			imageoff = ImageFolder..[[medica_off.png]],
+		},
+		PartyBene = {
+			index = 19,
+			name = "Benediction (P)",
+			visible = false,
+			bool = true,
+			menu = "Benediction",
+			tooltip = "Enable/Disable Benediction for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[benediction_on.png]],
+			imageoff = ImageFolder..[[benediction_off.png]],
+		},
+		PartySol = {
+			index = 20,
+			name = "Solace (P)",
+			visible = false,
+			bool = true,
+			menu = "Affl. Solace",
+			tooltip = "Enable/Disable Afflatus Solace for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[afflatus_solace_on.png]],
+			imageoff = ImageFolder..[[afflatus_solace_off.png]],
+		},
+		PartyTetra = {
+			index = 21,
+			name = "Tetra (P)",
+			visible = false,
+			bool = true,
+			menu = "Tetragrammaton",
+			tooltip = "Enable/Disable Tetragrammaton for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[tetragrammaton_on.png]],
+			imageoff = ImageFolder..[[tetragrammaton_off.png]],
+		},
+		PartyRegen = {
+			index = 22,
+			name = "Regen (P)",
+			visible = false,
+			bool = true,
+			menu = "Regen",
+			tooltip = "Enable/Disable Regen for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[regen_on.png]],
+			imageoff = ImageFolder..[[regen_off.png]],
+		},
+		PartyCureII = {
+			index = 23,
+			name = "Cure II (P)",
+			visible = false,
+			bool = true,
+			menu = "Cure II",
+			tooltip = "Enable/Disable Cure II for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_ii_on.png]],
+			imageoff = ImageFolder..[[cure_ii_off.png]],
+		},
+		PartyCure = {
+			index = 24,
+			name = "Cure (P)",
+			visible = false,
+			bool = true,
+			menu = "Cure",
+			tooltip = "Enable/Disable Cure for party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[cure_on.png]],
+			imageoff = ImageFolder..[[cure_off.png]],
+		},
+		Temperance = {
+			index = 25,
+			name = "Temperance",
+			visible = false,
+			bool = true,
+			menu = "Temperance",
+			tooltip = "Enable/Disable Temperance",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[temperance_on.png]],
+			imageoff = ImageFolder..[[temperance_off.png]],
+		},
+		Asylum = {
+			index = 26,
+			name = "Asylum",
+			visible = false,
+			bool = true,
+			menu = "Asylum",
+			tooltip = "Enable/Disable Asylum",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[asylum_on.png]],
+			imageoff = ImageFolder..[[asylum_off.png]],
+		},
+		Esuna = {
+			index = 27,
+			name = "Esuna",
+			visible = false,
+			bool = true,
+			menu = "Esuna",
+			tooltip = "Enable/Disable Esuna",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[esuna_on.png]],
+			imageoff = ImageFolder..[[esuna_off.png]],
+		},
+		Plenary = {
+			index = 28,
+			name = "Plenary",
+			visible = false,
+			bool = true,
+			menu = "Plenary I.",
+			tooltip = "Enable/Disable Plenary Indulgence",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[plenary_indulgence_on.png]],
+			imageoff = ImageFolder..[[plenary_indulgence_off.png]],
+		},
+		LiturgyOfTheBell = {
+			index = 29,
+			name = "Liturgy of the Bell",
+			visible = false,
+			bool = true,
+			menu = "Liturgy of the Bell",
+			tooltip = "Enable/Disable Liturgy of the Bell",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[liturgy_of_the_bell_on.png]],
+			imageoff = ImageFolder..[[liturgy_of_the_bell_off.png]],
 		},
 	},
 }
@@ -2574,7 +2928,7 @@ RoseCore.KeyCodes =
 local LuaPath = GetLuaModsPath()
 local ModulePath = LuaPath .. [[RoseCore\]]
 local ModuleSettings = ModulePath .. [[Settings.lua]]
-local ImageFolder = ModulePath .. [[Icons\]]
+local ImageFolder = ModulePath .. [[Images\]]
 
 local v = table.valid
 function RoseCore.valid(...)
@@ -2660,7 +3014,7 @@ end
 
 function RoseCore.Init()
     RoseCore.log("Initializing RoseCore v" .. tostring(RoseCore.version))
-    ml_gui.ui_mgr:AddMember({ id = "FFXIVMINION##MENU_RoseCore", name = "RoseCore", onClick = function() RoseCore.GUI.open = not RoseCore.GUI.open end, tooltip = "Complete Healing Reactions", texture = ModulePath.."Icons\\icon.png"},"FFXIVMINION##MENU_HEADER")
+    ml_gui.ui_mgr:AddMember({ id = "FFXIVMINION##MENU_RoseCore", name = "RoseCore", onClick = function() RoseCore.GUI.open = not RoseCore.GUI.open end, tooltip = "Complete Healing Reactions", texture = ModulePath.."Images\\icon.png"},"FFXIVMINION##MENU_HEADER")
 	RoseCore.LoadSettings()
 end
 
@@ -2745,7 +3099,7 @@ function RoseCore.KeybindsPressed(a)
 end
 
 function RoseCore.DrawCall()
-	local WinColR, WinColG, WinColB, WinColT = 100/255, 0/255, 0/255, 255/255
+	local WinColR, WinColG, WinColB, WinColT = 135/255, 117/255, 0/255, 255/255
 	local BgColR, BgColG, BgColB, BgColT = 0/255, 0/255, 0/255, 255/255
 	local OffColR, OffColG, OffColB, OffColT = 100/255, 100/255, 100/255, 255/255
 	local gamestate = GetGameState()
@@ -2763,246 +3117,256 @@ function RoseCore.DrawCall()
 			if (RoseCore.GUI.visible) then
 				local Tabs = RoseCore.Tabs
 				if table.valid(Tabs) then
-					local TotalTabCount = table.size(Tabs.TabData)
-					for i,e in pairs(Tabs.TabData) do
-						if i == Tabs.CurrentTab then 
-							GUI:TextColored(Tabs.ColourCurrent.r,Tabs.ColourCurrent.g,Tabs.ColourCurrent.b,Tabs.ColourCurrent.a,e)
-						elseif i == Tabs.HoveredTab then 
-							GUI:TextColored(Tabs.ColourHovered.r,Tabs.ColourHovered.g,Tabs.ColourHovered.b,Tabs.ColourHovered.a,e)
-							if (GUI:IsItemHovered()) then 
-								Tabs.HoveredTab = i
-								if (GUI:IsMouseClicked(0)) then
-									Tabs.CurrentTab = i
-								end
-							else
-								Tabs.HoveredTab = 0
-							end
-						else
-							GUI:TextColored(Tabs.ColourDefault.r,Tabs.ColourDefault.g,Tabs.ColourDefault.b,Tabs.ColourDefault.a,e)
-							if (GUI:IsItemHovered()) then 
-								Tabs.HoveredTab = i
-								if (GUI:IsMouseClicked(0)) then
-									Tabs.CurrentTab = i
-								end
-							end
-						end
-						if i < TotalTabCount then
-							GUI:SameLine() GUI:Text("|") GUI:SameLine()
+					if Tabs.General == true then
+						GUI:Image(ImageFolder..[[general_on.png]],100,25)
+					else
+						GUI:Image(ImageFolder..[[general_off.png]],100,25)
+					end
+					if (GUI:IsItemHovered()) then
+						if (GUI:IsMouseClicked(0)) then
+							Tabs.General = true
+							Tabs.Ast = false
+							Tabs.Sch = false
+							Tabs.Whm = false
+							Tabs.Sge = false
 						end
 					end
-					GUI:Separator()
+					GUI:SameLine(0,windowPadding.x + 12)
+					if Tabs.Ast == true then
+						GUI:Image(ImageFolder..[[astrologian_on.png]],50,25)
+					else
+						GUI:Image(ImageFolder..[[astrologian_off.png]],50,25)
+					end
+					if (GUI:IsItemHovered()) then
+						if (GUI:IsMouseClicked(0)) then
+							Tabs.General = false
+							Tabs.Ast = true
+							Tabs.Sch = false
+							Tabs.Whm = false
+							Tabs.Sge = false
+						end
+					end
+					GUI:SameLine(0,windowPadding.x + 12)
+					if Tabs.Sch == true then
+						GUI:Image(ImageFolder..[[scholar_on.png]],50,25)
+					else
+						GUI:Image(ImageFolder..[[scholar_off.png]],50,25)
+					end
+					if (GUI:IsItemHovered()) then
+						if (GUI:IsMouseClicked(0)) then
+							Tabs.General = false
+							Tabs.Ast = false
+							Tabs.Sch = true
+							Tabs.Whm = false
+							Tabs.Sge = false
+						end
+					end
+					GUI:SameLine(0,windowPadding.x + 12)
+					if Tabs.Whm == true then
+						GUI:Image(ImageFolder..[[white_mage_on.png]],50,25)
+					else
+						GUI:Image(ImageFolder..[[white_mage_off.png]],50,25)
+					end
+					if (GUI:IsItemHovered()) then
+						if (GUI:IsMouseClicked(0)) then
+							Tabs.General = false
+							Tabs.Ast = false
+							Tabs.Sch = false
+							Tabs.Whm = true
+							Tabs.Sge = false
+						end
+					end
+					GUI:SameLine(0,windowPadding.x + 12)
+					if Tabs.Sge == true then
+						GUI:Image(ImageFolder..[[sage_on.png]],50,25)
+					else
+						GUI:Image(ImageFolder..[[sage_off.png]],50,25)
+					end
+					if (GUI:IsItemHovered()) then
+						if (GUI:IsMouseClicked(0)) then
+							Tabs.General = false
+							Tabs.Ast = false
+							Tabs.Sch = false
+							Tabs.Whm = false
+							Tabs.Sge = true
+						end
+					end
 
 					-- Tab Contents
 					-- General Tab
-					if Tabs.CurrentTab == 1 then
+					if Tabs.General == true then
 
-						-- Heal Active Group
-						local str = GetString("Heal Active ON/OFF")
-						local strX,strY = GUI:CalcTextSize(str)
-						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
-						GUI:BeginChild(str.."#All", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
-						GUI:AlignFirstTextHeightToWidgets()
-						GUI:Text(str)
-						GUI:PopStyleColor()
-						GUI:EndChild()
-						GUI:Separator()
-						local Str = "Active"
-						local StrLength = GUI:CalcTextSize(Str)
-						GUI:Image(ImageFolder..[[icon.png]],10,10)
-						GUI:SameLine()
-						GUI:Text(Str)
-						if (GUI:IsItemHovered()) then
-							GUI:SetTooltip("Enable/Disable Healing")
-						end
-						GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength +10--[[-15]])
-						if RoseCore.Settings.WhmEvHotbar.TankCure.bool == true then
-							GUI:Image(ImageFolder..[[icon.png]],25,25)
+						-- Autoheal ON/OFF
+						-- GUI:Dummy(10,10)
+						GUI:SetCursorPos(30,80)
+						if RoseCore.Settings.Active == true then
+							GUI:Image(ImageFolder..[[autoheal_on.png]],100,75)
 							if GUI:IsItemHovered() then
 								if GUI:IsItemClicked(0) then
-									RoseCore.Settings.WhmEvHotbar.TankCure.bool = not RoseCore.Settings.WhmEvHotbar.TankCure.bool
+									RoseCore.Settings.Active = not RoseCore.Settings.Active
 									save(true)--Necessary if you want to save your settings.
 								end
 							end
-						elseif RoseCore.Settings.WhmEvHotbar.TankCure.bool == false then
-							GUI:Image(ImageFolder..[[icon2.png]],25,25)
+						elseif RoseCore.Settings.Active == false then
+							GUI:Image(ImageFolder..[[autoheal_off.png]],100,75)
 							if GUI:IsItemHovered() then
 								if GUI:IsItemClicked(0) then
-									RoseCore.Settings.WhmEvHotbar.TankCure.bool = not RoseCore.Settings.WhmEvHotbar.TankCure.bool
+									RoseCore.Settings.Active = not RoseCore.Settings.Active
 									save(true)--Necessary if you want to save your settings.
 								end
 							end
 						end
-						GUI:SameLine()----If side by side, it is necessary
-					RoseCore.Settings.Active,changed = GUI:Checkbox("##Active", RoseCore.Settings.Active)
-						if changed then
-							save(true)
-						end
+
+						-- Background
+						GUI:SetCursorPos(55,65)
+						GUI:Image(ImageFolder..[[background.png]],310,310)
 
 						-- Update Group
 						local str = "Updates"
 						local strX,strY = GUI:CalcTextSize(str)
-						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
-						GUI:BeginChild(str.."#All", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
-						GUI:AlignFirstTextHeightToWidgets()
-						GUI:Text(str)
-						GUI:PopStyleColor()
-						GUI:EndChild()
-						if GUI:TreeNode("RoseCore##UpdatesGeneral") then
-							-- Main button
-							if RoseCore.Data.NeedUpdateC == nil and RoseCore.Data.UpdateTick == nil then
-								if GUI:Button(GetString("Check Releases##Core")) then
-									RoseCore.Updater("core","check")
-								end
-							end
-							
-							-- Wait for check
-							if RoseCore.Data.CheckVerC == true then
-								GUI:TextColored(1,1,0,1,GetString("Processing..."))
-							end
-							
-							-- Other button pressed
-							if RoseCore.Data.NeedUpdateC == nil and RoseCore.Data.CheckVerC == nil and RoseCore.Data.UpdateTick ~= nil then
-								GUI:TextColored(1,1,0,1,GetString("Processing...")) 
-							end
-							
-							-- We need to update
-							if RoseCore.Data.NeedUpdateC == true and RoseCore.Data.UpdateTaskC ~= true  then
-								if GUI:Button(GetString("Update##Core")) then
-									GUI:OpenPopup("Download Updates")
-								end
-							end
-							
-							-- We are already on the latest version
-							if RoseCore.Data.NeedUpdateC == false and RoseCore.Data.UpdateTaskC ~= true and RoseCore.Data.CheckVerC == nil then
-								if GUI:Button(GetString("Check Again##Core")) then
-									RoseCore.Updater("core","check")
-								end
-								GUI:SameLine(0,windowPadding.x + 5)
-								GUI:TextColored(1,1,0,1,GetString("No Updates"))
-								GUI:SameLine(0,windowPadding.x + 5)
-								if GUI:Button(GetString("Force Update##Core")) then
-									GUI:OpenPopup("Download Updates")
-								end
-							end
-							
-							--Update Popup
-							if GUI:BeginPopupModal("Download Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
-								GUI:PushTextWrapPos(500)
-								GUI:Text(GetString("This will overwrite your current RoseCore.\n"))
-								GUI:TextColored(1,1,0,1,GetString("After the update minion will be reloaded.\n")) 								
-								GUI:TextColored(1,0,0,1,GetString("Do you still want to update?"))
-								if GUI:Button(GetString("Yes") ,30 ,20) then
-									RoseCore.Data.UpdateTaskC = true
-									RoseCore.Updater("core","update")
-									GUI:CloseCurrentPopup()
-								end 
-								GUI:SameLine()
-								if GUI:Button(GetString("No") ,30 ,20) then
-									GUI:CloseCurrentPopup() 
-								end
-								GUI:PopTextWrapPos()
-								GUI:EndPopup()
-							end
-							
-							if RoseCore.Data.UpdateTaskC == true then
-								GUI:TextColored(1,1,0,1,GetString("Updating..."))
-							end
-							
-							GUI:TreePop()
-						end
-						
-						if GUI:TreeNode("Reactions##UpdatesGeneral") then
-							-- Main button
-							if RoseCore.Data.NeedUpdateR == nil and RoseCore.Data.UpdateTick == nil then
-								if GUI:Button(GetString("Check Releases##Reactions")) then
-									RoseCore.Updater("reactions","check")
-								end
-							end
-							
-							-- Wait for check
-							if RoseCore.Data.CheckVerR == true then
-								GUI:TextColored(1,1,0,1,GetString("Processing..."))
-							end
-							
-							-- Other button pressed
-							if RoseCore.Data.NeedUpdateR == nil and RoseCore.Data.CheckVerR == nil and RoseCore.Data.UpdateTick ~= nil then
-								GUI:TextColored(1,1,0,1,GetString("Processing..."))
-							end
-							
-							-- We need to update
-							if RoseCore.Data.NeedUpdateR == true and RoseCore.Data.UpdateTaskR ~= true  then
-								if GUI:Button(GetString("Update##Reactions")) then
-									GUI:OpenPopup("Download Updates")
-								end
-							end
-							
-							-- We are already on the latest version
-							if RoseCore.Data.NeedUpdateR == false and RoseCore.Data.UpdateTaskR ~= true and RoseCore.Data.CheckVerR == nil then
-								if GUI:Button(GetString("Check Again##Reactions")) then
-									RoseCore.Updater("reactions","check")
-								end
-								GUI:SameLine(0,windowPadding.x + 5)
-								GUI:TextColored(1,1,0,1,GetString("No Updates"))
-								GUI:SameLine(0,windowPadding.x + 5)
-								if GUI:Button(GetString("Force Update##Reactions")) then
-									GUI:OpenPopup("Download Updates")
-								end
-							end
-							
-							--Update Popup
-							if GUI:BeginPopupModal("Download Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
-								GUI:PushTextWrapPos(500)
-								GUI:Text(GetString("This will overwrite your current healer reactions.\n"))
-								GUI:Text(GetString("A backup of your files will be created in ..LuaMods/TensorReactions/GeneralReactions/Rose.\n")) 								
-								GUI:TextColored(1,0,0,1,GetString("Do you still want to update?"))
-								if GUI:Button(GetString("Yes") ,30 ,20) then
-									RoseCore.Data.UpdateTaskR = true
-									RoseCore.Updater("reactions","update")
-									GUI:CloseCurrentPopup()
-								end 
-								GUI:SameLine()
-								if GUI:Button(GetString("No") ,30 ,20) then
-									GUI:CloseCurrentPopup() 
-								end
-								GUI:PopTextWrapPos()
-								GUI:EndPopup()
-							end
-							
-							if RoseCore.Data.UpdateTaskR == true then
-								GUI:TextColored(1,1,0,1,GetString("Updating..."))
-							end
-						
-							GUI:TreePop()
-						end				
 
-						-- Drawing Group
-						local str = "Drawings & Callouts"
-						local strX,strY = GUI:CalcTextSize(str)
-						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
-						GUI:BeginChild(str.."#All", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
-						GUI:AlignFirstTextHeightToWidgets()
-						GUI:Text(str)
-						GUI:PopStyleColor()
-						GUI:EndChild()
-						if GUI:TreeNode("General##DrawingsGeneral") then
-							GUI:Separator()
-							local Str = "Hotbar"
-							local StrLength = GUI:CalcTextSize(Str)
-							GUI:Text(Str)
-							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Enable/Disable Hotbar")
-							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-							RoseCore.Settings.DrawHotbar,changed = GUI:Checkbox("##DrawHotbar", RoseCore.Settings.DrawHotbar)
-							if changed then
-								save(true)
-							end
-							GUI:NextColumn()
-							GUI:TreePop()
-						end
+                        -- Main button
+                        GUI:SetWindowFontSize(1.8)
+                        if RoseCore.Data.NeedUpdateC == nil and RoseCore.Data.UpdateTick == nil then
+                            if GUI:Button(GetString("RoseCore Update##Core")) then
+                                RoseCore.Updater("core","check")
+                            end
+                        end
+                        GUI:SetWindowFontSize(1.05)
+							
+                        -- Wait for check
+                        if RoseCore.Data.CheckVerC == true then
+                            GUI:TextColored(1,1,0,1,GetString("Processing..."))
+                        end
+
+                        -- Other button pressed
+                        if RoseCore.Data.NeedUpdateC == nil and RoseCore.Data.CheckVerC == nil and RoseCore.Data.UpdateTick ~= nil then
+                            GUI:TextColored(1,1,0,1,GetString("Processing..."))
+                        end
+							
+                        -- We need to update
+                        if RoseCore.Data.NeedUpdateC == true and RoseCore.Data.UpdateTaskC ~= true  then
+                            if GUI:Button(GetString("Update##Core")) then
+                                GUI:OpenPopup("Download Updates")
+                            end
+                        end
+							
+                        -- We are already on the latest version
+                        if RoseCore.Data.NeedUpdateC == false and RoseCore.Data.UpdateTaskC ~= true and RoseCore.Data.CheckVerC == nil then
+                            if GUI:Button(GetString("Check Again##Core")) then
+                                RoseCore.Updater("core","check")
+                            end
+                            GUI:SameLine(0,windowPadding.x + 5)
+                            GUI:TextColored(1,1,0,1,GetString("No Updates"))
+                        end
+							
+							--Update Popup
+                        if GUI:BeginPopupModal("Download Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
+                            GUI:PushTextWrapPos(500)
+                            GUI:Text(GetString("This will overwrite your current RoseCore.\n"))
+                            GUI:TextColored(1,1,0,1,GetString("After the update minion will be reloaded.\n"))
+                            GUI:TextColored(1,0,0,1,GetString("Do you still want to update?"))
+                            if GUI:Button(GetString("Yes") ,30 ,20) then
+                                RoseCore.Data.UpdateTaskC = true
+                                RoseCore.Updater("core","update")
+                                GUI:CloseCurrentPopup()
+                            end
+                            GUI:SameLine()
+                            if GUI:Button(GetString("No") ,30 ,20) then
+                                GUI:CloseCurrentPopup()
+                            end
+                            GUI:PopTextWrapPos()
+                            GUI:EndPopup()
+                        end
+
+                        if RoseCore.Data.UpdateTaskC == true then
+                            GUI:TextColored(1,1,0,1,GetString("Updating..."))
+                        end
+                        GUI:SameLine(0,18)
+
+                        -- Social Group
+                        GUI:Image(ImageFolder..[[kofi.png]],50,50)
+                        if GUI:IsItemHovered() then
+                            if GUI:IsItemClicked(0) then
+                                io.popen([[cmd /c start "" "]]..RoseCoreLinks.kofi..[["]]):close()
+                            end
+                        end
+                        GUI:SameLine(0,10)
+                        GUI:Image(ImageFolder..[[discord.png]],50,45)
+                        if GUI:IsItemHovered() then
+                            if GUI:IsItemClicked(0) then
+                                io.popen([[cmd /c start "" "]]..RoseCoreLinks.discord..[["]]):close()
+                            end
+                        end
+                        GUI:SameLine(0,10)
+                        GUI:Image(ImageFolder..[[trello.png]],50,45)
+                        if GUI:IsItemHovered() then
+                            if GUI:IsItemClicked(0) then
+                                io.popen([[cmd /c start "" "]]..RoseCoreLinks.trello..[["]]):close()
+                            end
+                        end
+
+                        -- Main button
+                        GUI:SetCursorPos(8,413)
+                        GUI:SetWindowFontSize(1.8)
+                        if RoseCore.Data.NeedUpdateR == nil and RoseCore.Data.UpdateTick == nil then
+                            if GUI:Button(GetString("Reaction Update##Reactions")) then
+                                RoseCore.Updater("reactions","check")
+                            end
+                        end
+                        GUI:SetWindowFontSize(1.05)
+							
+                        -- Wait for check
+                        if RoseCore.Data.CheckVerR == true then
+                            GUI:TextColored(1,1,0,1,GetString("Processing..."))
+                        end
+							
+                        -- Other button pressed
+                        if RoseCore.Data.NeedUpdateR == nil and RoseCore.Data.CheckVerR == nil and RoseCore.Data.UpdateTick ~= nil then
+                            GUI:TextColored(1,1,0,1,GetString("Processing..."))
+                        end
+							
+                        -- We need to update
+                        if RoseCore.Data.NeedUpdateR == true and RoseCore.Data.UpdateTaskR ~= true  then
+                            if GUI:Button(GetString("Update##Reactions")) then
+                                GUI:OpenPopup("Download Updates")
+                            end
+                        end
+							
+                        -- We are already on the latest version
+                        if RoseCore.Data.NeedUpdateR == false and RoseCore.Data.UpdateTaskR ~= true and RoseCore.Data.CheckVerR == nil then
+                            if GUI:Button(GetString("Check Again##Reactions")) then
+                                RoseCore.Updater("reactions","check")
+                            end
+                            GUI:SameLine(0,windowPadding.x + 5)
+                            GUI:TextColored(1,1,0,1,GetString("No Updates"))
+                        end
+							
+                        --Update Popup
+                        if GUI:BeginPopupModal("Download Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
+                            GUI:PushTextWrapPos(500)
+                            GUI:Text(GetString("This will overwrite your current healer reactions.\n"))
+                            GUI:Text(GetString("A backup of your files will be created in ..LuaMods/TensorReactions/GeneralReactions/Rose.\n"))
+                            GUI:TextColored(1,0,0,1,GetString("Do you still want to update?"))
+                            if GUI:Button(GetString("Yes") ,30 ,20) then
+                                RoseCore.Data.UpdateTaskR = true
+                                RoseCore.Updater("reactions","update")
+                                GUI:CloseCurrentPopup()
+                            end
+                            GUI:SameLine()
+                            if GUI:Button(GetString("No") ,30 ,20) then
+                                GUI:CloseCurrentPopup()
+                            end
+                            GUI:PopTextWrapPos()
+                            GUI:EndPopup()
+                        end
+
+                        if RoseCore.Data.UpdateTaskR == true then
+                            GUI:TextColored(1,1,0,1,GetString("Updating..."))
+                        end
 
 					-- Ast Tab
-					elseif Tabs.CurrentTab == 2 then
+					elseif Tabs.Ast == true then
 						-- Everywhere Group
 						local str = "Everywhere"
 						local strX,strY = GUI:CalcTextSize(str)
@@ -3019,23 +3383,44 @@ function RoseCore.DrawCall()
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if not string.find(n.name, "(T)", 1, true) and not string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 22 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##AstEvGeneral"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
 							end
+							GUI:Dummy(10,10)
 							GUI:TreePop()
 						end
 						
@@ -3045,26 +3430,46 @@ function RoseCore.DrawCall()
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(T)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 6 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##AstEvTank"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 							
 							-- Overheal Slider
-							GUI:Separator()
 							local Str = "Tank Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
@@ -3088,26 +3493,46 @@ function RoseCore.DrawCall()
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 13 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##AstEvParty"..tostring(NewStr).."Bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 
 							-- Overheal Slider (AOE)
-							GUI:Separator()
 							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
@@ -3124,7 +3549,6 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 
 							-- Overheal Slider (ST)
-							GUI:Separator()
 							local Str = "Target Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
@@ -3354,111 +3778,173 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()
-						
+
 						if GUI:TreeNode("General##AstSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.AstSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if not string.find(n.name, "(T)", 1, true) and not string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 22 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##AstSavGeneral"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
 							end
+							GUI:Dummy(10,10)
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Tank##AstSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.AstSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(T)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 6 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##AstSavTank"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
-							
+							end
+							GUI:Dummy(10,10)
+
 							-- Overheal Slider
-							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Tank Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring tank to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstSavTankOverheal,changed = GUI:SliderInt("##AstSavHotbarTankOverheal", RoseCore.Settings.AstSavTankOverheal,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.AstSavTankOverhealSingle,changed = GUI:SliderInt("##AstSavTankOverhealSingle", RoseCore.Settings.AstSavTankOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
 							GUI:PopItemWidth()
 							GUI:NextColumn()
 							GUI:TreePop()
+							GUI:Dummy(10,10)
 						end
-							
+
 						if GUI:TreeNode("Party##AstSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.AstSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 13 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##AstSavParty"..tostring(NewStr).."Bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 
-							-- Overheal Slider (Aoe)
-							GUI:Separator()
-							local Str = "Aoe Overheal"
+							-- Overheal Slider (AOE)
+							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring AOE to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstSavPartyOverhealAoe,changed = GUI:SliderInt("##AstSavPartyOverhealAoe", RoseCore.Settings.AstSavPartyOverhealAoe,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.AstSavPartyOverhealAOE,changed = GUI:SliderInt("##AstSavPartyOverhealAOE", RoseCore.Settings.AstSavPartyOverhealAOE,50,100)
 							if changed then
 								save(true)
 							end
@@ -3466,16 +3952,15 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 
 							-- Overheal Slider (ST)
-							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Target Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring target to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.AstSavPartyOverhealSingle,changed = GUI:SliderInt("##AstSavPartyOverhealSingle", RoseCore.Settings.AstSavPartyOverhealSingle,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.AstSavPartyOverhealSingle,changed = GUI:SliderInt("##AstSavPartyOverhealSingle", RoseCore.Settings.AstSavPartyOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
@@ -3502,7 +3987,7 @@ function RoseCore.DrawCall()
 								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)							
 								
 								local butx,buty = 160,20
-								local r,g,b,t = 100/255, 0/255, 0/255, 204/255
+								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
 								GUI:BeginGroup()
 								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
 								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
@@ -3688,17 +4173,17 @@ function RoseCore.DrawCall()
 						end
 						
 						-- Fight Specific Group
-						local str = "Fight Specific"
+						--[[local str = "Fight Specific"
 						local strX,strY = GUI:CalcTextSize(str)
 						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
 						GUI:BeginChild(str.."#SchFightSpecific", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
 						GUI:AlignFirstTextHeightToWidgets()
 						GUI:Text(str)
 						GUI:PopStyleColor()
-						GUI:EndChild()
+						GUI:EndChild()]]--
 
 					-- Sch Tab
-					elseif Tabs.CurrentTab == 3 then
+					elseif Tabs.Sch == true then
 						-- Everywhere Group
 						local str = "Everywhere"
 						local strX,strY = GUI:CalcTextSize(str)
@@ -3708,59 +4193,100 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()
-						
+
 						if GUI:TreeNode("General##SchEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.SchEvHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if not string.find(n.name, "(T)", 1, true) and not string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 24 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##SchEvGeneral"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
 							end
+							GUI:Dummy(10,10)
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Tank##SchEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.SchEvHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(T)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 6 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##SchEvTank"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
-							
+							end
+							GUI:Dummy(10,10)
+
 							-- Overheal Slider
-							GUI:Separator()
 							local Str = "Tank Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
@@ -3775,36 +4301,55 @@ function RoseCore.DrawCall()
 							end
 							GUI:PopItemWidth()
 							GUI:NextColumn()
-
 							GUI:TreePop()
 						end
-							
+
 						if GUI:TreeNode("Party##SchEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.SchEvHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 15 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##SchEvParty"..tostring(NewStr).."Bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 
-							-- Overheal Slider (Aoe)
-							GUI:Separator()
+							-- Overheal Slider (AOE)
 							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
@@ -3821,8 +4366,7 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 
 							-- Overheal Slider (ST)
-							GUI:Separator()
-							local Str = "Single Heal Percent"
+							local Str = "Target Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
@@ -3836,7 +4380,6 @@ function RoseCore.DrawCall()
 							end
 							GUI:PopItemWidth()
 							GUI:NextColumn()
-							
 							GUI:TreePop()
 						end
 						
@@ -3858,7 +4401,7 @@ function RoseCore.DrawCall()
 								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)							
 								
 								local butx,buty = 160,20
-								local r,g,b,t = 100/255, 0/255, 0/255, 255/255
+								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
 								GUI:BeginGroup()
 								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
 								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
@@ -4052,95 +4595,172 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()
-						
+
 						if GUI:TreeNode("General##SchSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.SchSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if not string.find(n.name, "(T)", 1, true) and not string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 24 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##SchSavGeneral"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
 							end
+							GUI:Dummy(10,10)
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Tank##SchSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.SchSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(T)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 6 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##SchSavTank"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 
+							-- Overheal Slider
+							local Str = "Tank Heal Percent"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							if (GUI:IsItemHovered()) then
+								GUI:SetTooltip("Heal slider will bring tank to X percent of health")
+							end
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SchSavTankOverhealSingle,changed = GUI:SliderInt("##SchSavTankOverhealSingle", RoseCore.Settings.SchSavTankOverhealSingle,50,100)
+							if changed then
+								save(true)
+							end
+							GUI:PopItemWidth()
+							GUI:NextColumn()
 							GUI:TreePop()
 						end
-							
+
 						if GUI:TreeNode("Party##SchSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.SchSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 15 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##SchSavParty"..tostring(NewStr).."Bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 
-							-- Overheal Slider (Aoe)
-							GUI:Separator()
-							local Str = "Aoe Overheal"
+							-- Overheal Slider (AOE)
+							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring AOE to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.SchSavPartyOverhealAoe,changed = GUI:SliderInt("##SchSavPartyOverhealAoe", RoseCore.Settings.SchSavPartyOverhealAoe,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SchSavPartyOverhealAOE,changed = GUI:SliderInt("##SchSavPartyOverhealAOE", RoseCore.Settings.SchSavPartyOverhealAOE,50,100)
 							if changed then
 								save(true)
 							end
@@ -4148,16 +4768,15 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 
 							-- Overheal Slider (ST)
-							GUI:Separator()
-							local Str = "Single Target Overheal"
+							local Str = "Target Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring target to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.SchSavPartyOverhealSingle,changed = GUI:SliderInt("##SchSavPartyOverhealSingle", RoseCore.Settings.SchSavPartyOverhealSingle,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SchSavPartyOverhealSingle,changed = GUI:SliderInt("##SchSavPartyOverhealSingle", RoseCore.Settings.SchSavPartyOverhealSingle,50,100)
 							if changed then
 								save(true)
 							end
@@ -4370,17 +4989,17 @@ function RoseCore.DrawCall()
 						end
 						
 						-- Fight Specific Group
-						local str = "Fight Specific"
+						--[[local str = "Fight Specific"
 						local strX,strY = GUI:CalcTextSize(str)
 						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
 						GUI:BeginChild(str.."#SchFightSpecific", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
 						GUI:AlignFirstTextHeightToWidgets()
 						GUI:Text(str)
 						GUI:PopStyleColor()
-						GUI:EndChild()
+						GUI:EndChild()]]--
 					
 					-- Whm Tab
-					elseif Tabs.CurrentTab == 4 then
+					elseif Tabs.Whm == true then
 						-- Everywhere Group
 						local str = "Everywhere"
 						local strX,strY = GUI:CalcTextSize(str)
@@ -4390,59 +5009,100 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()
-						
+
 						if GUI:TreeNode("General##WhmEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.WhmEvHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if not string.find(n.name, "(T)", 1, true) and not string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 25 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##WhmEvGeneral"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
 							end
+							GUI:Dummy(10,10)
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Tank##WhmEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.WhmEvHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(T)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 6 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##WhmEvTank"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
-							
+							end
+							GUI:Dummy(10,10)
+
 							-- Overheal Slider
-							GUI:Separator()
 							local Str = "Tank Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
@@ -4457,36 +5117,55 @@ function RoseCore.DrawCall()
 							end
 							GUI:PopItemWidth()
 							GUI:NextColumn()
-
 							GUI:TreePop()
 						end
-							
+
 						if GUI:TreeNode("Party##WhmEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.WhmEvHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 15 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##WhmEvParty"..tostring(NewStr).."Bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 
-							-- Overheal Slider (Aoe)
-							GUI:Separator()
+							-- Overheal Slider (AOE)
 							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
@@ -4503,8 +5182,7 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 
 							-- Overheal Slider (ST)
-							GUI:Separator()
-							local Str = "Single Heal Percent"
+							local Str = "Target Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
@@ -4518,10 +5196,9 @@ function RoseCore.DrawCall()
 							end
 							GUI:PopItemWidth()
 							GUI:NextColumn()
-							
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Hotbar##WhmEverywhere") then
 							local count
 							local Hotbar = {}
@@ -4536,15 +5213,15 @@ function RoseCore.DrawCall()
 								if (GUI:IsItemHovered()) then
 									GUI:SetTooltip("Adds a "..tostring(n.menu).." toggle to the Hotbar")
 								end
-								
-								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)							
-								
+
+								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)
+
 								local butx,buty = 160,20
 								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
 								GUI:BeginGroup()
 								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
 								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
-								
+
 								local flags = GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoInputs
 								GUI:BeginChild("##WhmEvHotbar"..tostring(n.name).."Keybind", butx, buty, false, flags)
 								GUI:SetWindowFontSize(0.85)
@@ -4559,7 +5236,7 @@ function RoseCore.DrawCall()
 									end
 									if n.modifierC then
 										str = "CRTL + "..str
-								    end
+									end
 									if n.modifierS then
 										str = "SHIFT + "..str
 									end
@@ -4567,7 +5244,7 @@ function RoseCore.DrawCall()
 									GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
 									GUI:Text(str)
 								end
-								
+
 								GUI:PopStyleColor()
 								GUI:PopStyleVar()
 								GUI:EndChild()
@@ -4575,7 +5252,7 @@ function RoseCore.DrawCall()
 								if GUI:IsItemClicked(0) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									GUI:OpenPopup("Set Key".."##WhmEvHotbar"..tostring(n.name).."KeybindPopup")
-								end		
+								end
 								if GUI:IsItemClicked(1) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									save(true)
@@ -4583,17 +5260,17 @@ function RoseCore.DrawCall()
 								if GUI:IsItemHovered() then
 									GUI:SetTooltip("Left Click to add.\n".."Right Click to reset.")
 								end
-								
+
 								local WinX, WinY = GUI:GetWindowPos()
 								local PopPosX, PopPosY = WindowSizeX/2 + WinX - 60, WindowSizeY/2 + WinY - 15
 								GUI:SetWindowPos("Set Key".."##WhmEvHotbar"..tostring(n.name).."KeybindPopup", PopPosX, PopPosY, GUI.SetCond_Always)
 								GUI:SetNextWindowSize(120, 30, GUI.SetCond_Always)
 								local flags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize
-								if GUI:BeginPopupModal("Set Key".."##WhmEvHotbar"..tostring(n.name).."KeybindPopup", true, flags) then								
+								if GUI:BeginPopupModal("Set Key".."##WhmEvHotbar"..tostring(n.name).."KeybindPopup", true, flags) then
 									if count == nil then count = 0 end
 									if count < 1 then
-										GUI:Text(GetString("Press your Key")) 
-										count = count + 1 
+										GUI:Text(GetString("Press your Key"))
+										count = count + 1
 									end
 									if GUI:IsMouseClicked(1) then
 										save(true)
@@ -4604,7 +5281,7 @@ function RoseCore.DrawCall()
 										save(true)
 										GUI:CloseCurrentPopup()
 									end
-								GUI:EndPopup()
+									GUI:EndPopup()
 								end
 
 
@@ -4618,8 +5295,8 @@ function RoseCore.DrawCall()
 							end
 							GUI:TreePop()
 						end
-						
-						if GUI:TreeNode("Hotbar Customization##WhmEv") then
+
+						if GUI:TreeNode("Hotbar Customization##WhmEverywhere") then
 							GUI:Separator()
 							local Str = "Enable Hotbar"
 							local StrLength = GUI:CalcTextSize(Str)
@@ -4734,101 +5411,193 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()
-						
+
 						if GUI:TreeNode("General##WhmSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.WhmSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if not string.find(n.name, "(T)", 1, true) and not string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 23 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##WhmSavGeneral"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
 							end
+							GUI:Dummy(10,10)
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Tank##WhmSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.WhmSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(T)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 6 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##WhmSavTank"..tostring(NewStr).."bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 
+							-- Overheal Slider
+							local Str = "Tank Heal Percent"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							if (GUI:IsItemHovered()) then
+								GUI:SetTooltip("Heal slider will bring tank to X percent of health")
+							end
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.WhmSavTankOverhealSingle,changed = GUI:SliderInt("##WhmSavTankOverhealSingle", RoseCore.Settings.WhmSavTankOverhealSingle,50,100)
+							if changed then
+								save(true)
+							end
+							GUI:PopItemWidth()
+							GUI:NextColumn()
 							GUI:TreePop()
 						end
-							
+
 						if GUI:TreeNode("Party##WhmSavage") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.WhmSavHotbar) do
 								table.insert(Hotbar, v)
 							end
 							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
 							for m,n in ipairs(Hotbar) do
 								if string.find(n.name, "(P)", 1, true) then
-									GUI:Separator()
-									local StrLength = GUI:CalcTextSize(n.menu)
-									GUI:Text(n.menu)
-									if (GUI:IsItemHovered()) then
-										GUI:SetTooltip(n.tooltip)
+									if table.valid(images) then
+										if n.index == 14 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
 									end
-									GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
-									local NewStr = string.gsub(n.name, " ", "")
-									n.bool,changed = GUI:Checkbox("##WhmSavParty"..tostring(NewStr).."Bool", n.bool)
-									if changed then
-										save(true)
-									end
-									GUI:NextColumn()
 								end
-							end	
+							end
+							GUI:Dummy(10,10)
 
-							-- Overheal Slider (Aoe)
-							GUI:Separator()
-							local Str = "Aoe Overheal"
+							-- Overheal Slider (AOE)
+							local Str = "AOE Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
 							GUI:Text(Str)
 							if (GUI:IsItemHovered()) then
-								GUI:SetTooltip("Maximum overheal allowed in percent")
+								GUI:SetTooltip("Heal slider will bring AOE to X percent of health")
 							end
-							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
-							GUI:PushItemWidth(80)
-							RoseCore.Settings.WhmSavPartyOverhealAoe,changed = GUI:SliderInt("##WhmSavPartyOverhealAoe", RoseCore.Settings.WhmSavPartyOverhealAoe,0,30)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.WhmSavPartyOverhealAOE,changed = GUI:SliderInt("##WhmSavPartyOverhealAOE", RoseCore.Settings.WhmSavPartyOverhealAOE,50,100)
 							if changed then
 								save(true)
 							end
 							GUI:PopItemWidth()
 							GUI:NextColumn()
-							
+
+							-- Overheal Slider (ST)
+							local Str = "Target Heal Percent"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							if (GUI:IsItemHovered()) then
+								GUI:SetTooltip("Heal slider will bring target to X percent of health")
+							end
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.WhmSavPartyOverhealSingle,changed = GUI:SliderInt("##WhmSavPartyOverhealSingle", RoseCore.Settings.WhmSavPartyOverhealSingle,50,100)
+							if changed then
+								save(true)
+							end
+							GUI:PopItemWidth()
+							GUI:NextColumn()
 							GUI:TreePop()
 						end
 						
@@ -5033,15 +5802,16 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 							GUI:TreePop()
 						end
+
 						-- Fight Specific
-						local str = "Fight Specific"
+						--[[local str = "Fight Specific"
 						local strX,strY = GUI:CalcTextSize(str)
 						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
 						GUI:BeginChild(str.."#SchFightSpecific", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
 						GUI:AlignFirstTextHeightToWidgets()
 						GUI:Text(str)
 						GUI:PopStyleColor()
-						GUI:EndChild()
+						GUI:EndChild()]]--
 					end
 				end
 			end
@@ -5050,8 +5820,7 @@ function RoseCore.DrawCall()
 		end
 		
 		--Hotbar
-		if (RoseCore.Settings.DrawHotbar) then
-			local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
+        local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
 			
 			-- AST
 			if (Player.Job == 33) then
@@ -5075,7 +5844,7 @@ function RoseCore.DrawCall()
 						local count
 						if count == nil then count = 0 end
 						for k,v in pairs(Hotbar) do
-							local settingsOn = RoseCore.Settings.AstEvHotbarButColOn 
+							local settingsOn = RoseCore.Settings.AstEvHotbarButColOn
 							local settingsOff = RoseCore.Settings.AstEvHotbarButColOff
 							local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
 							local butx,buty = RoseCore.Settings.AstEvHotbarButtonSizeX,RoseCore.Settings.AstEvHotbarButtonSizeY
@@ -5091,7 +5860,7 @@ function RoseCore.DrawCall()
 							GUI:PopStyleVar()
 							GUI:EndChild()
 							if GUI:IsItemClicked(0) then
-								v.bool = not v.bool 
+								v.bool = not v.bool
 								save(true)
 							end
 							if RoseCore.KeybindsPressed(v) then
@@ -5122,7 +5891,7 @@ function RoseCore.DrawCall()
 						local count
 						if count == nil then count = 0 end
 						for k,v in pairs(Hotbar) do
-							local settingsOn = RoseCore.Settings.AstSavHotbarButColOn 
+							local settingsOn = RoseCore.Settings.AstSavHotbarButColOn
 							local settingsOff = RoseCore.Settings.AstSavHotbarButColOff
 							local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
 							local butx,buty = RoseCore.Settings.AstSavHotbarButtonSizeX,RoseCore.Settings.AstSavHotbarButtonSizeY
@@ -5138,7 +5907,7 @@ function RoseCore.DrawCall()
 							GUI:PopStyleVar()
 							GUI:EndChild()
 							if GUI:IsItemClicked(0) then
-								v.bool = not v.bool 
+								v.bool = not v.bool
 								save(true)
 							end
 							if RoseCore.KeybindsPressed(v) then
@@ -5149,7 +5918,7 @@ function RoseCore.DrawCall()
 						GUI:End()
 					end
 				end
-			end	
+			end
 
 			--SCH
 			if (Player.Job == 28 or Player.Job == 26) then
@@ -5346,7 +6115,7 @@ function RoseCore.DrawCall()
 					end
 				end
 			end	
-		end
+		--end
 	end
 end
 
