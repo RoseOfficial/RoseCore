@@ -1,3 +1,35 @@
+--[[
+
+"You can call me anything that you want
+Don’t ever, ever call me a self-made man
+It gives the wrong impression, that we can do it alone
+None of can, the whole concept of the self made man or woman is a myth
+To accept that credit, that mantle, would discount every single person who has helped me get here"
+- Arnold Schwarzenegger
+
+This project was originally created by Qwert, I took it over and has been constantly changing it and evolving it ever
+since. I have been working day and night to build something that everyone could use, and have it work as good or if not
+better than the other paid ones. It all started when Rikudou would tell me to just reuse QwertCore if I wanted a good
+healing system, so after a year of hoping something better would release, I started working on this. I started knowing
+nothing about coding and after just a few months, started learning more and more about Lua. I still have much to learn,
+but I would like to thank a lot of people for making this possible.
+
+nil-go
+Kali
+Madao
+mushroom
+Dating Simulator
+and countless others
+
+But most of all, Rikudou and his gang. Its people that tell me that I can't do something that motivates me. It gave me a
+hunger, a passion, something that will never be satisfied until it is better than the rest. And I hope that if you're
+reading this, you get inspired to do whatever it is that you want to do. I want to thank each and every one of you for
+your help in making this the best healing system out there, and for making me happy doing what I love. Thank you.
+
+https://discord.gg/BM9MBERbA9
+
+]]
+
 RoseCore = {}
 
 RoseCore.version = "0.04.29"
@@ -3247,7 +3279,7 @@ function RoseCore.DrawCall()
                         -- We need to update
                         if RoseCore.Data.NeedUpdateC == true and RoseCore.Data.UpdateTaskC ~= true  then
                             if GUI:Button(GetString("Update##Core")) then
-                                GUI:OpenPopup("Download Updates")
+                                GUI:OpenPopup("Download Core Updates")
                             end
                         end
 							
@@ -3261,7 +3293,7 @@ function RoseCore.DrawCall()
                         end
 							
 							--Update Popup
-                        if GUI:BeginPopupModal("Download Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
+                        if GUI:BeginPopupModal("Download Core Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
                             GUI:PushTextWrapPos(500)
                             GUI:Text(GetString("This will overwrite your current RoseCore.\n"))
                             GUI:TextColored(1,1,0,1,GetString("After the update minion will be reloaded.\n"))
@@ -3329,7 +3361,7 @@ function RoseCore.DrawCall()
                         -- We need to update
                         if RoseCore.Data.NeedUpdateR == true and RoseCore.Data.UpdateTaskR ~= true  then
                             if GUI:Button(GetString("Update##Reactions")) then
-                                GUI:OpenPopup("Download Updates")
+                                GUI:OpenPopup("Download Reaction Updates")
                             end
                         end
 							
@@ -3343,7 +3375,7 @@ function RoseCore.DrawCall()
                         end
 							
                         --Update Popup
-                        if GUI:BeginPopupModal("Download Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
+                        if GUI:BeginPopupModal("Download Reaction Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
                             GUI:PushTextWrapPos(500)
                             GUI:Text(GetString("This will overwrite your current healer reactions.\n"))
                             GUI:Text(GetString("A backup of your files will be created in ..LuaMods/TensorReactions/GeneralReactions/Rose.\n"))
@@ -3765,7 +3797,6 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
 							GUI:TreePop()
 						end
 							
@@ -5820,7 +5851,8 @@ function RoseCore.DrawCall()
 		end
 		
 		--Hotbar
-        local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
+		if TensorCore then
+        	local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
 			
 			-- AST
 			if (Player.Job == 33) then
@@ -6115,7 +6147,7 @@ function RoseCore.DrawCall()
 					end
 				end
 			end	
-		--end
+		end
 	end
 end
 
@@ -6187,6 +6219,7 @@ function RoseCore.OnUpdate()
 				if TensorCore ~= nil then
 					TensorCore.API.TensorReactions.reloadGeneralReactions()
 					TensorCore.API.TensorReactions.reloadTimelineReactions()
+					Reload()
 				end
 			else
 				RoseCore.Data.UpdateTimerR = Now()
