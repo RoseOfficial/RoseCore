@@ -3,7 +3,7 @@
 "You can call me anything that you want
 Don’t ever, ever call me a self-made man
 It gives the wrong impression, that we can do it alone
-None of can, the whole concept of the self made man or woman is a myth
+None of us can, the whole concept of the self made man or woman is a myth
 To accept that credit, that mantle, would discount every single person who has helped me get here"
 - Arnold Schwarzenegger
 
@@ -19,6 +19,7 @@ Kali
 Madao
 mushroom
 Dating Simulator
+Rhakin
 and countless others
 
 But most of all, Rikudou and his gang. Its people that tell me that I can't do something that motivates me. It gave me a
@@ -32,7 +33,7 @@ https://discord.gg/BM9MBERbA9
 
 RoseCore = {}
 
-RoseCore.version = "0.04.29"
+RoseCore.version = "0.06.10"
 
 RoseCore.GUI = {
     open = true,
@@ -2781,6 +2782,1111 @@ RoseCore.Settings = {
 			imageoff = ImageFolder..[[liturgy_of_the_bell_off.png]],
 		},
 	},
+    --[Sge] Savage
+    SgeSavHotbarButColOn = {
+        R = 135/255,
+        G = 117/255,
+        B = 0/255,
+        T = 255/255,
+    },
+    SgeSavHotbarButColOff = {
+        R = 50/255,
+        G = 50/255,
+        B = 50/255,
+        T = 255/255,
+    },
+    SgeSavHotbarBgT = 255,
+    SgeSavHotbarButtonSizeX = 103,
+    SgeSavHotbarButtonSizeY = 30,
+    SgeSavHotbarColumns = 1,
+    SgeSavHotbarLocked = false,
+    SgeSavHotbarEnabled = true,
+
+    SgeSavTankOverhealSingle = 100,
+    SgeSavPartyOverhealAOE = 100,
+    SgeSavPartyOverhealSingle = 100,
+
+    -- Fight Specific
+
+    SgeSavHotbar = {
+        Heal = {
+            index = 1,
+            name = "Heal",
+            visible = true,
+            bool = true,
+            menu = "Heal",
+            tooltip = "Enable/Disable Heals",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[heal_on.png]],
+            imageoff = ImageFolder..[[heal_off.png]],
+        },
+        UsePrepull = {
+            index = 2,
+            name = "Prepull",
+            visible = false,
+            bool = true,
+            menu = "Prepull",
+            tooltip = "Enable/Disable prepull abilities",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[prepull_on.png]],
+            imageoff = ImageFolder..[[prepull_off.png]],
+        },
+        Sprint = {
+            index = 3,
+            name = "Sprint",
+            visible = false,
+            bool = true,
+            menu = "Sprint",
+            tooltip = "Enable/Disable Sprint",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[sprint_on.png]],
+            imageoff = ImageFolder..[[sprint_off.png]],
+        },
+        TankHeal = {
+            index = 4,
+            name = "Heal (T)",
+            visible = false,
+            bool = true,
+            menu = "Heal Tank",
+            tooltip = "Enable/Disable Heals for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[tank_heal_on.png]],
+            imageoff = ImageFolder..[[tank_heal_off.png]],
+        },
+        TankGcd = {
+            index = 5,
+            name = "GCD (T)",
+            visible = false,
+            bool = true,
+            menu = "GCD",
+            tooltip = "Enable/Disable GCD abilities for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[tank_gcd_on.png]],
+            imageoff = ImageFolder..[[tank_gcd_off.png]],
+        },
+        TankExco = {
+            index = 6,
+            name = "Exco (T)",
+            visible = false,
+            bool = true,
+            menu = "Excogitation",
+            tooltip = "Enable/Disable Excogitation for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[excogitation_on.png]],
+            imageoff = ImageFolder..[[excogitation_off.png]],
+        },
+        TankAp = {
+            index = 7,
+            name = "Aetherpact (T)",
+            visible = false,
+            bool = true,
+            menu = "Aetherpact",
+            tooltip = "Enable/Disable Aetherpact for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[aetherpact_on.png]],
+            imageoff = ImageFolder..[[aetherpact_off.png]],
+        },
+        TankLustrate = {
+            index = 8,
+            name = "Lustrate (T)",
+            visible = false,
+            bool = true,
+            menu = "Lustrate",
+            tooltip = "Enable/Disable Lustrate for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[lustrate_on.png]],
+            imageoff = ImageFolder..[[lustrate_off.png]],
+        },
+        TankEt = {
+            index = 9,
+            name = "ET (T)",
+            visible = false,
+            bool = true,
+            menu = "E. Tactics",
+            tooltip = "Enable/Disable Emergency Tactics for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[emergency_tactics_on.png]],
+            imageoff = ImageFolder..[[emergency_tactics_off.png]],
+        },
+        TankAdlo = {
+            index = 10,
+            name = "Adlo (T)",
+            visible = false,
+            bool = true,
+            menu = "Adloquium",
+            tooltip = "Enable/Disable Adloquium for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[adloquium_on.png]],
+            imageoff = ImageFolder..[[adloquium_off.png]],
+        },
+        TankPhysick = {
+            index = 11,
+            name = "Physick (T)",
+            visible = false,
+            bool = true,
+            menu = "Physick",
+            tooltip = "Enable/Disable Physick for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[physick_on.png]],
+            imageoff = ImageFolder..[[physick_off.png]],
+        },
+        TankProtraction = {
+            index = 12,
+            name = "Protraction (T)",
+            visible = false,
+            bool = true,
+            menu = "Protraction",
+            tooltip = "Enable/Disable Protraction for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[protraction_on.png]],
+            imageoff = ImageFolder..[[protraction_off.png]],
+        },
+        PartyHeal = {
+            index = 13,
+            name = "Heal (P)",
+            visible = false,
+            bool = true,
+            menu = "Heal Party",
+            tooltip = "Enable/Disable Heals for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[party_heal_on.png]],
+            imageoff = ImageFolder..[[party_heal_off.png]],
+        },
+        PartyGcd = {
+            index = 14,
+            name = "GCD (P)",
+            visible = false,
+            bool = true,
+            menu = "GCD",
+            tooltip = "Enable/Disable GCD abilities for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[party_gcd_on.png]],
+            imageoff = ImageFolder..[[party_gcd_off.png]],
+        },
+        PartyConsolation = {
+            index = 15,
+            name = "Consolation (P)",
+            visible = false,
+            bool = true,
+            menu = "Consolation",
+            tooltip = "Enable/Disable Consolation for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[consolation_on.png]],
+            imageoff = ImageFolder..[[consolation_off.png]],
+        },
+        PartyIndom = {
+            index = 16,
+            name = "Indom (P)",
+            visible = false,
+            bool = true,
+            menu = "Indom",
+            tooltip = "Enable/Disable Indomitability for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[indomitability_on.png]],
+            imageoff = ImageFolder..[[indomitability_off.png]],
+        },
+        PartyWhisp = {
+            index = 17,
+            name = "WD (P)",
+            visible = false,
+            bool = true,
+            menu = "Whisp. Dawn",
+            tooltip = "Enable/Disable Whispering Dawn for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[whispering_dawn_on.png]],
+            imageoff = ImageFolder..[[whispering_dawn_off.png]],
+        },
+        PartyFeyB = {
+            index = 18,
+            name = "FB (P)",
+            visible = false,
+            bool = true,
+            menu = "Fey Blessing",
+            tooltip = "Enable/Disable Fey Blessing for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[fey_blessing_on.png]],
+            imageoff = ImageFolder..[[fey_blessing_off.png]],
+        },
+        PartySuccor = {
+            index = 19,
+            name = "Succor (P)",
+            visible = false,
+            bool = true,
+            menu = "Succor",
+            tooltip = "Enable/Disable Succor for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[succor_on.png]],
+            imageoff = ImageFolder..[[succor_off.png]],
+        },
+        PartyAp = {
+            index = 20,
+            name = "Ap (P)",
+            visible = false,
+            bool = true,
+            menu = "Aetherpact",
+            tooltip = "Enable/Disable Aetherpact for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[aetherpact_on.png]],
+            imageoff = ImageFolder..[[aetherpact_off.png]],
+        },
+        PartyLustrate = {
+            index = 21,
+            name = "Lustrate (P)",
+            visible = false,
+            bool = true,
+            menu = "Lustrate",
+            tooltip = "Enable/Disable Lustrate for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[lustrate_on.png]],
+            imageoff = ImageFolder..[[lustrate_off.png]],
+        },
+        PartyAdlo = {
+            index = 22,
+            name = "Adlo (P)",
+            visible = false,
+            bool = true,
+            menu = "Adloquium",
+            tooltip = "Enable/Disable Adloquium for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[adloquium_on.png]],
+            imageoff = ImageFolder..[[adloquium_off.png]],
+        },
+        PartyPhysick = {
+            index = 23,
+            name = "Physick (P)",
+            visible = false,
+            bool = true,
+            menu = "Physick",
+            tooltip = "Enable/Disable Physick for party members",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[physick_on.png]],
+            imageoff = ImageFolder..[[physick_off.png]],
+        },
+        Seraph = {
+            index = 24,
+            name = "Seraph",
+            visible = false,
+            bool = true,
+            menu = "Summon Seraph",
+            tooltip = "Enable/Disable Seraph",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[seraph_on.png]],
+            imageoff = ImageFolder..[[seraph_off.png]],
+        },
+        Soil = {
+            index = 25,
+            name = "Sacred Soil",
+            visible = false,
+            bool = true,
+            menu = "Sacred Soil",
+            tooltip = "Enable/Disable Sacred Soil",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[sacred_soil_on.png]],
+            imageoff = ImageFolder..[[sacred_soil_off.png]],
+        },
+        FeyIllu = {
+            index = 26,
+            name = "Illumination",
+            visible = false,
+            bool = true,
+            menu = "Illumination",
+            tooltip = "Enable/Disable Fey Illumination",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[fey_illumination_on.png]],
+            imageoff = ImageFolder..[[fey_illumination_off.png]],
+        },
+        DeploymentTact = {
+            index = 27,
+            name = "D. Tactics",
+            visible = false,
+            bool = true,
+            menu = "D. Tactics",
+            tooltip = "Enable/Disable Deployment Tactics",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[deployment_tactics_on.png]],
+            imageoff = ImageFolder..[[deployment_tactics_off.png]],
+        },
+        Expedient = {
+            index = 28,
+            name = "Expedient",
+            visible = false,
+            bool = true,
+            menu = "Expedient",
+            tooltip = "Enable/Disable Expedient",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[expedient_on.png]],
+            imageoff = ImageFolder..[[expedient_off.png]],
+        },
+    },
+
+    --[Sge] Everywhere
+    SgeEvHotbarButColOn = {
+        R = 135/255,
+        G = 117/255,
+        B = 0/255,
+        T = 255/255,
+    },
+    SgeEvHotbarButColOff = {
+        R = 50/255,
+        G = 50/255,
+        B = 50/255,
+        T = 255/255,
+    },
+    SgeEvHotbarBgT = 255,
+    SgeEvHotbarButtonSizeX = 103,
+    SgeEvHotbarButtonSizeY = 30,
+    SgeEvHotbarColumns = 1,
+    SgeEvHotbarLocked = false,
+    SgeEvHotbarEnabled = true,
+
+    SgeEvTankOverhealSingle = 90,
+    SgeEvPartyOverhealAOE = 75,
+    SgeEvPartyOverhealSingle = 75,
+
+    SgeEvHotbar = {
+        Heal = {
+            index = 1,
+            name = "Heal",
+            visible = true,
+            bool = true,
+            menu = "Heal",
+            tooltip = "Enable/Disable Heals",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[heal_on.png]],
+            imageoff = ImageFolder..[[heal_off.png]],
+        },
+		DPS = {
+			index = 2,
+			name = "DPS",
+			visible = false,
+			bool = true,
+			menu = "DPS",
+			tooltip = "Enable/Disable DPS abilities",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[dps_on.png]],
+			imageoff = ImageFolder..[[dps_off.png]],
+		},
+		SmartTarget = {
+			index = 3,
+			name = "Smart Target",
+			visible = false,
+			bool = true,
+			menu = "Smart Target",
+			tooltip = "Enable/Disable Smart Targeting",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[smart_target_on.png]],
+			imageoff = ImageFolder..[[smart_target_off.png]],
+		},
+        UsePrepull = {
+            index = 4,
+            name = "Prepull",
+            visible = false,
+            bool = true,
+            menu = "Prepull",
+            tooltip = "Enable/Disable abilities before a pull (minimum Lvl 90, currently does nothing)",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[prepull_on.png]],
+            imageoff = ImageFolder..[[prepull_off.png]],
+        },
+        Sprint = {
+            index = 5,
+            name = "Sprint",
+            visible = false,
+            bool = true,
+            menu = "Sprint",
+            tooltip = "Enable/Disable Sprint",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[sprint_on.png]],
+            imageoff = ImageFolder..[[sprint_off.png]],
+        },
+        Dosis = {
+            index = 6,
+            name = "Dosis (D)",
+            visible = false,
+            bool = true,
+            menu = "Dosis",
+            tooltip = "Enable/Disable Dosis",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[dosis_on.png]],
+            imageoff = ImageFolder..[[dosis_off.png]],
+        },
+        Diagnosis = {
+            index = 7,
+            name = "Diagnosis (H)",
+            visible = false,
+            bool = true,
+            menu = "Diagnosis",
+            tooltip = "Enable/Disable Diagnosis for Tanks and Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[diagnosis_on.png]],
+            imageoff = ImageFolder..[[diagnosis_off.png]],
+        },
+        Kardia = {
+            index = 8,
+            name = "Kardia (H)",
+            visible = false,
+            bool = true,
+            menu = "Kardia",
+            tooltip = "Enable/Disable Kardia for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[kardia_on.png]],
+            imageoff = ImageFolder..[[kardia_off.png]],
+        },
+        Esuna = {
+            index = 9,
+            name = "Esuna",
+            visible = false,
+            bool = true,
+            menu = "Esuna",
+            tooltip = "Enable/Disable Esuna for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[esuna_on.png]],
+            imageoff = ImageFolder..[[esuna_off.png]],
+        },
+        Prognosis = {
+            index = 10,
+            name = "Prognosis (H)",
+            visible = false,
+            bool = true,
+            menu = "Prognosis",
+            tooltip = "Enable/Disable Prognosis",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[prognosis_on.png]],
+            imageoff = ImageFolder..[[prognosis_off.png]],
+        },
+        Egeiro = {
+            index = 11,
+            name = "Egeiro (H)",
+            visible = false,
+            bool = true,
+            menu = "Egeiro",
+            tooltip = "Enable/Disable Egeiro for Tanks and Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[egeiro_on.png]],
+            imageoff = ImageFolder..[[egeiro_off.png]],
+        },
+        Physis = {
+            index = 12,
+            name = "Physis (H)",
+            visible = false,
+            bool = true,
+            menu = "Physis",
+            tooltip = "Enable/Disable Physis for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[physis_on.png]],
+            imageoff = ImageFolder..[[physis_off.png]],
+        },
+        Phlegma = {
+            index = 13,
+            name = "Phlegma (D)",
+            visible = false,
+            bool = true,
+            menu = "Phlegma",
+            tooltip = "Enable/Disable Phlegma for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[phlegma_on.png]],
+            imageoff = ImageFolder..[[phlegma_off.png]],
+        },
+        Eukrasia = {
+            index = 14,
+            name = "Eukrasia",
+            visible = false,
+            bool = true,
+            menu = "Eukrasia",
+            tooltip = "Enable/Disable Eukrasia",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[eukrasia_on.png]],
+            imageoff = ImageFolder..[[eukrasia_off.png]],
+        },
+        EukrasianDiagnosis = {
+            index = 15,
+            name = "Eukrasian Diagnosis (H)",
+            visible = false,
+            bool = true,
+            menu = "Physick",
+            tooltip = "Enable/Disable Eukrasian Diagnosis for Tanks and Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[eukrasian_diagnosis_on.png]],
+            imageoff = ImageFolder..[[eukrasian_diagnosis_off.png]],
+        },
+        EukrasianPrognosis = {
+            index = 16,
+            name = "Eukrasian Prognosis (H)",
+            visible = false,
+            bool = true,
+            menu = "Eukrasian Prognosis",
+            tooltip = "Enable/Disable Eukrasian Prognosis for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[eukrasian_prognosis_on.png]],
+            imageoff = ImageFolder..[[eukrasian_prognosis_off.png]],
+        },
+        EukrasianDosis = {
+            index = 17,
+            name = "Eukrasian Dosis (D)",
+            visible = false,
+            bool = true,
+            menu = "Eukrasian Dosis",
+            tooltip = "Enable/Disable Eukrasian Dosis",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[eukrasian_dosis_on.png]],
+            imageoff = ImageFolder..[[eukrasian_dosis_off.png]],
+        },
+        Soteria = {
+            index = 18,
+            name = "Soteria",
+            visible = false,
+            bool = true,
+            menu = "Soteria",
+            tooltip = "Enable/Disable Soteria for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[soteria_on.png]],
+            imageoff = ImageFolder..[[soteria_off.png]],
+        },
+        Icarus = {
+            index = 19,
+            name = "Icarus",
+            visible = false,
+            bool = true,
+            menu = "Icarus",
+            tooltip = "Enable/Disable Icarus",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[icarus_on.png]],
+            imageoff = ImageFolder..[[icarus_off.png]],
+        },
+        Druochole = {
+            index = 20,
+            name = "Druochole (H)",
+            visible = false,
+            bool = true,
+            menu = "Druochole",
+            tooltip = "Enable/Disable Druochole for Tanks and Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[druochole_on.png]],
+            imageoff = ImageFolder..[[druochole_off.png]],
+        },
+        Dyskrasia = {
+            index = 21,
+            name = "Dyskrasia (D)",
+            visible = false,
+            bool = true,
+            menu = "Dyskrasia",
+            tooltip = "Enable/Disable Dyskrasia",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[dyskrasia_on.png]],
+            imageoff = ImageFolder..[[dyskrasia_off.png]],
+        },
+        Kerachole = {
+            index = 22,
+            name = "Kerachole (H)",
+            visible = false,
+            bool = true,
+            menu = "Kerachole",
+            tooltip = "Enable/Disable Kerachole for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[kerachole_on.png]],
+            imageoff = ImageFolder..[[kerachole_off.png]],
+        },
+        Ixochole = {
+            index = 23,
+            name = "Ixochole (H)",
+            visible = false,
+            bool = true,
+            menu = "Ixochole",
+            tooltip = "Enable/Disable Ixochole for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[ixochole_on.png]],
+            imageoff = ImageFolder..[[ixochole_off.png]],
+        },
+        Zoe = {
+            index = 24,
+            name = "Zoe",
+            visible = false,
+            bool = true,
+            menu = "Zoe",
+            tooltip = "Enable/Disable Zoe",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[zoe_on.png]],
+            imageoff = ImageFolder..[[zoe_off.png]],
+        },
+        Pepsis = {
+            index = 25,
+            name = "Pepsis (H)",
+            visible = false,
+            bool = true,
+            menu = "Pepsis",
+            tooltip = "Enable/Disable Pepsis for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[pepsis_on.png]],
+            imageoff = ImageFolder..[[pepsis_off.png]],
+        },
+        PhysisII = {
+            index = 26,
+            name = "Physis II (H)",
+            visible = false,
+            bool = true,
+            menu = "Physis II",
+            tooltip = "Enable/Disable Physis II for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[physis_ii_on.png]],
+            imageoff = ImageFolder..[[physis_ii_off.png]],
+        },
+        Taurochole = {
+            index = 27,
+            name = "Taurochole (H)",
+            visible = false,
+            bool = true,
+            menu = "Taurochole",
+            tooltip = "Enable/Disable Taurochole for Tanks and Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[taurochole_on.png]],
+            imageoff = ImageFolder..[[taurochole_off.png]],
+        },
+        Toxikon = {
+            index = 28,
+            name = "Toxikon (D)",
+            visible = false,
+            bool = true,
+            menu = "Toxikon",
+            tooltip = "Enable/Disable Toxikon",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[toxikon_on.png]],
+            imageoff = ImageFolder..[[toxikon_off.png]],
+        },
+        Haima = {
+            index = 29,
+            name = "Haima (H)",
+            visible = false,
+            bool = true,
+            menu = "Haima",
+            tooltip = "Enable/Disable Haima for Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[haima_on.png]],
+            imageoff = ImageFolder..[[haima_off.png]],
+        },
+        DosisII = {
+            index = 30,
+            name = "Dosis II (D)",
+            visible = false,
+            bool = true,
+            menu = "Dosis II",
+            tooltip = "Enable/Disable Dosis II",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[dosis_ii_on.png]],
+            imageoff = ImageFolder..[[dosis_ii_off.png]],
+        },
+        PhlegmaII = {
+            index = 31,
+            name = "Phlegma II (D)",
+            visible = false,
+            bool = true,
+            menu = "Phlegma II",
+            tooltip = "Enable/Disable Phlegma",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[phlegma_ii_on.png]],
+            imageoff = ImageFolder..[[phlegma_ii_off.png]],
+        },
+        EukrasianDosisII = {
+            index = 32,
+            name = "Eukrasian Dosis II (D)",
+            visible = false,
+            bool = true,
+            menu = "Eukrasian Dosis II",
+            tooltip = "Enable/Disable Eukrasian Dosis II",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[eukrasian_dosis_ii_on.png]],
+            imageoff = ImageFolder..[[eukrasian_dosis_ii_off.png]],
+        },
+        Rhizomata = {
+            index = 33,
+            name = "Rhizomata",
+            visible = false,
+            bool = true,
+            menu = "Rhizomata",
+            tooltip = "Enable/Disable Rhizomata",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[rhizomata_on.png]],
+            imageoff = ImageFolder..[[rhizomata_off.png]],
+        },
+        Holos = {
+            index = 34,
+            name = "Holos (H)",
+            visible = false,
+            bool = true,
+            menu = "Holos",
+            tooltip = "Enable/Disable Holos for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[holos_on.png]],
+            imageoff = ImageFolder..[[holos_off.png]],
+        },
+        Panhaima = {
+            index = 35,
+            name = "Panhaima (H)",
+            visible = false,
+            bool = true,
+            menu = "Panhaima",
+            tooltip = "Enable/Disable Panhaima for Party",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[panhaima_on.png]],
+            imageoff = ImageFolder..[[panhaima_off.png]],
+        },
+        DosisIII = {
+            index = 36,
+            name = "Dosis III (D)",
+            visible = false,
+            bool = true,
+            menu = "Dosis III",
+            tooltip = "Enable/Disable Dosis III",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[dosis_iii_on.png]],
+            imageoff = ImageFolder..[[dosis_iii_off.png]],
+        },
+        PhlegmaIII = {
+            index = 37,
+            name = "Phlegma III (D)",
+            visible = false,
+            bool = true,
+            menu = "Phelgma III",
+            tooltip = "Enable/Disable Phlegma III",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[phlegma_iii_on.png]],
+            imageoff = ImageFolder..[[phlegma_iii_off.png]],
+        },
+        EukrasianDosisIII = {
+            index = 38,
+            name = "Eukrasian Dosis III (D)",
+            visible = false,
+            bool = true,
+            menu = "Eukrasian Dosis III",
+            tooltip = "Enable/Disable Eukrasian Dosis III",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[eukrasian_dosis_iii_on.png]],
+            imageoff = ImageFolder..[[eukrasian_dosis_iii_off.png]],
+        },
+        DyskrasiaII = {
+            index = 39,
+            name = "Dyskrasia II (D)",
+            visible = false,
+            bool = true,
+            menu = "Dyskrasia II",
+            tooltip = "Enable/Disable Dyskrasia II",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[dyskrasia_ii_on.png]],
+            imageoff = ImageFolder..[[dyskrasia_ii_off.png]],
+        },
+        ToxikonII = {
+            index = 40,
+            name = "Toxikon II (D)",
+            visible = false,
+            bool = true,
+            menu = "Toxikon II",
+            tooltip = "Enable/Disable Toxikon II",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[toxikon_ii_on.png]],
+            imageoff = ImageFolder..[[toxikon_ii_off.png]],
+        },
+        Krasis = {
+            index = 41,
+            name = "Krasis (H)",
+            visible = false,
+            bool = true,
+            menu = "Krasis",
+            tooltip = "Enable/Disable Krasis on Tanks",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[krasis_on.png]],
+            imageoff = ImageFolder..[[krasis_off.png]],
+        },
+        Pneuma = {
+            index = 42,
+            name = "Pneuma (D)",
+            visible = false,
+            bool = true,
+            menu = "Pneuma",
+            tooltip = "Enable/Disable Pneuma",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[pneuma_on.png]],
+            imageoff = ImageFolder..[[pneuma_off.png]],
+        },
+    },
 }
 
 RoseCore.KeyCodes =
@@ -3265,7 +4371,7 @@ function RoseCore.DrawCall()
                             end
                         end
                         GUI:SetWindowFontSize(1.05)
-							
+
                         -- Wait for check
                         if RoseCore.Data.CheckVerC == true then
                             GUI:TextColored(1,1,0,1,GetString("Processing..."))
@@ -3275,14 +4381,14 @@ function RoseCore.DrawCall()
                         if RoseCore.Data.NeedUpdateC == nil and RoseCore.Data.CheckVerC == nil and RoseCore.Data.UpdateTick ~= nil then
                             GUI:TextColored(1,1,0,1,GetString("Processing..."))
                         end
-							
+
                         -- We need to update
                         if RoseCore.Data.NeedUpdateC == true and RoseCore.Data.UpdateTaskC ~= true  then
                             if GUI:Button(GetString("Update##Core")) then
                                 GUI:OpenPopup("Download Core Updates")
                             end
                         end
-							
+
                         -- We are already on the latest version
                         if RoseCore.Data.NeedUpdateC == false and RoseCore.Data.UpdateTaskC ~= true and RoseCore.Data.CheckVerC == nil then
                             if GUI:Button(GetString("Check Again##Core")) then
@@ -3291,7 +4397,7 @@ function RoseCore.DrawCall()
                             GUI:SameLine(0,windowPadding.x + 5)
                             GUI:TextColored(1,1,0,1,GetString("No Updates"))
                         end
-							
+
 							--Update Popup
                         if GUI:BeginPopupModal("Download Core Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
                             GUI:PushTextWrapPos(500)
@@ -3347,24 +4453,24 @@ function RoseCore.DrawCall()
                             end
                         end
                         GUI:SetWindowFontSize(1.05)
-							
+
                         -- Wait for check
                         if RoseCore.Data.CheckVerR == true then
                             GUI:TextColored(1,1,0,1,GetString("Processing..."))
                         end
-							
+
                         -- Other button pressed
                         if RoseCore.Data.NeedUpdateR == nil and RoseCore.Data.CheckVerR == nil and RoseCore.Data.UpdateTick ~= nil then
                             GUI:TextColored(1,1,0,1,GetString("Processing..."))
                         end
-							
+
                         -- We need to update
                         if RoseCore.Data.NeedUpdateR == true and RoseCore.Data.UpdateTaskR ~= true  then
                             if GUI:Button(GetString("Update##Reactions")) then
                                 GUI:OpenPopup("Download Reaction Updates")
                             end
                         end
-							
+
                         -- We are already on the latest version
                         if RoseCore.Data.NeedUpdateR == false and RoseCore.Data.UpdateTaskR ~= true and RoseCore.Data.CheckVerR == nil then
                             if GUI:Button(GetString("Check Again##Reactions")) then
@@ -3373,7 +4479,7 @@ function RoseCore.DrawCall()
                             GUI:SameLine(0,windowPadding.x + 5)
                             GUI:TextColored(1,1,0,1,GetString("No Updates"))
                         end
-							
+
                         --Update Popup
                         if GUI:BeginPopupModal("Download Reaction Updates", true, GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize + GUI.WindowFlags_AlwaysAutoResize) then
                             GUI:PushTextWrapPos(500)
@@ -3408,7 +4514,7 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()
-						
+
 						if GUI:TreeNode("General##AstEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.AstEvHotbar) do
@@ -3455,7 +4561,7 @@ function RoseCore.DrawCall()
 							GUI:Dummy(10,10)
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Tank##AstEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.AstEvHotbar) do
@@ -3500,7 +4606,7 @@ function RoseCore.DrawCall()
 								end
 							end
 							GUI:Dummy(10,10)
-							
+
 							-- Overheal Slider
 							local Str = "Tank Heal Percent"
 							local StrLength = GUI:CalcTextSize(Str)
@@ -3518,7 +4624,7 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 							GUI:TreePop()
 						end
-							
+
 						if GUI:TreeNode("Party##AstEverywhere") then
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.AstEvHotbar) do
@@ -3597,8 +4703,8 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 							GUI:TreePop()
 						end
-						
-						if GUI:TreeNode("Hotbar##AstEverywhere") then							
+
+						if GUI:TreeNode("Hotbar##AstEverywhere") then
 							local count
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.AstEvHotbar) do
@@ -3612,15 +4718,15 @@ function RoseCore.DrawCall()
 								if (GUI:IsItemHovered()) then
 									GUI:SetTooltip("Adds a "..tostring(n.menu).." toggle to the Hotbar")
 								end
-								
-								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)							
-								
+
+								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)
+
 								local butx,buty = 160,20
 								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
 								GUI:BeginGroup()
 								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
 								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
-								
+
 								local flags = GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoInputs
 								GUI:BeginChild("##AstEvHotbar"..tostring(n.name).."Keybind", butx, buty, false, flags)
 								GUI:SetWindowFontSize(0.85)
@@ -3643,7 +4749,7 @@ function RoseCore.DrawCall()
 									GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
 									GUI:Text(str)
 								end
-								
+
 								GUI:PopStyleColor()
 								GUI:PopStyleVar()
 								GUI:EndChild()
@@ -3651,7 +4757,7 @@ function RoseCore.DrawCall()
 								if GUI:IsItemClicked(0) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									GUI:OpenPopup("Set Key".."##AstEvHotbar"..tostring(n.name).."KeybindPopup")
-								end		
+								end
 								if GUI:IsItemClicked(1) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									save(true)
@@ -3659,17 +4765,17 @@ function RoseCore.DrawCall()
 								if GUI:IsItemHovered() then
 									GUI:SetTooltip("Left Click to add.\n".."Right Click to reset.")
 								end
-								
+
 								local WinX, WinY = GUI:GetWindowPos()
 								local PopPosX, PopPosY = WindowSizeX/2 + WinX - 60, WindowSizeY/2 + WinY - 15
 								GUI:SetWindowPos("Set Key".."##AstEvHotbar"..tostring(n.name).."KeybindPopup", PopPosX, PopPosY, GUI.SetCond_Always)
 								GUI:SetNextWindowSize(120, 30, GUI.SetCond_Always)
 								local flags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize
-								if GUI:BeginPopupModal("Set Key".."##AstEvHotbar"..tostring(n.name).."KeybindPopup", true, flags) then								
+								if GUI:BeginPopupModal("Set Key".."##AstEvHotbar"..tostring(n.name).."KeybindPopup", true, flags) then
 									if count == nil then count = 0 end
 									if count < 1 then
-										GUI:Text(GetString("Press your Key")) 
-										count = count + 1 
+										GUI:Text(GetString("Press your Key"))
+										count = count + 1
 									end
 									if GUI:IsMouseClicked(1) then
 										save(true)
@@ -3694,7 +4800,7 @@ function RoseCore.DrawCall()
 							end
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Hotbar Customization##AstEv") then
 							GUI:Separator()
 							local Str = "Enable Hotbar"
@@ -3709,7 +4815,7 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:Separator()
 							local Str = "Lock Hotbar"
 							local StrLength = GUI:CalcTextSize(Str)
@@ -3723,19 +4829,19 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							-- Enabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.AstEvHotbarButColOn 
+							local settings = RoseCore.Settings.AstEvHotbarButColOn
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Enabled##AstEvHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
 							end
 							GUI:NextColumn()
-							
+
 							-- Disabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.AstEvHotbarButColOff 
+							local settings = RoseCore.Settings.AstEvHotbarButColOff
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Disabled##AstEvHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
@@ -3754,8 +4860,8 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:PopItemWidth()
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size X
 							GUI:Separator()
 							local Str = "Button Width"
@@ -3768,8 +4874,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size Y
 							GUI:Separator()
 							local Str = "Button Height"
@@ -3782,8 +4888,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Column
 							GUI:Separator()
 							local Str = "Columns"
@@ -3799,7 +4905,7 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 							GUI:TreePop()
 						end
-							
+
 						-- Savage Group
 						local str = "Savage"
 						local strX,strY = GUI:CalcTextSize(str)
@@ -3999,8 +5105,8 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 							GUI:TreePop()
 						end
-						
-						if GUI:TreeNode("Hotbar##AstSavage") then		
+
+						if GUI:TreeNode("Hotbar##AstSavage") then
 							local count
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.AstSavHotbar) do
@@ -4014,15 +5120,15 @@ function RoseCore.DrawCall()
 								if (GUI:IsItemHovered()) then
 									GUI:SetTooltip("Adds a "..tostring(n.menu).." toggle to the Hotbar")
 								end
-								
-								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)							
-								
+
+								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)
+
 								local butx,buty = 160,20
 								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
 								GUI:BeginGroup()
 								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
 								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
-								
+
 								local flags = GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoInputs
 								GUI:BeginChild("##AstSavHotbar"..tostring(n.name).."Keybind", butx, buty, false, flags)
 								GUI:SetWindowFontSize(0.85)
@@ -4045,7 +5151,7 @@ function RoseCore.DrawCall()
 									GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
 									GUI:Text(str)
 								end
-								
+
 								GUI:PopStyleColor()
 								GUI:PopStyleVar()
 								GUI:EndChild()
@@ -4053,7 +5159,7 @@ function RoseCore.DrawCall()
 								if GUI:IsItemClicked(0) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									GUI:OpenPopup("Set Key".."##AstSavHotbar"..tostring(n.name).."KeybindPopup")
-								end		
+								end
 								if GUI:IsItemClicked(1) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									save(true)
@@ -4061,17 +5167,17 @@ function RoseCore.DrawCall()
 								if GUI:IsItemHovered() then
 									GUI:SetTooltip("Left Click to add.\n".."Right Click to reset.")
 								end
-								
+
 								local WinX, WinY = GUI:GetWindowPos()
 								local PopPosX, PopPosY = WindowSizeX/2 + WinX - 60, WindowSizeY/2 + WinY - 15
 								GUI:SetWindowPos("Set Key".."##AstSavHotbar"..tostring(n.name).."KeybindPopup", PopPosX, PopPosY, GUI.SetCond_Always)
 								GUI:SetNextWindowSize(120, 30, GUI.SetCond_Always)
 								local flags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize
-								if GUI:BeginPopupModal("Set Key".."##AstSavHotbar"..tostring(n.name).."KeybindPopup", true, flags) then								
+								if GUI:BeginPopupModal("Set Key".."##AstSavHotbar"..tostring(n.name).."KeybindPopup", true, flags) then
 									if count == nil then count = 0 end
 									if count < 1 then
-										GUI:Text(GetString("Press your Key")) 
-										count = count + 1 
+										GUI:Text(GetString("Press your Key"))
+										count = count + 1
 									end
 									if GUI:IsMouseClicked(1) then
 										save(true)
@@ -4096,7 +5202,7 @@ function RoseCore.DrawCall()
 							end
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Hotbar Customization##AstSav") then
 							GUI:Separator()
 							local Str = "Enable Hotbar"
@@ -4111,7 +5217,7 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:Separator()
 							local Str = "Lock Hotbar"
 							local StrLength = GUI:CalcTextSize(Str)
@@ -4125,19 +5231,19 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							-- Enabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.AstSavHotbarButColOn 
+							local settings = RoseCore.Settings.AstSavHotbarButColOn
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Enabled##AstSavHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
 							end
 							GUI:NextColumn()
-							
+
 							-- Disabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.AstSavHotbarButColOff 
+							local settings = RoseCore.Settings.AstSavHotbarButColOff
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Disabled##AstSavHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
@@ -4156,8 +5262,8 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:PopItemWidth()
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size X
 							GUI:Separator()
 							local Str = "Button Width"
@@ -4170,8 +5276,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size Y
 							GUI:Separator()
 							local Str = "Button Height"
@@ -4184,8 +5290,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Column
 							GUI:Separator()
 							local Str = "Columns"
@@ -4199,10 +5305,10 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:TreePop()
 						end
-						
+
 						-- Fight Specific Group
 						--[[local str = "Fight Specific"
 						local strX,strY = GUI:CalcTextSize(str)
@@ -4413,8 +5519,8 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 							GUI:TreePop()
 						end
-						
-						if GUI:TreeNode("Hotbar##SchEverywhere") then							
+
+						if GUI:TreeNode("Hotbar##SchEverywhere") then
 							local count
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.SchEvHotbar) do
@@ -4428,15 +5534,15 @@ function RoseCore.DrawCall()
 								if (GUI:IsItemHovered()) then
 									GUI:SetTooltip("Adds a "..tostring(n.menu).." toggle to the Hotbar")
 								end
-								
-								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)							
-								
+
+								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)
+
 								local butx,buty = 160,20
 								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
 								GUI:BeginGroup()
 								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
 								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
-								
+
 								local flags = GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoInputs
 								GUI:BeginChild("##SchEvHotbar"..tostring(n.name).."Keybind", butx, buty, false, flags)
 								GUI:SetWindowFontSize(0.85)
@@ -4459,7 +5565,7 @@ function RoseCore.DrawCall()
 									GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
 									GUI:Text(str)
 								end
-								
+
 								GUI:PopStyleColor()
 								GUI:PopStyleVar()
 								GUI:EndChild()
@@ -4467,7 +5573,7 @@ function RoseCore.DrawCall()
 								if GUI:IsItemClicked(0) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									GUI:OpenPopup("Set Key".."##SchEvHotbar"..tostring(n.name).."KeybindPopup")
-								end		
+								end
 								if GUI:IsItemClicked(1) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									save(true)
@@ -4475,17 +5581,17 @@ function RoseCore.DrawCall()
 								if GUI:IsItemHovered() then
 									GUI:SetTooltip("Left Click to add.\n".."Right Click to reset.")
 								end
-								
+
 								local WinX, WinY = GUI:GetWindowPos()
 								local PopPosX, PopPosY = WindowSizeX/2 + WinX - 60, WindowSizeY/2 + WinY - 15
 								GUI:SetWindowPos("Set Key".."##SchEvHotbar"..tostring(n.name).."KeybindPopup", PopPosX, PopPosY, GUI.SetCond_Always)
 								GUI:SetNextWindowSize(120, 30, GUI.SetCond_Always)
 								local flags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize
-								if GUI:BeginPopupModal("Set Key".."##SchEvHotbar"..tostring(n.name).."KeybindPopup", true, flags) then								
+								if GUI:BeginPopupModal("Set Key".."##SchEvHotbar"..tostring(n.name).."KeybindPopup", true, flags) then
 									if count == nil then count = 0 end
 									if count < 1 then
-										GUI:Text(GetString("Press your Key")) 
-										count = count + 1 
+										GUI:Text(GetString("Press your Key"))
+										count = count + 1
 									end
 									if GUI:IsMouseClicked(1) then
 										save(true)
@@ -4510,7 +5616,7 @@ function RoseCore.DrawCall()
 							end
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Hotbar Customization##SchEv") then
 							GUI:Separator()
 							local Str = "Enable Hotbar"
@@ -4525,7 +5631,7 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:Separator()
 							local Str = "Lock Hotbar"
 							local StrLength = GUI:CalcTextSize(Str)
@@ -4539,19 +5645,19 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							-- Enabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.SchEvHotbarButColOn 
+							local settings = RoseCore.Settings.SchEvHotbarButColOn
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Enabled##SchEvHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
 							end
 							GUI:NextColumn()
-							
+
 							-- Disabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.SchEvHotbarButColOff 
+							local settings = RoseCore.Settings.SchEvHotbarButColOff
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Disabled##SchEvHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
@@ -4570,8 +5676,8 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:PopItemWidth()
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size X
 							GUI:Separator()
 							local Str = "Button Width"
@@ -4584,8 +5690,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size Y
 							GUI:Separator()
 							local Str = "Button Height"
@@ -4598,8 +5704,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Column
 							GUI:Separator()
 							local Str = "Columns"
@@ -4613,10 +5719,10 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:TreePop()
 						end
-							
+
 						-- Savage Group
 						local str = "Savage"
 						local strX,strY = GUI:CalcTextSize(str)
@@ -4815,8 +5921,8 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 							GUI:TreePop()
 						end
-						
-						if GUI:TreeNode("Hotbar##SchSavage") then		
+
+						if GUI:TreeNode("Hotbar##SchSavage") then
 							local count
 							local Hotbar = {}
 							for k,v in pairs(RoseCore.Settings.SchSavHotbar) do
@@ -4830,15 +5936,15 @@ function RoseCore.DrawCall()
 								if (GUI:IsItemHovered()) then
 									GUI:SetTooltip("Adds a "..tostring(n.menu).." toggle to the Hotbar")
 								end
-								
-								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)							
-								
+
+								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)
+
 								local butx,buty = 160,20
 								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
 								GUI:BeginGroup()
 								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
 								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
-								
+
 								local flags = GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoInputs
 								GUI:BeginChild("##SchSavHotbar"..tostring(n.name).."Keybind", butx, buty, false, flags)
 								GUI:SetWindowFontSize(0.85)
@@ -4861,7 +5967,7 @@ function RoseCore.DrawCall()
 									GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
 									GUI:Text(str)
 								end
-								
+
 								GUI:PopStyleColor()
 								GUI:PopStyleVar()
 								GUI:EndChild()
@@ -4869,7 +5975,7 @@ function RoseCore.DrawCall()
 								if GUI:IsItemClicked(0) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									GUI:OpenPopup("Set Key".."##SchSavHotbar"..tostring(n.name).."KeybindPopup")
-								end		
+								end
 								if GUI:IsItemClicked(1) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									save(true)
@@ -4877,17 +5983,17 @@ function RoseCore.DrawCall()
 								if GUI:IsItemHovered() then
 									GUI:SetTooltip("Left Click to add.\n".."Right Click to reset.")
 								end
-								
+
 								local WinX, WinY = GUI:GetWindowPos()
 								local PopPosX, PopPosY = WindowSizeX/2 + WinX - 60, WindowSizeY/2 + WinY - 15
 								GUI:SetWindowPos("Set Key".."##SchSavHotbar"..tostring(n.name).."KeybindPopup", PopPosX, PopPosY, GUI.SetCond_Always)
 								GUI:SetNextWindowSize(120, 30, GUI.SetCond_Always)
 								local flags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize
-								if GUI:BeginPopupModal("Set Key".."##SchSavHotbar"..tostring(n.name).."KeybindPopup", true, flags) then								
+								if GUI:BeginPopupModal("Set Key".."##SchSavHotbar"..tostring(n.name).."KeybindPopup", true, flags) then
 									if count == nil then count = 0 end
 									if count < 1 then
-										GUI:Text(GetString("Press your Key")) 
-										count = count + 1 
+										GUI:Text(GetString("Press your Key"))
+										count = count + 1
 									end
 									if GUI:IsMouseClicked(1) then
 										save(true)
@@ -4912,7 +6018,7 @@ function RoseCore.DrawCall()
 							end
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Hotbar Customization##SchSav") then
 							GUI:Separator()
 							local Str = "Enable Hotbar"
@@ -4927,7 +6033,7 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:Separator()
 							local Str = "Lock Hotbar"
 							local StrLength = GUI:CalcTextSize(Str)
@@ -4941,19 +6047,19 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							-- Enabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.SchSavHotbarButColOn 
+							local settings = RoseCore.Settings.SchSavHotbarButColOn
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Enabled##SchSavHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
 							end
 							GUI:NextColumn()
-							
+
 							-- Disabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.SchSavHotbarButColOff 
+							local settings = RoseCore.Settings.SchSavHotbarButColOff
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Disabled##SchSavHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
@@ -4972,8 +6078,8 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:PopItemWidth()
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size X
 							GUI:Separator()
 							local Str = "Button Width"
@@ -4986,8 +6092,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size Y
 							GUI:Separator()
 							local Str = "Button Height"
@@ -5000,8 +6106,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Column
 							GUI:Separator()
 							local Str = "Columns"
@@ -5015,10 +6121,10 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:TreePop()
 						end
-						
+
 						-- Fight Specific Group
 						--[[local str = "Fight Specific"
 						local strX,strY = GUI:CalcTextSize(str)
@@ -5028,7 +6134,7 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()]]--
-					
+
 					-- Whm Tab
 					elseif Tabs.Whm == true then
 						-- Everywhere Group
@@ -5341,7 +6447,7 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:Separator()
 							local Str = "Lock Hotbar"
 							local StrLength = GUI:CalcTextSize(Str)
@@ -5355,19 +6461,19 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							-- Enabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.WhmEvHotbarButColOn 
+							local settings = RoseCore.Settings.WhmEvHotbarButColOn
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Enabled##WhmEvHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
 							end
 							GUI:NextColumn()
-							
+
 							-- Disabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.WhmEvHotbarButColOff 
+							local settings = RoseCore.Settings.WhmEvHotbarButColOff
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Disabled##WhmEvHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
@@ -5386,8 +6492,8 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:PopItemWidth()
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size X
 							GUI:Separator()
 							local Str = "Button Width"
@@ -5400,8 +6506,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size Y
 							GUI:Separator()
 							local Str = "Button Height"
@@ -5414,8 +6520,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Column
 							GUI:Separator()
 							local Str = "Columns"
@@ -5429,10 +6535,10 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:TreePop()
 						end
-						
+
 						-- Savage Group
 						local str = "Savage"
 						local strX,strY = GUI:CalcTextSize(str)
@@ -5631,7 +6737,7 @@ function RoseCore.DrawCall()
 							GUI:NextColumn()
 							GUI:TreePop()
 						end
-						
+
 						if GUI:TreeNode("Hotbar##WhmSavage") then
 							local count
 							local Hotbar = {}
@@ -5646,15 +6752,15 @@ function RoseCore.DrawCall()
 								if (GUI:IsItemHovered()) then
 									GUI:SetTooltip("Adds a "..tostring(n.menu).." toggle to the Hotbar")
 								end
-								
-								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)							
-								
+
+								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)
+
 								local butx,buty = 160,20
 								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
 								GUI:BeginGroup()
 								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
 								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
-								
+
 								local flags = GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoInputs
 								GUI:BeginChild("##WhmSavHotbar"..tostring(n.name).."Keybind", butx, buty, false, flags)
 								GUI:SetWindowFontSize(0.85)
@@ -5677,7 +6783,7 @@ function RoseCore.DrawCall()
 									GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
 									GUI:Text(str)
 								end
-								
+
 								GUI:PopStyleColor()
 								GUI:PopStyleVar()
 								GUI:EndChild()
@@ -5685,7 +6791,7 @@ function RoseCore.DrawCall()
 								if GUI:IsItemClicked(0) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									GUI:OpenPopup("Set Key".."##WhmSavHotbar"..tostring(n.name).."KeybindPopup")
-								end		
+								end
 								if GUI:IsItemClicked(1) then
 									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
 									save(true)
@@ -5693,17 +6799,17 @@ function RoseCore.DrawCall()
 								if GUI:IsItemHovered() then
 									GUI:SetTooltip("Left Click to add.\n".."Right Click to reset.")
 								end
-								
+
 								local WinX, WinY = GUI:GetWindowPos()
 								local PopPosX, PopPosY = WindowSizeX/2 + WinX - 60, WindowSizeY/2 + WinY - 15
 								GUI:SetWindowPos("Set Key".."##WhmSavHotbar"..tostring(n.name).."KeybindPopup", PopPosX, PopPosY, GUI.SetCond_Always)
 								GUI:SetNextWindowSize(120, 30, GUI.SetCond_Always)
 								local flags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize
-								if GUI:BeginPopupModal("Set Key".."##WhmSavHotbar"..tostring(n.name).."KeybindPopup", true, flags) then								
+								if GUI:BeginPopupModal("Set Key".."##WhmSavHotbar"..tostring(n.name).."KeybindPopup", true, flags) then
 									if count == nil then count = 0 end
 									if count < 1 then
-										GUI:Text(GetString("Press your Key")) 
-										count = count + 1 
+										GUI:Text(GetString("Press your Key"))
+										count = count + 1
 									end
 									if GUI:IsMouseClicked(1) then
 										save(true)
@@ -5743,7 +6849,7 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							GUI:Separator()
 							local Str = "Lock Hotbar"
 							local StrLength = GUI:CalcTextSize(Str)
@@ -5757,19 +6863,19 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:NextColumn()
-						
+
 							-- Enabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.WhmSavHotbarButColOn 
+							local settings = RoseCore.Settings.WhmSavHotbarButColOn
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Enabled##WhmSavHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
 							end
 							GUI:NextColumn()
-							
+
 							-- Disabled
 							GUI:Separator()
-							local settings = RoseCore.Settings.WhmSavHotbarButColOff 
+							local settings = RoseCore.Settings.WhmSavHotbarButColOff
 							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Disabled##WhmSavHotbar",settings.R, settings.G, settings.B, settings.T)
 							if changed then
 								save(true)
@@ -5788,8 +6894,8 @@ function RoseCore.DrawCall()
 								save(true)
 							end
 							GUI:PopItemWidth()
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size X
 							GUI:Separator()
 							local Str = "Button Width"
@@ -5802,8 +6908,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Size Y
 							GUI:Separator()
 							local Str = "Button Height"
@@ -5816,8 +6922,8 @@ function RoseCore.DrawCall()
 							if changed then
 								save(true)
 							end
-							GUI:NextColumn()	
-						
+							GUI:NextColumn()
+
 							-- Column
 							GUI:Separator()
 							local Str = "Columns"
@@ -5843,6 +6949,815 @@ function RoseCore.DrawCall()
 						GUI:Text(str)
 						GUI:PopStyleColor()
 						GUI:EndChild()]]--
+
+						-- Sge Tab
+					elseif Tabs.Sge == true then
+						-- Everywhere Group
+						local str = "Everywhere"
+						local strX,strY = GUI:CalcTextSize(str)
+						GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
+						GUI:BeginChild(str.."#Sge", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
+						GUI:AlignFirstTextHeightToWidgets()
+						GUI:Text(str)
+						GUI:PopStyleColor()
+						GUI:EndChild()
+
+						if GUI:TreeNode("General##SgeEverywhere") then
+							local Hotbar = {}
+							for k,v in pairs(RoseCore.Settings.SgeEvHotbar) do
+								table.insert(Hotbar, v)
+							end
+							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
+							for m,n in ipairs(Hotbar) do
+								if not string.find(n.name, "(H)", 1, true) and not string.find(n.name, "(D)", 1, true) then
+									if table.valid(images) then
+										if n.index == 9 then
+											GUI:Dummy(10,10)
+										end
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
+									end
+								end
+							end
+							GUI:Dummy(10,10)
+							GUI:TreePop()
+						end
+
+						if GUI:TreeNode("Healing##SgeEverywhere") then
+							local Hotbar = {}
+							for k,v in pairs(RoseCore.Settings.SgeEvHotbar) do
+								table.insert(Hotbar, v)
+							end
+							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
+							for m,n in ipairs(Hotbar) do
+								if string.find(n.name, "(H)", 1, true) then
+									if table.valid(images) then
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
+									end
+								end
+							end
+							GUI:Dummy(10,10)
+
+							-- Overheal Slider
+							local Str = "Tank Heal Percent"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							if (GUI:IsItemHovered()) then
+								GUI:SetTooltip("Heal slider will bring tank to X percent of health")
+							end
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SgeEvTankOverhealSingle,changed = GUI:SliderInt("##SgeEvTankOverhealSingle", RoseCore.Settings.SgeEvTankOverhealSingle,50,100)
+							if changed then
+								save(true)
+							end
+							GUI:PopItemWidth()
+							GUI:NextColumn()
+
+							-- Overheal Slider (AOE)
+							local Str = "AOE Heal Percent"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							if (GUI:IsItemHovered()) then
+								GUI:SetTooltip("Heal slider will bring AOE to X percent of health")
+							end
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SgeEvPartyOverhealAOE,changed = GUI:SliderInt("##SgeEvPartyOverhealAOE", RoseCore.Settings.SgeEvPartyOverhealAOE,50,100)
+							if changed then
+								save(true)
+							end
+							GUI:PopItemWidth()
+							GUI:NextColumn()
+
+							-- Overheal Slider (ST)
+							local Str = "Target Heal Percent"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							if (GUI:IsItemHovered()) then
+								GUI:SetTooltip("Heal slider will bring target to X percent of health")
+							end
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+							GUI:PushItemWidth(200)
+							RoseCore.Settings.SgeEvPartyOverhealSingle,changed = GUI:SliderInt("##SgeEvPartyOverhealSingle", RoseCore.Settings.SgeEvPartyOverhealSingle,50,100)
+							if changed then
+								save(true)
+							end
+							GUI:PopItemWidth()
+							GUI:NextColumn()
+							GUI:TreePop()
+						end
+
+						if GUI:TreeNode("Damage##SgeEverywhere") then
+							local Hotbar = {}
+							for k,v in pairs(RoseCore.Settings.SgeEvHotbar) do
+								table.insert(Hotbar, v)
+							end
+							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							GUI:PushItemWidth(100)
+							GUI:PopItemWidth()
+							local images = FolderList(ImageFolder)
+							for m,n in ipairs(Hotbar) do
+								if string.find(n.name, "(D)", 1, true) then
+									if table.valid(images) then
+										if n.bool == true then
+											GUI:Image(n.imageon,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										elseif n.bool == false then
+											GUI:Image(n.imageoff,ImageSize,ImageSize)
+											if GUI:IsItemHovered() then
+												GUI:SetTooltip(n.tooltip)
+												if GUI:IsItemClicked(0) then
+													n.bool = not n.bool
+													save(true)--Necessary if you want to save your settings.
+												end
+											end
+										end
+										for _,image in pairs(images) do
+											GUI:SameLine(0,ImageSpacing)
+											if GUI:GetContentRegionAvailWidth() < ImageSize then
+												GUI:NewLine()
+											end
+										end
+									end
+								end
+							end
+							GUI:Dummy(10,10)
+							GUI:TreePop()
+						end
+
+						if GUI:TreeNode("Hotbar##SgeEverywhere") then
+							local count
+							local Hotbar = {}
+							for k,v in pairs(RoseCore.Settings.SgeEvHotbar) do
+								table.insert(Hotbar, v)
+							end
+							table.sort(Hotbar, function(a,b) return a.index < b.index end)
+							for m,n in ipairs(Hotbar) do
+								GUI:Separator()
+								local StrLength = GUI:CalcTextSize(n.menu)
+								GUI:Text(n.menu)
+								if (GUI:IsItemHovered()) then
+									GUI:SetTooltip("Adds a "..tostring(n.menu).." toggle to the Hotbar")
+								end
+
+								GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)
+
+								local butx,buty = 160,20
+								local r,g,b,t = 100/255, 100/255, 100/255, 204/255
+								GUI:BeginGroup()
+								GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
+								GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
+
+								local flags = GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoInputs
+								GUI:BeginChild("##SgeEvHotbar"..tostring(n.name).."Keybind", butx, buty, false, flags)
+								GUI:SetWindowFontSize(0.85)
+								if (n.keyname == "None") then
+									local x,y = GUI:CalcTextSize(n.keyname)
+									GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
+									GUI:Text(n.keyname)
+								else
+									local str = n.keyname
+									if n.modifierA then
+										str = "ALT + "..str
+									end
+									if n.modifierC then
+										str = "CRTL + "..str
+									end
+									if n.modifierS then
+										str = "SHIFT + "..str
+									end
+									local x,y = GUI:CalcTextSize(str)
+									GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
+									GUI:Text(str)
+								end
+
+								GUI:PopStyleColor()
+								GUI:PopStyleVar()
+								GUI:EndChild()
+								GUI:EndGroup()
+								if GUI:IsItemClicked(0) then
+									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
+									GUI:OpenPopup("Set Key".."##SgeEvHotbar"..tostring(n.name).."KeybindPopup")
+								end
+								if GUI:IsItemClicked(1) then
+									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
+									save(true)
+								end
+								if GUI:IsItemHovered() then
+									GUI:SetTooltip("Left Click to add.\n".."Right Click to reset.")
+								end
+
+								local WinX, WinY = GUI:GetWindowPos()
+								local PopPosX, PopPosY = WindowSizeX/2 + WinX - 60, WindowSizeY/2 + WinY - 15
+								GUI:SetWindowPos("Set Key".."##SgeEvHotbar"..tostring(n.name).."KeybindPopup", PopPosX, PopPosY, GUI.SetCond_Always)
+								GUI:SetNextWindowSize(120, 30, GUI.SetCond_Always)
+								local flags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize
+								if GUI:BeginPopupModal("Set Key".."##SgeEvHotbar"..tostring(n.name).."KeybindPopup", true, flags) then
+									if count == nil then count = 0 end
+									if count < 1 then
+										GUI:Text(GetString("Press your Key"))
+										count = count + 1
+									end
+									if GUI:IsMouseClicked(1) then
+										save(true)
+										GUI:CloseCurrentPopup()
+									end
+									n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS, changed = RoseCore.IsKeyDown()
+									if changed then
+										save(true)
+										GUI:CloseCurrentPopup()
+									end
+									GUI:EndPopup()
+								end
+
+
+								GUI:SameLine(0,5)
+								local NewStr = string.gsub(n.name, " ", "")
+								n.visible,changed = GUI:Checkbox("##SgeEvHotbar"..tostring(NewStr).."Visible", n.visible)
+								if changed then
+									save(true)
+								end
+								GUI:NextColumn()
+							end
+							GUI:TreePop()
+						end
+
+						if GUI:TreeNode("Hotbar Customization##SgeEverywhere") then
+							GUI:Separator()
+							local Str = "Enable Hotbar"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							if (GUI:IsItemHovered()) then
+								GUI:SetTooltip("Enable Hotbar")
+							end
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
+							RoseCore.Settings.SgeEvHotbarEnabled,changed = GUI:Checkbox("##SgeEvHotbarEnabled", RoseCore.Settings.SgeEvHotbarEnabled)
+							if changed then
+								save(true)
+							end
+							GUI:NextColumn()
+
+							GUI:Separator()
+							local Str = "Lock Hotbar"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							if (GUI:IsItemHovered()) then
+								GUI:SetTooltip("Lock Hotbar")
+							end
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
+							RoseCore.Settings.SgeEvHotbarLocked,changed = GUI:Checkbox("##SgeEvHotbarLocked", RoseCore.Settings.SgeEvHotbarLocked)
+							if changed then
+								save(true)
+							end
+							GUI:NextColumn()
+
+							-- Enabled
+							GUI:Separator()
+							local settings = RoseCore.Settings.SgeEvHotbarButColOn
+							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Enabled##SgeEvHotbar",settings.R, settings.G, settings.B, settings.T)
+							if changed then
+								save(true)
+							end
+							GUI:NextColumn()
+
+							-- Disabled
+							GUI:Separator()
+							local settings = RoseCore.Settings.SgeEvHotbarButColOff
+							settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Disabled##SgeEvHotbar",settings.R, settings.G, settings.B, settings.T)
+							if changed then
+								save(true)
+							end
+							GUI:NextColumn()
+
+							-- Transparency
+							GUI:Separator()
+							local Str = "Background Transparency"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
+							GUI:PushItemWidth(80)
+							RoseCore.Settings.SgeEvHotbarBgT,changed = GUI:SliderInt("##SgeEvHotbarBgT", RoseCore.Settings.SgeEvHotbarBgT,0,255)
+							if changed then
+								save(true)
+							end
+							GUI:PopItemWidth()
+							GUI:NextColumn()
+
+							-- Size X
+							GUI:Separator()
+							local Str = "Button Width"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 95)
+							GUI:PushItemWidth(100)
+							RoseCore.Settings.SgeEvHotbarButtonSizeX,changed = GUI:InputFloat("##SgeEvHotbarButtonSizeX", RoseCore.Settings.SgeEvHotbarButtonSizeX,1,2,0)
+							GUI:PopItemWidth()
+							if changed then
+								save(true)
+							end
+							GUI:NextColumn()
+
+							-- Size Y
+							GUI:Separator()
+							local Str = "Button Height"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 95)
+							GUI:PushItemWidth(100)
+							RoseCore.Settings.SgeEvHotbarButtonSizeY,changed = GUI:InputFloat("##SgeEvHotbarButtonSizeY", RoseCore.Settings.SgeEvHotbarButtonSizeY,1,2,0)
+							GUI:PopItemWidth()
+							if changed then
+								save(true)
+							end
+							GUI:NextColumn()
+
+							-- Column
+							GUI:Separator()
+							local Str = "Columns"
+							local StrLength = GUI:CalcTextSize(Str)
+							GUI:Text(Str)
+							GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 95)
+							GUI:PushItemWidth(100)
+							RoseCore.Settings.SgeEvHotbarColumns,changed = GUI:InputFloat("##SgeEvHotbarColumns", RoseCore.Settings.SgeEvHotbarColumns,1,1,0)
+							GUI:PopItemWidth()
+							if changed then
+								save(true)
+							end
+							GUI:NextColumn()
+
+							GUI:TreePop()
+						end
+
+						-- Savage Group
+						--[[local str = "Savage"
+                        local strX,strY = GUI:CalcTextSize(str)
+                        GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
+                        GUI:BeginChild(str.."#Sge", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
+                        GUI:AlignFirstTextHeightToWidgets()
+                        GUI:Text(str)
+                        GUI:PopStyleColor()
+                        GUI:EndChild()
+
+                        if GUI:TreeNode("General##SgeSavage") then
+                            local Hotbar = {}
+                            for k,v in pairs(RoseCore.Settings.SgeSavHotbar) do
+                                table.insert(Hotbar, v)
+                            end
+                            table.sort(Hotbar, function(a,b) return a.index < b.index end)
+                            GUI:PushItemWidth(100)
+                            GUI:PopItemWidth()
+                            local images = FolderList(ImageFolder)
+                            for m,n in ipairs(Hotbar) do
+                                if not string.find(n.name, "(T)", 1, true) and not string.find(n.name, "(P)", 1, true) then
+                                    if table.valid(images) then
+                                        if n.index == 23 then
+                                            GUI:Dummy(10,10)
+                                        end
+                                        if n.bool == true then
+                                            GUI:Image(n.imageon,ImageSize,ImageSize)
+                                            if GUI:IsItemHovered() then
+                                                GUI:SetTooltip(n.tooltip)
+                                                if GUI:IsItemClicked(0) then
+                                                    n.bool = not n.bool
+                                                    save(true)--Necessary if you want to save your settings.
+                                                end
+                                            end
+                                        elseif n.bool == false then
+                                            GUI:Image(n.imageoff,ImageSize,ImageSize)
+                                            if GUI:IsItemHovered() then
+                                                GUI:SetTooltip(n.tooltip)
+                                                if GUI:IsItemClicked(0) then
+                                                    n.bool = not n.bool
+                                                    save(true)--Necessary if you want to save your settings.
+                                                end
+                                            end
+                                        end
+                                        for _,image in pairs(images) do
+                                            GUI:SameLine(0,ImageSpacing)
+                                            if GUI:GetContentRegionAvailWidth() < ImageSize then
+                                                GUI:NewLine()
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                            GUI:Dummy(10,10)
+                            GUI:TreePop()
+                        end
+
+                        if GUI:TreeNode("Tank##SgeSavage") then
+                            local Hotbar = {}
+                            for k,v in pairs(RoseCore.Settings.SgeSavHotbar) do
+                                table.insert(Hotbar, v)
+                            end
+                            table.sort(Hotbar, function(a,b) return a.index < b.index end)
+                            GUI:PushItemWidth(100)
+                            GUI:PopItemWidth()
+                            local images = FolderList(ImageFolder)
+                            for m,n in ipairs(Hotbar) do
+                                if string.find(n.name, "(T)", 1, true) then
+                                    if table.valid(images) then
+                                        if n.index == 6 then
+                                            GUI:Dummy(10,10)
+                                        end
+                                        if n.bool == true then
+                                            GUI:Image(n.imageon,ImageSize,ImageSize)
+                                            if GUI:IsItemHovered() then
+                                                GUI:SetTooltip(n.tooltip)
+                                                if GUI:IsItemClicked(0) then
+                                                    n.bool = not n.bool
+                                                    save(true)--Necessary if you want to save your settings.
+                                                end
+                                            end
+                                        elseif n.bool == false then
+                                            GUI:Image(n.imageoff,ImageSize,ImageSize)
+                                            if GUI:IsItemHovered() then
+                                                GUI:SetTooltip(n.tooltip)
+                                                if GUI:IsItemClicked(0) then
+                                                    n.bool = not n.bool
+                                                    save(true)--Necessary if you want to save your settings.
+                                                end
+                                            end
+                                        end
+                                        for _,image in pairs(images) do
+                                            GUI:SameLine(0,ImageSpacing)
+                                            if GUI:GetContentRegionAvailWidth() < ImageSize then
+                                                GUI:NewLine()
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                            GUI:Dummy(10,10)
+
+                            -- Overheal Slider
+                            local Str = "Tank Heal Percent"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            if (GUI:IsItemHovered()) then
+                                GUI:SetTooltip("Heal slider will bring tank to X percent of health")
+                            end
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+                            GUI:PushItemWidth(200)
+                            RoseCore.Settings.SgeSavTankOverhealSingle,changed = GUI:SliderInt("##SgeSavTankOverhealSingle", RoseCore.Settings.SgeSavTankOverhealSingle,50,100)
+                            if changed then
+                                save(true)
+                            end
+                            GUI:PopItemWidth()
+                            GUI:NextColumn()
+                            GUI:TreePop()
+                        end
+
+                        if GUI:TreeNode("Party##SgeSavage") then
+                            local Hotbar = {}
+                            for k,v in pairs(RoseCore.Settings.SgeSavHotbar) do
+                                table.insert(Hotbar, v)
+                            end
+                            table.sort(Hotbar, function(a,b) return a.index < b.index end)
+                            GUI:PushItemWidth(100)
+                            GUI:PopItemWidth()
+                            local images = FolderList(ImageFolder)
+                            for m,n in ipairs(Hotbar) do
+                                if string.find(n.name, "(P)", 1, true) then
+                                    if table.valid(images) then
+                                        if n.index == 14 then
+                                            GUI:Dummy(10,10)
+                                        end
+                                        if n.bool == true then
+                                            GUI:Image(n.imageon,ImageSize,ImageSize)
+                                            if GUI:IsItemHovered() then
+                                                GUI:SetTooltip(n.tooltip)
+                                                if GUI:IsItemClicked(0) then
+                                                    n.bool = not n.bool
+                                                    save(true)--Necessary if you want to save your settings.
+                                                end
+                                            end
+                                        elseif n.bool == false then
+                                            GUI:Image(n.imageoff,ImageSize,ImageSize)
+                                            if GUI:IsItemHovered() then
+                                                GUI:SetTooltip(n.tooltip)
+                                                if GUI:IsItemClicked(0) then
+                                                    n.bool = not n.bool
+                                                    save(true)--Necessary if you want to save your settings.
+                                                end
+                                            end
+                                        end
+                                        for _,image in pairs(images) do
+                                            GUI:SameLine(0,ImageSpacing)
+                                            if GUI:GetContentRegionAvailWidth() < ImageSize then
+                                                GUI:NewLine()
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                            GUI:Dummy(10,10)
+
+                            -- Overheal Slider (AOE)
+                            local Str = "AOE Heal Percent"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            if (GUI:IsItemHovered()) then
+                                GUI:SetTooltip("Heal slider will bring AOE to X percent of health")
+                            end
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+                            GUI:PushItemWidth(200)
+                            RoseCore.Settings.SgeSavPartyOverhealAOE,changed = GUI:SliderInt("##SgeSavPartyOverhealAOE", RoseCore.Settings.SgeSavPartyOverhealAOE,50,100)
+                            if changed then
+                                save(true)
+                            end
+                            GUI:PopItemWidth()
+                            GUI:NextColumn()
+
+                            -- Overheal Slider (ST)
+                            local Str = "Target Heal Percent"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            if (GUI:IsItemHovered()) then
+                                GUI:SetTooltip("Heal slider will bring target to X percent of health")
+                            end
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 195)
+                            GUI:PushItemWidth(200)
+                            RoseCore.Settings.SgeSavPartyOverhealSingle,changed = GUI:SliderInt("##SgeSavPartyOverhealSingle", RoseCore.Settings.SgeSavPartyOverhealSingle,50,100)
+                            if changed then
+                                save(true)
+                            end
+                            GUI:PopItemWidth()
+                            GUI:NextColumn()
+                            GUI:TreePop()
+                        end
+
+                        if GUI:TreeNode("Hotbar##SgeSavage") then
+                            local count
+                            local Hotbar = {}
+                            for k,v in pairs(RoseCore.Settings.SgeSavHotbar) do
+                                table.insert(Hotbar, v)
+                            end
+                            table.sort(Hotbar, function(a,b) return a.index < b.index end)
+                            for m,n in ipairs(Hotbar) do
+                                GUI:Separator()
+                                local StrLength = GUI:CalcTextSize(n.menu)
+                                GUI:Text(n.menu)
+                                if (GUI:IsItemHovered()) then
+                                    GUI:SetTooltip("Adds a "..tostring(n.menu).." toggle to the Hotbar")
+                                end
+
+                                GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 180)
+
+                                local butx,buty = 160,20
+                                local r,g,b,t = 100/255, 100/255, 100/255, 204/255
+                                GUI:BeginGroup()
+                                GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
+                                GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
+
+                                local flags = GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoInputs
+                                GUI:BeginChild("##SgeSavHotbar"..tostring(n.name).."Keybind", butx, buty, false, flags)
+                                GUI:SetWindowFontSize(0.85)
+                                if (n.keyname == "None") then
+                                    local x,y = GUI:CalcTextSize(n.keyname)
+                                    GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
+                                    GUI:Text(n.keyname)
+                                else
+                                    local str = n.keyname
+                                    if n.modifierA then
+                                        str = "ALT + "..str
+                                    end
+                                    if n.modifierC then
+                                        str = "CRTL + "..str
+                                    end
+                                    if n.modifierS then
+                                        str = "SHIFT + "..str
+                                    end
+                                    local x,y = GUI:CalcTextSize(str)
+                                    GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
+                                    GUI:Text(str)
+                                end
+
+                                GUI:PopStyleColor()
+                                GUI:PopStyleVar()
+                                GUI:EndChild()
+                                GUI:EndGroup()
+                                if GUI:IsItemClicked(0) then
+                                    n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
+                                    GUI:OpenPopup("Set Key".."##SgeSavHotbar"..tostring(n.name).."KeybindPopup")
+                                end
+                                if GUI:IsItemClicked(1) then
+                                    n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS = -1, "None", false, false, false
+                                    save(true)
+                                end
+                                if GUI:IsItemHovered() then
+                                    GUI:SetTooltip("Left Click to add.\n".."Right Click to reset.")
+                                end
+
+                                local WinX, WinY = GUI:GetWindowPos()
+                                local PopPosX, PopPosY = WindowSizeX/2 + WinX - 60, WindowSizeY/2 + WinY - 15
+                                GUI:SetWindowPos("Set Key".."##SgeSavHotbar"..tostring(n.name).."KeybindPopup", PopPosX, PopPosY, GUI.SetCond_Always)
+                                GUI:SetNextWindowSize(120, 30, GUI.SetCond_Always)
+                                local flags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoResize
+                                if GUI:BeginPopupModal("Set Key".."##SgeSavHotbar"..tostring(n.name).."KeybindPopup", true, flags) then
+                                    if count == nil then count = 0 end
+                                    if count < 1 then
+                                        GUI:Text(GetString("Press your Key"))
+                                        count = count + 1
+                                    end
+                                    if GUI:IsMouseClicked(1) then
+                                        save(true)
+                                        GUI:CloseCurrentPopup()
+                                    end
+                                    n.key, n.keyname, n.modifierC, n.modifierA, n.modifierS, changed = RoseCore.IsKeyDown()
+                                    if changed then
+                                        save(true)
+                                        GUI:CloseCurrentPopup()
+                                    end
+                                    GUI:EndPopup()
+                                end
+
+
+                                GUI:SameLine(0,5)
+                                local NewStr = string.gsub(n.name, " ", "")
+                                n.visible,changed = GUI:Checkbox("##SgeSavHotbar"..tostring(NewStr).."Visible", n.visible)
+                                if changed then
+                                    save(true)
+                                end
+                                GUI:NextColumn()
+                            end
+                            GUI:TreePop()
+                        end
+
+                        if GUI:TreeNode("Hotbar Customization##SgeSav") then
+                            GUI:Separator()
+                            local Str = "Enable Hotbar"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            if (GUI:IsItemHovered()) then
+                                GUI:SetTooltip("Enable Hotbar")
+                            end
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
+                            RoseCore.Settings.SgeSavHotbarEnabled,changed = GUI:Checkbox("##SgeSavHotbarEnabled", RoseCore.Settings.SgeSavHotbarEnabled)
+                            if changed then
+                                save(true)
+                            end
+                            GUI:NextColumn()
+
+                            GUI:Separator()
+                            local Str = "Lock Hotbar"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            if (GUI:IsItemHovered()) then
+                                GUI:SetTooltip("Lock Hotbar")
+                            end
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 15)
+                            RoseCore.Settings.SgeSavHotbarLocked,changed = GUI:Checkbox("##SgeSavHotbarLocked", RoseCore.Settings.SgeSavHotbarLocked)
+                            if changed then
+                                save(true)
+                            end
+                            GUI:NextColumn()
+
+                            -- Enabled
+                            GUI:Separator()
+                            local settings = RoseCore.Settings.SgeSavHotbarButColOn
+                            settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Enabled##SgeSavHotbar",settings.R, settings.G, settings.B, settings.T)
+                            if changed then
+                                save(true)
+                            end
+                            GUI:NextColumn()
+
+                            -- Disabled
+                            GUI:Separator()
+                            local settings = RoseCore.Settings.SgeSavHotbarButColOff
+                            settings.R,settings.G,settings.B,settings.T,changed = GUI:ColorEdit4("Disabled##SgeSavHotbar",settings.R, settings.G, settings.B, settings.T)
+                            if changed then
+                                save(true)
+                            end
+                            GUI:NextColumn()
+
+                            -- Transparency
+                            GUI:Separator()
+                            local Str = "Background Transparency"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 75)
+                            GUI:PushItemWidth(80)
+                            RoseCore.Settings.SgeSavHotbarBgT,changed = GUI:SliderInt("##SgeSavHotbarBgT", RoseCore.Settings.SgeSavHotbarBgT,0,255)
+                            if changed then
+                                save(true)
+                            end
+                            GUI:PopItemWidth()
+                            GUI:NextColumn()
+
+                            -- Size X
+                            GUI:Separator()
+                            local Str = "Button Width"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 95)
+                            GUI:PushItemWidth(100)
+                            RoseCore.Settings.SgeSavHotbarButtonSizeX,changed = GUI:InputFloat("##SgeSavHotbarButtonSizeX", RoseCore.Settings.SgeSavHotbarButtonSizeX,1,2,0)
+                            GUI:PopItemWidth()
+                            if changed then
+                                save(true)
+                            end
+                            GUI:NextColumn()
+
+                            -- Size Y
+                            GUI:Separator()
+                            local Str = "Button Height"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 95)
+                            GUI:PushItemWidth(100)
+                            RoseCore.Settings.SgeSavHotbarButtonSizeY,changed = GUI:InputFloat("##SgeSavHotbarButtonSizeY", RoseCore.Settings.SgeSavHotbarButtonSizeY,1,2,0)
+                            GUI:PopItemWidth()
+                            if changed then
+                                save(true)
+                            end
+                            GUI:NextColumn()
+
+                            -- Column
+                            GUI:Separator()
+                            local Str = "Columns"
+                            local StrLength = GUI:CalcTextSize(Str)
+                            GUI:Text(Str)
+                            GUI:SameLine(0,SubWindowSizeX - windowPadding.x - StrLength - 95)
+                            GUI:PushItemWidth(100)
+                            RoseCore.Settings.SgeSavHotbarColumns,changed = GUI:InputFloat("##SgeSavHotbarColumns", RoseCore.Settings.SgeSavHotbarColumns,1,1,0)
+                            GUI:PopItemWidth()
+                            if changed then
+                                save(true)
+                            end
+                            GUI:NextColumn()
+                            GUI:TreePop()
+                        end]]
+
+						-- Fight Specific
+						--[[local str = "Fight Specific"
+                        local strX,strY = GUI:CalcTextSize(str)
+                        GUI:PushStyleColor(GUI.Col_ChildWindowBg, WinColR, WinColG, WinColB, WinColT)
+                        GUI:BeginChild(str.."#SchFightSpecific", WindowSizeX - (windowPadding.x * 2) - 8, GUI:GetFrameHeight() + (windowPadding.y * 2) ,true, GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoMove + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoInputs)
+                        GUI:AlignFirstTextHeightToWidgets()
+                        GUI:Text(str)
+                        GUI:PopStyleColor()
+                        GUI:EndChild()]]--
 					end
 				end
 			end
@@ -5852,8 +7767,8 @@ function RoseCore.DrawCall()
 		
 		--Hotbar
 		if TensorCore then
-        	local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
-			
+			local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
+
 			-- AST
 			if (Player.Job == 33) then
 				if RoseCore.Settings.AstEvHotbarEnabled then
@@ -5974,7 +7889,7 @@ function RoseCore.DrawCall()
 						local count
 						if count == nil then count = 0 end
 						for k,v in pairs(Hotbar) do
-							local settingsOn = RoseCore.Settings.SchEvHotbarButColOn 
+							local settingsOn = RoseCore.Settings.SchEvHotbarButColOn
 							local settingsOff = RoseCore.Settings.SchEvHotbarButColOff
 							local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
 							local butx,buty = RoseCore.Settings.SchEvHotbarButtonSizeX,RoseCore.Settings.SchEvHotbarButtonSizeY
@@ -5990,7 +7905,7 @@ function RoseCore.DrawCall()
 							GUI:PopStyleVar()
 							GUI:EndChild()
 							if GUI:IsItemClicked(0) then
-								v.bool = not v.bool 
+								v.bool = not v.bool
 								save(true)
 							end
 							if RoseCore.KeybindsPressed(v) then
@@ -6021,7 +7936,7 @@ function RoseCore.DrawCall()
 						local count
 						if count == nil then count = 0 end
 						for k,v in pairs(Hotbar) do
-							local settingsOn = RoseCore.Settings.SchSavHotbarButColOn 
+							local settingsOn = RoseCore.Settings.SchSavHotbarButColOn
 							local settingsOff = RoseCore.Settings.SchSavHotbarButColOff
 							local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
 							local butx,buty = RoseCore.Settings.SchSavHotbarButtonSizeX,RoseCore.Settings.SchSavHotbarButtonSizeY
@@ -6037,7 +7952,7 @@ function RoseCore.DrawCall()
 							GUI:PopStyleVar()
 							GUI:EndChild()
 							if GUI:IsItemClicked(0) then
-								v.bool = not v.bool 
+								v.bool = not v.bool
 								save(true)
 							end
 							if RoseCore.KeybindsPressed(v) then
@@ -6048,8 +7963,8 @@ function RoseCore.DrawCall()
 						GUI:End()
 					end
 				end
-			end	
-			
+			end
+
 			--WHM
 			if (Player.Job == 24 or Player.Job == 6) then
 				if RoseCore.Settings.WhmEvHotbarEnabled then
@@ -6072,7 +7987,7 @@ function RoseCore.DrawCall()
 						local count
 						if count == nil then count = 0 end
 						for k,v in pairs(Hotbar) do
-							local settingsOn = RoseCore.Settings.WhmEvHotbarButColOn 
+							local settingsOn = RoseCore.Settings.WhmEvHotbarButColOn
 							local settingsOff = RoseCore.Settings.WhmEvHotbarButColOff
 							local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
 							local butx,buty = RoseCore.Settings.WhmEvHotbarButtonSizeX,RoseCore.Settings.WhmEvHotbarButtonSizeY
@@ -6088,7 +8003,7 @@ function RoseCore.DrawCall()
 							GUI:PopStyleVar()
 							GUI:EndChild()
 							if GUI:IsItemClicked(0) then
-								v.bool = not v.bool 
+								v.bool = not v.bool
 								save(true)
 							end
 							if RoseCore.KeybindsPressed(v) then
@@ -6098,8 +8013,8 @@ function RoseCore.DrawCall()
 						end
 						GUI:End()
 					end
-				end		
-				if RoseCore.Settings.WhmSavHotbarEnabled then		
+				end
+				if RoseCore.Settings.WhmSavHotbarEnabled then
 					if GeneralProfile ~= nil and string.find(GeneralProfile, "Savage", 1, true) and string.find(GeneralProfile, "WHM", 1, true) then
 						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
 						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.WhmSavHotbarBgT/255)
@@ -6119,7 +8034,7 @@ function RoseCore.DrawCall()
 						local count
 						if count == nil then count = 0 end
 						for k,v in pairs(Hotbar) do
-							local settingsOn = RoseCore.Settings.WhmSavHotbarButColOn 
+							local settingsOn = RoseCore.Settings.WhmSavHotbarButColOn
 							local settingsOff = RoseCore.Settings.WhmSavHotbarButColOff
 							local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
 							local butx,buty = RoseCore.Settings.WhmSavHotbarButtonSizeX,RoseCore.Settings.WhmSavHotbarButtonSizeY
@@ -6135,7 +8050,7 @@ function RoseCore.DrawCall()
 							GUI:PopStyleVar()
 							GUI:EndChild()
 							if GUI:IsItemClicked(0) then
-								v.bool = not v.bool 
+								v.bool = not v.bool
 								save(true)
 							end
 							if RoseCore.KeybindsPressed(v) then
@@ -6146,9 +8061,103 @@ function RoseCore.DrawCall()
 						GUI:End()
 					end
 				end
-			end	
+			end
 		end
-	end
+
+		--SGE
+		if Player.Job == 40 and RoseCore.Settings.SgeEvHotbarEnabled and gACRSelectedProfiles[Player.job] == "RoseSGE" then
+            GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
+            GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.SgeEvHotbarBgT/255)
+            GUI:Begin("RoseSgeEvHotbar", true, (function() if RoseCore.Settings.SgeEvHotbarLocked then
+                return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoMove
+            else
+                return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize
+            end end)())
+            GUI:PopStyleColor(1)
+            local Hotbar = {}
+            for m,n in pairs(RoseCore.Settings.SgeEvHotbar) do
+                if n.visible then
+                    table.insert(Hotbar, n)
+                end
+            end
+            table.sort(Hotbar, function(a,b) return a.index < b.index end)
+            local count
+            if count == nil then count = 0 end
+            for k,v in pairs(Hotbar) do
+                local settingsOn = RoseCore.Settings.SgeEvHotbarButColOn
+                local settingsOff = RoseCore.Settings.SgeEvHotbarButColOff
+                local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
+                local butx,buty = RoseCore.Settings.SgeEvHotbarButtonSizeX,RoseCore.Settings.SgeEvHotbarButtonSizeY
+                GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
+                GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
+                if count % RoseCore.Settings.SgeEvHotbarColumns ~= 0 then GUI:SameLine(0,5) end
+                GUI:BeginChild("##SgeEvButton"..tostring(k), butx, buty, false, GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse)
+                count = count + 1
+                local x,y = GUI:CalcTextSize(v.name)
+                GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
+                GUI:Text(v.name)
+                GUI:PopStyleColor()
+                GUI:PopStyleVar()
+                GUI:EndChild()
+                if GUI:IsItemClicked(0) then
+                    v.bool = not v.bool
+                    save(true)
+                end
+                if RoseCore.KeybindsPressed(v) then
+                    v.bool = not v.bool
+                    save(true)
+                end
+            end
+            GUI:End()
+        end
+    end
+    --[[if RoseCore.Settings.SgeSavHotbarEnabled then
+		if GeneralProfile ~= nil and string.find(GeneralProfile, "Savage", 1, true) and string.find(GeneralProfile, "SGE", 1, true) then
+			GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
+			GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.SgeSavHotbarBgT/255)
+			GUI:Begin("RoseSgeSavHotbar", true, (function() if RoseCore.Settings.SgeSavHotbarLocked then
+				return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoMove
+			else
+				return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize
+			end end)())
+			GUI:PopStyleColor(1)
+			local Hotbar = {}
+			for m,n in pairs(RoseCore.Settings.SgeSavHotbar) do
+				if n.visible then
+					table.insert(Hotbar, n)
+				end
+			end
+			table.sort(Hotbar, function(a,b) return a.index < b.index end)
+			local count
+			if count == nil then count = 0 end
+			for k,v in pairs(Hotbar) do
+				local settingsOn = RoseCore.Settings.SgeSavHotbarButColOn
+				local settingsOff = RoseCore.Settings.SgeSavHotbarButColOff
+				local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
+				local butx,buty = RoseCore.Settings.SgeSavHotbarButtonSizeX,RoseCore.Settings.SgeSavHotbarButtonSizeY
+				GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
+				GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
+				if count % RoseCore.Settings.SgeSavHotbarColumns ~= 0 then GUI:SameLine(0,5) end
+				GUI:BeginChild("##SgeSavButton"..tostring(k), butx, buty, false, GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse)
+				count = count + 1
+				local x,y = GUI:CalcTextSize(v.name)
+				GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
+				GUI:Text(v.name)
+				GUI:PopStyleColor()
+				GUI:PopStyleVar()
+				GUI:EndChild()
+				if GUI:IsItemClicked(0) then
+					v.bool = not v.bool
+					save(true)
+				end
+				if RoseCore.KeybindsPressed(v) then
+					v.bool = not v.bool
+					save(true)
+				end
+			end
+			GUI:End()
+		end
+	end]]
 end
 
 function RoseCore.OnUpdate()
