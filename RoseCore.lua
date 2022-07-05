@@ -3901,6 +3901,21 @@ RoseCore.Settings = {
             imageon = ImageFolder..[[pneuma_on.png]],
             imageoff = ImageFolder..[[pneuma_off.png]],
         },
+		HealOutsideOfCombat = {
+            index = 29,
+            name = "Heal OOC",
+            visible = true,
+            bool = false,
+            menu = "Heal Outside of combat",
+            tooltip = "Heal outside of combat / Without a target",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[expedient_on.png]],
+            imageoff = ImageFolder..[[expedient_off.png]],
+        },
     },
 }
 
