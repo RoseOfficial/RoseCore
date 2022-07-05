@@ -61,7 +61,7 @@ function RoseSGE.Targeting()
     RoseSGE.plist = MEntityList("alive,chartype=4,myparty,targetable,maxdistance=30") or {} -- Adding party members to plist
     local plist = RoseSGE.plist
     if target and target.attackable and not target.incombat then
-        if Player:GetTarget() and not table.valid(plist) and SageHotarSettings.DPS.bool and SageHotarSettings.Dosis.bool then
+        if Player:GetTarget() and not table.valid(plist) and SageHotbarSettings.DPS.bool and SageHotbarSettings.Dosis.bool then
             local dosis = ActionList:Get(1, 24283)
             if RoseSGE.IsReady(dosis) then
                 return RoseSGE.Action(dosis,target)
@@ -145,9 +145,9 @@ function RoseSGE.HasTarget()
 end
 
 function RoseSGE.Cast()
-    SageHotarSettings = RoseCore.Settings.SgeEvHotbar
+    SageHotbarSettings = RoseCore.Settings.SgeEvHotbar
     if RoseCore.Settings.Active then
-        if Player:IsMoving() and not Player.ismounted and SageHotarSettings.Sprint.bool then
+        if Player:IsMoving() and not Player.ismounted and SageHotbarSettings.Sprint.bool then
             local sprint = ActionList:Get(1, 3)
             if RoseSGE.IsReady(sprint) then
                 return RoseSGE.Action(sprint,Player)
@@ -155,10 +155,10 @@ function RoseSGE.Cast()
         end
         RoseSGE.Targeting()
         local HasTarget, target = RoseSGE.HasTarget()
-        if HasTarget or SageHotarSettings.HealOutsideOfCombat.bool then
+        if HasTarget or SageHotbarSettings.HealOutsideOfCombat.bool then
             local level = Player.level
             local elist = RoseSGE.elist
-            if SageHotarSettings.Heal.bool then
+            if SageHotbarSettings.Heal.bool then
                 local Heal = true
                 local plist = RoseSGE.plist
                 plist[Player.id] = Player -- Adding Player to plist
@@ -219,7 +219,7 @@ function RoseSGE.Cast()
                         return RoseSGE.Action(lucid,Player)
                     end
                 end
-                if table.valid(dplist) and Player.level >= 12 and Player.mp.percent >= 24 and SageHotarSettings.Egeiro.bool then
+                if table.valid(dplist) and Player.level >= 12 and Player.mp.percent >= 24 and SageHotbarSettings.Egeiro.bool then
                     local egeiro = ActionList:Get(1, 24287)
                     local swiftcast = ActionList:Get(1, 7561)
                     local healers,tanks,raisers,others = {},{},{},{}
@@ -262,7 +262,7 @@ function RoseSGE.Cast()
                     end
                     if table.valid(raiseTarget) and MissingBuffs(raiseTarget,"148+1140") then
                         local reztexttime = 0
-                        if level >= 18 and RoseSGE.Action(swiftcast) and SageHotarSettings.Swiftcast.bool then
+                        if level >= 18 and RoseSGE.Action(swiftcast) and SageHotbarSettings.Swiftcast.bool then
                             return RoseSGE.Action(swiftcast,Player)
                         elseif RoseSGE.IsReady(egeiro) then
                             if TimeSince(reztexttime) > 2000 then
@@ -273,7 +273,7 @@ function RoseSGE.Cast()
                         end
                     end
                 end
-                if table.valid(plist) and level >= 10 and SageHotarSettings.Esuna.bool then
+                if table.valid(plist) and level >= 10 and SageHotbarSettings.Esuna.bool then
                     for _, member in pairs(plist) do
                         if (table.valid(member.buffs)) then
                             for _, buff in pairs(member.buffs) do
@@ -287,13 +287,13 @@ function RoseSGE.Cast()
                         end
                     end
                 end
-                if table.valid(needsKardia) and level >= 4 and SageHotarSettings.Kardia.bool then
+                if table.valid(needsKardia) and level >= 4 and SageHotbarSettings.Kardia.bool then
                     local kardia = ActionList:Get(1, 24285)
                     if RoseSGE.IsReady(kardia) then
                         return RoseSGE.Action(kardia,needsKardia[next(needsKardia)])
                     end
                 end
-                if Player.gauge[2] <= 1 and level >= 74 and SageHotarSettings.Rhizomata.bool then
+                if Player.gauge[2] <= 1 and level >= 74 and SageHotbarSettings.Rhizomata.bool then
                     local rhizomata = ActionList:Get(1, 24309)
                     if RoseSGE.IsReady(rhizomata) then
                         return RoseSGE.Action(rhizomata,Player)
@@ -311,38 +311,38 @@ function RoseSGE.Cast()
                 if TimeSince(prognosistime) > 2000 then
                     if level >= 50 then
                         if TensorCore and TensorCore.Avoidance.inUnavoidableAOE(Argus.getCurrentAOEs(), Player) then
-                            if level >= 80 and SageHotarSettings.Panhaima.bool then
+                            if level >= 80 and SageHotbarSettings.Panhaima.bool then
                                 local panhaima = ActionList:Get(1, 24311)
                                 if RoseSGE.IsReady(panhaima) then
                                     return RoseSGE.Action(panhaima,Player)
                                 end
                             end
-                            if level >= 76 and SageHotarSettings.Holos.bool then
+                            if level >= 76 and SageHotbarSettings.Holos.bool then
                                 local holos = ActionList:Get(1, 24310)
                                 if RoseSGE.IsReady(holos) then
                                     return RoseSGE.Action(holos,Player)
                                 end
                             end
-                            if Player.gauge[2] >= 1 and SageHotarSettings.Kerachole.bool then
+                            if Player.gauge[2] >= 1 and SageHotbarSettings.Kerachole.bool then
                                 local kerachole = ActionList:Get(1, 24298)
                                 if RoseSGE.IsReady(kerachole) then
                                     return RoseSGE.Action(kerachole,Player)
                                 end
                             end
                         end
-                        if level >= 80 and khpcount >= 5 and SageHotarSettings.Panhaima.bool then
+                        if level >= 80 and khpcount >= 5 and SageHotbarSettings.Panhaima.bool then
                             local panhaima = ActionList:Get(1, 24311)
                             if RoseSGE.IsReady(panhaima) then
                                 return RoseSGE.Action(panhaima,Player)
                             end
                         end
-                        if level >= 76 and khpcount >= 5 and SageHotarSettings.Holos.bool then
+                        if level >= 76 and khpcount >= 5 and SageHotbarSettings.Holos.bool then
                             local holos = ActionList:Get(1, 24310)
                             if RoseSGE.IsReady(holos) then
                                 return RoseSGE.Action(holos,Player)
                             end
                         end
-                        if khpcount >= 5 and Player.gauge[2] >= 1 and SageHotarSettings.Kerachole.bool then
+                        if khpcount >= 5 and Player.gauge[2] >= 1 and SageHotbarSettings.Kerachole.bool then
                             local kerachole = ActionList:Get(1, 24298)
                             if RoseSGE.IsReady(kerachole) then
                                 return RoseSGE.Action(kerachole,Player)
@@ -359,19 +359,19 @@ function RoseSGE.Cast()
                             end
                         end
                         RoseSGE.DebugPrint("Lowest HP: "..hp, lowest)
-                        if level >= 86 and IsTank(lowest.job) and SageHotarSettings.Krasis.bool then
+                        if level >= 86 and IsTank(lowest.job) and SageHotbarSettings.Krasis.bool then
                             local krasis = ActionList:Get(1, 24317)
                             if RoseSGE.IsReady(krasis) then
                                 return RoseSGE.Action(krasis,lowest)
                             end
                         end
-                        if level >= 70 and IsTank(lowest.job) and SageHotarSettings.Haima.bool then
+                        if level >= 70 and IsTank(lowest.job) and SageHotbarSettings.Haima.bool then
                             local haima = ActionList:Get(1, 24305)
                             if RoseSGE.IsReady(haima) then
                                 return RoseSGE.Action(haima,lowest)
                             end
                         end
-                        if level >= 62 and Player.gauge[2] >= 1 and SageHotarSettings.Taurochole.bool and Heal then
+                        if level >= 62 and Player.gauge[2] >= 1 and SageHotbarSettings.Taurochole.bool and Heal then
                             local taurochole = ActionList:Get(1, 24303)
                             if RoseSGE.IsReady(taurochole) then
                                 if RoseSGE.HealFormula(lowest,700) then
@@ -379,7 +379,7 @@ function RoseSGE.Cast()
                                 end
                             end
                         end
-                        if level >= 45 and Player.gauge[2] >= 1 and SageHotarSettings.Druochole.bool and Heal then
+                        if level >= 45 and Player.gauge[2] >= 1 and SageHotbarSettings.Druochole.bool and Heal then
                             local druochole = ActionList:Get(1, 24296)
                             if RoseSGE.IsReady(druochole) then
                                 if RoseSGE.HealFormula(lowest,600) then
@@ -387,7 +387,7 @@ function RoseSGE.Cast()
                                 end
                             end
                         end
-                        if level >= 30 and MissingBuff(lowest,2607) and SageHotarSettings.Eukrasia.bool and SageHotarSettings.EukrasianDiagnosis.bool and Heal then
+                        if level >= 30 and MissingBuff(lowest,2607) and SageHotbarSettings.Eukrasia.bool and SageHotbarSettings.EukrasianDiagnosis.bool and Heal then
                             if MissingBuff(Player,2606) then
                                 local eukrasia = ActionList:Get(1, 24290)
                                 if RoseSGE.IsReady(eukrasia) then
@@ -403,7 +403,7 @@ function RoseSGE.Cast()
                                 end
                             end
                         end
-                        if level >= 2 and SageHotarSettings.Diagnosis.bool and Heal then
+                        if level >= 2 and SageHotbarSettings.Diagnosis.bool and Heal then
                             local diagnosis = ActionList:Get(1, 24284)
                             if RoseSGE.IsReady(diagnosis) then
                                 if RoseSGE.HealFormula(lowest,400) then
@@ -422,7 +422,7 @@ function RoseSGE.Cast()
                                     aoecount = aoecount + 1
                                 end
                             end
-                            if pepsiscount >= 2 and level >= 58 and SageHotarSettings.Pepsis.bool and Heal then
+                            if pepsiscount >= 2 and level >= 58 and SageHotbarSettings.Pepsis.bool and Heal then
                                 local pepsis = ActionList:Get(1, 24301)
                                 if RoseSGE.IsReady(pepsis) then
                                     if RoseSGE.HealFormula(lowest,450) then
@@ -436,7 +436,7 @@ function RoseSGE.Cast()
                                     eukrasianprognosiscount = eukrasianprognosiscount + 1
                                 end
                             end
-                            if level >= 60 and aoecount >= 2 and SageHotarSettings.PhysisII.bool and Heal then
+                            if level >= 60 and aoecount >= 2 and SageHotbarSettings.PhysisII.bool and Heal then
                                 local physis_ii = ActionList:Get(1, 24302)
                                 if RoseSGE.IsReady(physis_ii) then
                                     if RoseSGE.HealFormula(lowest,130) then
@@ -444,7 +444,7 @@ function RoseSGE.Cast()
                                     end
                                 end
                             end
-                            if level >= 20 and level <= 59 and aoecount >= 2 and SageHotarSettings.Physis.bool and Heal then
+                            if level >= 20 and level <= 59 and aoecount >= 2 and SageHotbarSettings.Physis.bool and Heal then
                                 local physis = ActionList:Get(1, 24288)
                                 if RoseSGE.IsReady(physis) then
                                     if RoseSGE.HealFormula(lowest,100) then
@@ -452,7 +452,7 @@ function RoseSGE.Cast()
                                     end
                                 end
                             end
-                            if level >= 52 and Player.gauge[2] >= 1 and aoecount >= 2 and SageHotarSettings.Ixochole.bool and Heal then
+                            if level >= 52 and Player.gauge[2] >= 1 and aoecount >= 2 and SageHotbarSettings.Ixochole.bool and Heal then
                                 local ixochole = ActionList:Get(1, 24299)
                                 if RoseSGE.IsReady(ixochole) then
                                     if RoseSGE.HealFormula(lowest,400) then
@@ -460,7 +460,7 @@ function RoseSGE.Cast()
                                     end
                                 end
                             end
-                            if level >= 30 and aoecount >= 2 and eukrasianprognosiscount >= 2 and SageHotarSettings.Eukrasia.bool and SageHotarSettings.EukrasianPrognosis.bool and Heal then
+                            if level >= 30 and aoecount >= 2 and eukrasianprognosiscount >= 2 and SageHotbarSettings.Eukrasia.bool and SageHotbarSettings.EukrasianPrognosis.bool and Heal then
                                 if MissingBuff(Player,2606) then
                                     local eukrasia = ActionList:Get(1, 24290)
                                     if RoseSGE.IsReady(eukrasia) then
@@ -476,7 +476,7 @@ function RoseSGE.Cast()
                                     end
                                 end
                             end
-                            if level >= 10 and aoecount >= 2 and SageHotarSettings.Prognosis.bool and Heal then
+                            if level >= 10 and aoecount >= 2 and SageHotbarSettings.Prognosis.bool and Heal then
                                 local prognosis = ActionList:Get(1, 24286)
                                 if RoseSGE.IsReady(prognosis) then
                                     if RoseSGE.HealFormula(lowest,300) then
@@ -489,7 +489,7 @@ function RoseSGE.Cast()
                     end
                 end
                 if lowcount > 0 then
-                    if level >= 35 and MissingBuff(Player,2610) and SageHotarSettings.Soteria.bool then
+                    if level >= 35 and MissingBuff(Player,2610) and SageHotbarSettings.Soteria.bool then
                         local soteria = ActionList:Get(1, 24294)
                         if RoseSGE.IsReady(soteria) then
                             return RoseSGE.Action(soteria,Player)
@@ -499,7 +499,7 @@ function RoseSGE.Cast()
             end
             local missingDosis = {}
             local allHasBuff = true
-            if table.valid(elist) and SageHotarSettings.DPS.bool then
+            if table.valid(elist) and SageHotbarSettings.DPS.bool then
                 for i,enemy in pairs(elist) do
                     if MissingBuffs(enemy,"2614+2615+2616") then
                         allHasBuff = false
@@ -517,26 +517,26 @@ function RoseSGE.Cast()
                 elseif table.valid(missingDosis) then
                     local id = next(missingDosis)
                     local entity = missingDosis[id]
-                    if level >= 30 and SageHotarSettings.Eukrasia.bool then
+                    if level >= 30 and SageHotbarSettings.Eukrasia.bool then
                         if MissingBuff(Player,2606) then
                             local eukrasia = ActionList:Get(1, 24290)
                             if RoseSGE.IsReady(eukrasia) then
                                 return RoseSGE.Action(eukrasia,Player)
                             end
                         end
-                        if level >= 82 and SageHotarSettings.EukrasianDosisIII.bool and SageHotarSettings.Eukrasia.bool then
+                        if level >= 82 and SageHotbarSettings.EukrasianDosisIII.bool and SageHotbarSettings.Eukrasia.bool then
                             local eukrasiandosis_iii = ActionList:Get(1, 24314)
                             if RoseSGE.IsReady(eukrasiandosis_iii) then
                                 return RoseSGE.Action(eukrasiandosis_iii,entity)
                             end
                         end
-                        if level >= 72 and level <= 81 and SageHotarSettings.EukrasianDosisII.bool and SageHotarSettings.Eukrasia.bool then
+                        if level >= 72 and level <= 81 and SageHotbarSettings.EukrasianDosisII.bool and SageHotbarSettings.Eukrasia.bool then
                             local eukrasiandosis_ii = ActionList:Get(1, 24308)
                             if RoseSGE.IsReady(eukrasiandosis_ii) then
                                 return RoseSGE.Action(eukrasiandosis_ii,entity)
                             end
                         end
-                        if level >= 30 and level <= 71 and SageHotarSettings.EukrasianDosis.bool and SageHotarSettings.Eukrasia.bool then
+                        if level >= 30 and level <= 71 and SageHotbarSettings.EukrasianDosis.bool and SageHotbarSettings.Eukrasia.bool then
                             local eukrasiandosis = ActionList:Get(1, 24293)
                             if RoseSGE.IsReady(eukrasiandosis) then
                                 return RoseSGE.Action(eukrasiandosis,entity)
@@ -555,7 +555,7 @@ function RoseSGE.Cast()
                             end
                         end
                     end
-                    if pneumacount <= 1 and level >= 90 and SageHotarSettings.Zoe.bool and SageHotarSettings.Pneuma.bool then
+                    if pneumacount <= 1 and level >= 90 and SageHotbarSettings.Zoe.bool and SageHotbarSettings.Pneuma.bool then
                         if MissingBuff(Player, 24300) and level >= 90 then
                             local zoe = ActionList:Get(1, 24300)
                             if RoseSGE.IsReady(zoe) then
@@ -568,19 +568,19 @@ function RoseSGE.Cast()
                         end
                     end
                     if enemycount >= 1 then
-                        if level >= 82 and SageHotarSettings.PhlegmaIII.bool then
+                        if level >= 82 and SageHotbarSettings.PhlegmaIII.bool then
                             local phlegma_iii = ActionList:Get(1, 24313)
                             if phlegma_iii.cd == 0 or phlegma_iii.cd >= 45 then
                                 return RoseSGE.Action(phlegma_iii, target)
                             end
                         end
-                        if level >= 72 and level <= 81 and SageHotarSettings.PhlegmaII.bool then
+                        if level >= 72 and level <= 81 and SageHotbarSettings.PhlegmaII.bool then
                             local phlegma_ii = ActionList:Get(1, 24307)
                             if phlegma_ii.cd == 0 or phlegma_ii.cd >= 45 then
                                 return RoseSGE.Action(phlegma_ii, target)
                             end
                         end
-                        if level >= 26 and level <= 71 and SageHotarSettings.Phlegma.bool then
+                        if level >= 26 and level <= 71 and SageHotbarSettings.Phlegma.bool then
                             local phlegma = ActionList:Get(1, 24289)
                             if phlegma.cd == 0 or phlegma.cd >= 45 then
                                 return RoseSGE.Action(phlegma, target)
@@ -589,45 +589,45 @@ function RoseSGE.Cast()
                     end
                     if enemycount >= 2 then
                         if Player.gauge[3] >= 1 then
-                            if level >= 82 and SageHotarSettings.ToxikonII.bool then
+                            if level >= 82 and SageHotbarSettings.ToxikonII.bool then
                                 local toxikon_ii = ActionList:Get(1, 24316)
                                 if RoseSGE.IsReady(toxikon_ii) then
                                     return RoseSGE.Action(toxikon_ii, target)
                                 end
                             end
-                            if level >= 66 and level <= 81 and SageHotarSettings.Toxikon.bool then
+                            if level >= 66 and level <= 81 and SageHotbarSettings.Toxikon.bool then
                                 local toxikon = ActionList:Get(1, 24304)
                                 if RoseSGE.IsReady(toxikon) then
                                     return RoseSGE.Action(toxikon, target)
                                 end
                             end
                         end
-                        if level >= 82 and SageHotarSettings.DyskrasiaII.bool then
+                        if level >= 82 and SageHotbarSettings.DyskrasiaII.bool then
                             local dyskrasia_ii = ActionList:Get(1, 24315)
                             if RoseSGE.IsReady(dyskrasia_ii) then
                                 return RoseSGE.Action(dyskrasia_ii, Player)
                             end
                         end
-                        if level >= 46 and level <= 81 and SageHotarSettings.Dyskrasia.bool then
+                        if level >= 46 and level <= 81 and SageHotbarSettings.Dyskrasia.bool then
                             local dyskrasia = ActionList:Get(1, 24297)
                             if RoseSGE.IsReady(dyskrasia) then
                                 return RoseSGE.Action(dyskrasia, Player)
                             end
                         end
                     end
-                    if level >= 82 and SageHotarSettings.DosisIII.bool then
+                    if level >= 82 and SageHotbarSettings.DosisIII.bool then
                         local dosis_iii = ActionList:Get(1, 24312)
                         if RoseSGE.IsReady(dosis_iii) then
                             return RoseSGE.Action(dosis_iii, target)
                         end
                     end
-                    if level >= 72 and level <= 81 and SageHotarSettings.DosisII.bool then
+                    if level >= 72 and level <= 81 and SageHotbarSettings.DosisII.bool then
                         local dosis_ii = ActionList:Get(1, 24306)
                         if RoseSGE.IsReady(dosis_ii) then
                             return RoseSGE.Action(dosis_ii, target)
                         end
                     end
-                    if level >= 1 and level <= 71 and SageHotarSettings.Dosis.bool then
+                    if level >= 1 and level <= 71 and SageHotbarSettings.Dosis.bool then
                         local dosis = ActionList:Get(1, 24283)
                         if RoseSGE.IsReady(dosis) then
                             return RoseSGE.Action(dosis, target)
