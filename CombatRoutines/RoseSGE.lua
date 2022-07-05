@@ -446,7 +446,7 @@ function RoseSGE.Cast()
                         end
                     end
                 end
-                if target then
+                if lowcount > 0 then
                     if level >= 35 and MissingBuff(Player,2610) and actionenabled.Soteria.bool then
                         local soteria = ActionList:Get(1, 24294)
                         if RoseSGE.IsReady(soteria) then
