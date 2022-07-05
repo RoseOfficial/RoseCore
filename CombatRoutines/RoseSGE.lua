@@ -183,8 +183,8 @@ function RoseSGE.Cast()
             end
         end
         RoseSGE.Targeting()
-        local target = MGetTarget()
-        if table.valid(target) and target.incombat then
+        local HasTarget, target = RoseSGE.HasTarget()
+        if HasTarget or actionenabled.HealOutsideOfCombat.bool then
             local level = Player.level
             local elist = RoseSGE.elist
             if actionenabled.Heal.bool then
