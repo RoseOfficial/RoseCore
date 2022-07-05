@@ -55,6 +55,16 @@ local lastTargetCheck = 0
 function RoseSGE.Targeting()
     RoseSGE.elist = MEntityList("alive,attackable,incombat,maxdistance=30")
     local target = MGetTarget()
+    RoseSGE.plist = MEntityList("alive,chartype=4,myparty,targetable,maxdistance=30") or {} -- Adding party members to plist
+    local plist = RoseSGE.plist
+    if target and target.attackable and not target.incombat then
+        if Player:GetTarget() and not table.valid(plist) and actionenabled.DPS.bool and actionenabled.Dosis.bool then
+            local dosis = ActionList:Get(1, 24283)
+            if RoseSGE.IsReady(dosis) then
+                return RoseSGE.Action(dosis,target)
+            end
+        end
+    end
     if not table.valid(target) and RoseCore.Settings.SgeEvHotbar.SmartTarget.bool then
         local llist = MEntityList("lowesthealth,alive,attackable,maxdistance=30")
         if table.valid(llist) then
@@ -66,7 +76,7 @@ function RoseSGE.Targeting()
             end
         end
     end
-    if table.valid(target) and target.incombat then
+    if table.valid(target) and target.incombat and target.attackable then
         if table.valid(target) then
             if RoseSGE.lastEnemyTargetID ~= target.id and target.attackable then
                 RoseSGE.lastEnemyTarget = target
@@ -120,10 +130,50 @@ end
     return false
 end]]
 
+function RoseSGE.HealFormula(lowest,potency)
+    d("a")
+    if not lowest then
+        d("b")
+        return false
+    end
+    local Slider = RoseCore.Settings.SgeEvTankOverhealSingle
+    if not IsTank(lowest.job) then
+        d("c")
+        Slider = RoseCore.Settings.SgeEvPartyOverhealSingle
+    end
+    d(Slider)
+    d(lowest.name)
+    d(lowest.hp.percent)
+    if Player.level <= 89 and lowest.hp.percent <= (Slider - 10) then
+        d("d")
+        return true
+    end
+    if Player.level <= 89 and lowest.hp.percent >= (Slider - 10) or lowest.hp.percent >= 100 then
+        d("e")
+        return false
+    end
+    if lowest.hp.percent <= 99 then
+        RoseSGE.PartyBuff = 1
+        RoseSGE.HealingMagicPotency1 = Player:GetStats(34)
+        RoseSGE.HealingMagicPotency2 = (569 * ((RoseSGE.HealingMagicPotency1 * RoseSGE.PartyBuff) - 390) / 1522) + 100
+        RoseSGE.Determination1 = Player:GetStats(44)
+        RoseSGE.Determination2 = (140 * (RoseSGE.Determination1 - 390) / 1900 + 1000)
+        RoseSGE.Healing1 = (((potency * RoseSGE.HealingMagicPotency2 * RoseSGE.Determination2) / 100) / 1000)
+        RoseSGE.WeaponDamage1 = Inventory:Get(1000):GetList()[1]:GetStat(12, true)
+        RoseSGE.WeaponDamage2 = ((390 * 115 / 1000) + RoseSGE.WeaponDamage1)
+        RoseSGE.Healing2 = (((((RoseSGE.Healing1 * 1000) / 1000) * RoseSGE.WeaponDamage2) / 100) * 130) / 100
+        RoseSGE.HealingPercent = (RoseSGE.Healing2 / lowest.hp.max) * 100
+        if (Slider - RoseSGE.HealingPercent) >= lowest.hp.percent == true then
+            return true
+        end
+    end
+    return false
+end
+
 function RoseSGE.Cast()
     actionenabled = RoseCore.Settings.SgeEvHotbar
     if RoseCore.Settings.Active then
-        if Player:IsMoving() and actionenabled.Sprint.bool then
+        if Player:IsMoving() and not Player.ismounted and actionenabled.Sprint.bool then
             local sprint = ActionList:Get(1, 3)
             if RoseSGE.IsReady(sprint) then
                 return RoseSGE.Action(sprint,Player)
@@ -136,27 +186,33 @@ function RoseSGE.Cast()
             local elist = RoseSGE.elist
             if actionenabled.Heal.bool then
                 local Heal = true
-                RoseSGE.plist = MEntityList("alive,chartype=4,myparty,targetable,maxdistance=30") or {} -- Adding party members to plist
                 local plist = RoseSGE.plist
                 plist[Player.id] = Player -- Adding Player to plist
                 local tlist = MEntityList("alive,targetable,type=2,chartype=9,maxdistance2d=30")
                 if table.valid(tlist) then
-                    for k,v in pairs(tlist) do plist[k]=v end -- adding Trust npcs to plist
+                    for k,v in pairs(tlist) do plist[k]=v end -- adding Trust to plist
+                end
+                local nlist = MEntityList("alive,targetable,type=2,chartype=0,maxdistance2d=30")
+                if table.valid(nlist) then
+                    for k,v in pairs(nlist) do plist[k]=v end -- adding npcs to plist
                 end
                 RoseSGE.dplist = MEntityList("dead,friendly,chartype=4,myparty,targetable,maxdistance=30") or {} -- Adding party members to plist
                 local dplist = RoseSGE.dplist
                 local dtlist = MEntityList("dead,targetable,type=2,chartype=9,maxdistance2d=30")
                 if table.valid(dtlist) then
-                    for k,v in pairs(dtlist) do dplist[k]=v end -- adding Trust npcs to dplist
+                    for k,v in pairs(dtlist) do dplist[k]=v end -- adding Trust to dplist
                 end
-                -- If I ever wanted to add healing to friendly NPCs, I would do so like above with Trusts
+                local dnlist = MEntityList("dead,targetable,type=2,chartype=0,maxdistance2d=30")
+                if table.valid(dnlist) then
+                    for k,v in pairs(dnlist) do dplist[k]=v end -- adding npcs to dplist
+                end
                 local lowcount = 0
                 local lowTankHP = {}
                 local lowPartyHP = {}
                 local needsKardia = {}
                 if table.valid(plist) then
                     for i,member in pairs(plist) do
-                        if IsTank(member.job) and member.hp.percent < 75 then
+                        if IsTank(member.job) and member.hp.percent < 90 then
                             if member.hp.percent < 50 then
                                 lowPartyHP[i] = member
                                 lowcount = lowcount + 1
@@ -178,13 +234,18 @@ function RoseSGE.Cast()
                         end
                     end
                 end
+                if not table.valid(plist) then
+                    if Player.hp.percent <= 90 then
+                        lowcount = 1
+                    end
+                end
                 if level >= 14 and Player.mp.percent <= 75 then
                     local lucid = ActionList:Get(1,7562)
                     if RoseSGE.IsReady(lucid) then
                         return RoseSGE.Action(lucid,Player)
                     end
                 end
-                if table.valid(dplist) and Player.level >= 12 then
+                if table.valid(dplist) and Player.level >= 12 and Player.mp.percent >= 24 and actionenabled.Egeiro.bool then
                     local egeiro = ActionList:Get(1, 24287)
                     local swiftcast = ActionList:Get(1, 7561)
                     local healers,tanks,raisers,others = {},{},{},{}
@@ -225,10 +286,15 @@ function RoseSGE.Cast()
                             end
                         end
                     end
-                    if table.valid(raiseTarget) and Player.mp.percent >= 24 and actionenabled.Egeiro.bool then
-                        if level >= 18 and RoseSGE.Action(swiftcast) then
+                    if table.valid(raiseTarget) and MissingBuffs(raiseTarget,"148+1140") then
+                        local reztexttime = 0
+                        if level >= 18 and RoseSGE.Action(swiftcast) and actionenabled.Swiftcast.bool then
                             return RoseSGE.Action(swiftcast,Player)
                         elseif RoseSGE.IsReady(egeiro) then
+                            if TimeSince(reztexttime) > 2000 then
+                                SendTextCommand ("/e Rezzing <t>")
+                                reztexttime = Now()
+                            end
                             return RoseSGE.Action(egeiro,raiseTarget)
                         end
                     end
@@ -267,7 +333,7 @@ function RoseSGE.Cast()
                         end
                     end
                 end
-                prognosistime = 0
+                local prognosistime = 0
                 if TimeSince(prognosistime) > 2000 then
                     if level >= 50 then
                         if TensorCore and TensorCore.Avoidance.inUnavoidableAOE(Argus.getCurrentAOEs(), Player) then
@@ -283,7 +349,7 @@ function RoseSGE.Cast()
                                     return RoseSGE.Action(holos,Player)
                                 end
                             end
-                            if actionenabled.Kerachole.bool then
+                            if Player.gauge[2] >= 1 and actionenabled.Kerachole.bool then
                                 local kerachole = ActionList:Get(1, 24298)
                                 if RoseSGE.IsReady(kerachole) then
                                     return RoseSGE.Action(kerachole,Player)
@@ -330,38 +396,44 @@ function RoseSGE.Cast()
                                 return RoseSGE.Action(haima,lowest)
                             end
                         end
-                        Potency = 700
                         if level >= 62 and Player.gauge[2] >= 1 and actionenabled.Taurochole.bool and Heal then
                             local taurochole = ActionList:Get(1, 24303)
                             if RoseSGE.IsReady(taurochole) then
-                                return RoseSGE.Action(taurochole,lowest)
+                                if RoseSGE.HealFormula(lowest,700) then
+                                    return RoseSGE.Action(taurochole,lowest)
+                                end
                             end
                         end
-                        Potency = 600
                         if level >= 45 and Player.gauge[2] >= 1 and actionenabled.Druochole.bool and Heal then
                             local druochole = ActionList:Get(1, 24296)
                             if RoseSGE.IsReady(druochole) then
-                                return RoseSGE.Action(druochole,lowest)
+                                if RoseSGE.HealFormula(lowest,600) then
+                                    return RoseSGE.Action(druochole,lowest)
+                                end
                             end
                         end
-                        Potency = 300
                         if level >= 30 and MissingBuff(lowest,2607) and actionenabled.Eukrasia.bool and actionenabled.EukrasianDiagnosis.bool and Heal then
                             if MissingBuff(Player,2606) then
                                 local eukrasia = ActionList:Get(1, 24290)
                                 if RoseSGE.IsReady(eukrasia) then
-                                    return RoseSGE.Action(eukrasia,Player)
+                                    if RoseSGE.HealFormula(lowest,400) then
+                                        return RoseSGE.Action(eukrasia,Player)
+                                    end
                                 end
                             end
                             local eukrasiandiagnosis = ActionList:Get(1, 24291)
                             if RoseSGE.IsReady(eukrasiandiagnosis) then
-                                return RoseSGE.Action(eukrasiandiagnosis,lowest)
+                                if RoseSGE.HealFormula(lowest,300) then
+                                    return RoseSGE.Action(eukrasiandiagnosis,lowest)
+                                end
                             end
                         end
-                        Potency = 400
                         if level >= 2 and actionenabled.Diagnosis.bool and Heal then
                             local diagnosis = ActionList:Get(1, 24284)
                             if RoseSGE.IsReady(diagnosis) then
-                                return RoseSGE.Action(diagnosis,lowest)
+                                if RoseSGE.HealFormula(lowest,400) then
+                                    return RoseSGE.Action(diagnosis,lowest)
+                                end
                             end
                         end
                         if lowcount >= 2 then
@@ -375,11 +447,12 @@ function RoseSGE.Cast()
                                     aoecount = aoecount + 1
                                 end
                             end
-                            Potency = 450
                             if pepsiscount >= 2 and level >= 58 and actionenabled.Pepsis.bool and Heal then
                                 local pepsis = ActionList:Get(1, 24301)
                                 if RoseSGE.IsReady(pepsis) then
-                                    return RoseSGE.Action(pepsis,Player)
+                                    if RoseSGE.HealFormula(lowest,450) then
+                                        return RoseSGE.Action(pepsis,Player)
+                                    end
                                 end
                             end
                             local eukrasianprognosiscount = 0
@@ -388,46 +461,53 @@ function RoseSGE.Cast()
                                     eukrasianprognosiscount = eukrasianprognosiscount + 1
                                 end
                             end
-                            Potency = 130
                             if level >= 60 and aoecount >= 2 and actionenabled.PhysisII.bool and Heal then
                                 local physis_ii = ActionList:Get(1, 24302)
                                 if RoseSGE.IsReady(physis_ii) then
-                                    return RoseSGE.Action(physis_ii,Player)
+                                    if RoseSGE.HealFormula(lowest,130) then
+                                        return RoseSGE.Action(physis_ii,Player)
+                                    end
                                 end
                             end
-                            Potency = 100
                             if level >= 20 and level <= 59 and aoecount >= 2 and actionenabled.Physis.bool and Heal then
                                 local physis = ActionList:Get(1, 24288)
                                 if RoseSGE.IsReady(physis) then
-                                    return RoseSGE.Action(physis,Player)
+                                    if RoseSGE.HealFormula(lowest,100) then
+                                        return RoseSGE.Action(physis,Player)
+                                    end
                                 end
                             end
-                            Potency = 400
                             if level >= 52 and Player.gauge[2] >= 1 and aoecount >= 2 and actionenabled.Ixochole.bool and Heal then
                                 local ixochole = ActionList:Get(1, 24299)
                                 if RoseSGE.IsReady(ixochole) then
-                                    return RoseSGE.Action(ixochole,Player)
+                                    if RoseSGE.HealFormula(lowest,400) then
+                                        return RoseSGE.Action(ixochole,Player)
+                                    end
                                 end
                             end
-                            Potency = 100
                             if level >= 30 and aoecount >= 2 and eukrasianprognosiscount >= 2 and actionenabled.Eukrasia.bool and actionenabled.EukrasianPrognosis.bool and Heal then
                                 if MissingBuff(Player,2606) then
                                     local eukrasia = ActionList:Get(1, 24290)
                                     if RoseSGE.IsReady(eukrasia) then
-                                        return RoseSGE.Action(eukrasia,Player)
+                                        if RoseSGE.HealFormula(lowest,100) then
+                                            return RoseSGE.Action(eukrasia,Player)
+                                        end
                                     end
                                 end
                                 local eukrasianprognosis = ActionList:Get(1, 24292)
                                 if RoseSGE.IsReady(eukrasianprognosis) then
-                                    return RoseSGE.Action(eukrasianprognosis,Player)
+                                    if RoseSGE.HealFormula(lowest,100) then
+                                        return RoseSGE.Action(eukrasianprognosis,Player)
+                                    end
                                 end
                             end
-                            Potency = 300
                             if level >= 10 and aoecount >= 2 and actionenabled.Prognosis.bool and Heal then
                                 local prognosis = ActionList:Get(1, 24286)
                                 if RoseSGE.IsReady(prognosis) then
-                                    prognosistime = Now()
-                                    return RoseSGE.Action(prognosis,Player)
+                                    if RoseSGE.HealFormula(lowest,300) then
+                                        prognosistime = Now()
+                                        return RoseSGE.Action(prognosis,Player)
+                                    end
                                 end
                             end
                         end

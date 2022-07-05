@@ -33,7 +33,7 @@ https://discord.gg/BM9MBERbA9
 
 RoseCore = {}
 
-RoseCore.version = "0.06.10"
+RoseCore.version = "0.05.15"
 
 RoseCore.GUI = {
     open = true,
@@ -3391,8 +3391,23 @@ RoseCore.Settings = {
             imageon = ImageFolder..[[esuna_on.png]],
             imageoff = ImageFolder..[[esuna_off.png]],
         },
-        Prognosis = {
+        Swiftcast = {
             index = 10,
+            name = "Swiftcast",
+            visible = false,
+            bool = true,
+            menu = "Swiftcast",
+            tooltip = "Enable/Disable Swiftcast",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[swiftcast_on.png]],
+            imageoff = ImageFolder..[[swiftcast_off.png]],
+        },
+        Prognosis = {
+            index = 11,
             name = "Prognosis (H)",
             visible = false,
             bool = true,
@@ -3407,7 +3422,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[prognosis_off.png]],
         },
         Egeiro = {
-            index = 11,
+            index = 12,
             name = "Egeiro (H)",
             visible = false,
             bool = true,
@@ -3422,7 +3437,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[egeiro_off.png]],
         },
         Physis = {
-            index = 12,
+            index = 13,
             name = "Physis (H)",
             visible = false,
             bool = true,
@@ -3437,7 +3452,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[physis_off.png]],
         },
         Phlegma = {
-            index = 13,
+            index = 14,
             name = "Phlegma (D)",
             visible = false,
             bool = true,
@@ -3452,7 +3467,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[phlegma_off.png]],
         },
         Eukrasia = {
-            index = 14,
+            index = 15,
             name = "Eukrasia",
             visible = false,
             bool = true,
@@ -3467,7 +3482,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[eukrasia_off.png]],
         },
         EukrasianDiagnosis = {
-            index = 15,
+            index = 16,
             name = "Eukrasian Diagnosis (H)",
             visible = false,
             bool = true,
@@ -3482,7 +3497,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[eukrasian_diagnosis_off.png]],
         },
         EukrasianPrognosis = {
-            index = 16,
+            index = 17,
             name = "Eukrasian Prognosis (H)",
             visible = false,
             bool = true,
@@ -3497,7 +3512,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[eukrasian_prognosis_off.png]],
         },
         EukrasianDosis = {
-            index = 17,
+            index = 18,
             name = "Eukrasian Dosis (D)",
             visible = false,
             bool = true,
@@ -3512,7 +3527,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[eukrasian_dosis_off.png]],
         },
         Soteria = {
-            index = 18,
+            index = 19,
             name = "Soteria",
             visible = false,
             bool = true,
@@ -3527,7 +3542,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[soteria_off.png]],
         },
         Icarus = {
-            index = 19,
+            index = 20,
             name = "Icarus",
             visible = false,
             bool = true,
@@ -3542,7 +3557,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[icarus_off.png]],
         },
         Druochole = {
-            index = 20,
+            index = 21,
             name = "Druochole (H)",
             visible = false,
             bool = true,
@@ -3557,7 +3572,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[druochole_off.png]],
         },
         Dyskrasia = {
-            index = 21,
+            index = 22,
             name = "Dyskrasia (D)",
             visible = false,
             bool = true,
@@ -3572,7 +3587,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[dyskrasia_off.png]],
         },
         Kerachole = {
-            index = 22,
+            index = 23,
             name = "Kerachole (H)",
             visible = false,
             bool = true,
@@ -3587,7 +3602,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[kerachole_off.png]],
         },
         Ixochole = {
-            index = 23,
+            index = 24,
             name = "Ixochole (H)",
             visible = false,
             bool = true,
@@ -3602,7 +3617,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[ixochole_off.png]],
         },
         Zoe = {
-            index = 24,
+            index = 25,
             name = "Zoe",
             visible = false,
             bool = true,
@@ -3617,7 +3632,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[zoe_off.png]],
         },
         Pepsis = {
-            index = 25,
+            index = 26,
             name = "Pepsis (H)",
             visible = false,
             bool = true,
@@ -3632,7 +3647,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[pepsis_off.png]],
         },
         PhysisII = {
-            index = 26,
+            index = 27,
             name = "Physis II (H)",
             visible = false,
             bool = true,
@@ -3647,7 +3662,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[physis_ii_off.png]],
         },
         Taurochole = {
-            index = 27,
+            index = 28,
             name = "Taurochole (H)",
             visible = false,
             bool = true,
@@ -3662,7 +3677,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[taurochole_off.png]],
         },
         Toxikon = {
-            index = 28,
+            index = 29,
             name = "Toxikon (D)",
             visible = false,
             bool = true,
@@ -3677,7 +3692,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[toxikon_off.png]],
         },
         Haima = {
-            index = 29,
+            index = 30,
             name = "Haima (H)",
             visible = false,
             bool = true,
@@ -3692,7 +3707,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[haima_off.png]],
         },
         DosisII = {
-            index = 30,
+            index = 31,
             name = "Dosis II (D)",
             visible = false,
             bool = true,
@@ -3707,7 +3722,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[dosis_ii_off.png]],
         },
         PhlegmaII = {
-            index = 31,
+            index = 32,
             name = "Phlegma II (D)",
             visible = false,
             bool = true,
@@ -3722,7 +3737,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[phlegma_ii_off.png]],
         },
         EukrasianDosisII = {
-            index = 32,
+            index = 33,
             name = "Eukrasian Dosis II (D)",
             visible = false,
             bool = true,
@@ -3737,7 +3752,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[eukrasian_dosis_ii_off.png]],
         },
         Rhizomata = {
-            index = 33,
+            index = 34,
             name = "Rhizomata",
             visible = false,
             bool = true,
@@ -3752,7 +3767,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[rhizomata_off.png]],
         },
         Holos = {
-            index = 34,
+            index = 35,
             name = "Holos (H)",
             visible = false,
             bool = true,
@@ -3767,7 +3782,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[holos_off.png]],
         },
         Panhaima = {
-            index = 35,
+            index = 36,
             name = "Panhaima (H)",
             visible = false,
             bool = true,
@@ -3782,7 +3797,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[panhaima_off.png]],
         },
         DosisIII = {
-            index = 36,
+            index = 37,
             name = "Dosis III (D)",
             visible = false,
             bool = true,
@@ -3797,7 +3812,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[dosis_iii_off.png]],
         },
         PhlegmaIII = {
-            index = 37,
+            index = 38,
             name = "Phlegma III (D)",
             visible = false,
             bool = true,
@@ -3812,7 +3827,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[phlegma_iii_off.png]],
         },
         EukrasianDosisIII = {
-            index = 38,
+            index = 39,
             name = "Eukrasian Dosis III (D)",
             visible = false,
             bool = true,
@@ -3827,7 +3842,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[eukrasian_dosis_iii_off.png]],
         },
         DyskrasiaII = {
-            index = 39,
+            index = 40,
             name = "Dyskrasia II (D)",
             visible = false,
             bool = true,
@@ -3842,7 +3857,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[dyskrasia_ii_off.png]],
         },
         ToxikonII = {
-            index = 40,
+            index = 41,
             name = "Toxikon II (D)",
             visible = false,
             bool = true,
@@ -3857,7 +3872,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[toxikon_ii_off.png]],
         },
         Krasis = {
-            index = 41,
+            index = 42,
             name = "Krasis (H)",
             visible = false,
             bool = true,
@@ -3872,7 +3887,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[krasis_off.png]],
         },
         Pneuma = {
-            index = 42,
+            index = 43,
             name = "Pneuma (D)",
             visible = false,
             bool = true,
