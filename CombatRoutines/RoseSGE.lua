@@ -204,7 +204,7 @@ function RoseSGE.Cast()
                             end
                         end
                         local kardiatime = 0
-                        if RoseSGE.HasTankStance(member) and MissingBuff(member, 2605) and TimeSince(kardiatime) > 10000 then
+                        if member.IsTank and RoseSGE.HasTankStance(member) and MissingBuff(member, 2605) and TimeSince(kardiatime) > 10000 then
                             kardiatime = Now()
                             needsKardia[i] = member
                         end
