@@ -331,6 +331,7 @@ function RoseSGE.Cast()
                                 hp = member.hp.percent
                             end
                         end
+                        RoseSGE.DebugPrint("Lowest HP: "..hp, lowest)
                         if level >= 86 and IsTank(lowest.job) and actionenabled.Krasis.bool then
                             local krasis = ActionList:Get(1, 24317)
                             if RoseSGE.IsReady(krasis) then
