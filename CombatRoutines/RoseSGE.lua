@@ -460,7 +460,6 @@ function RoseSGE.Cast()
             local allHasBuff = true
             if table.valid(elist) and actionenabled.DPS.bool then
                 for i,enemy in pairs(elist) do
-                    d(enemy.count)
                     if MissingBuffs(enemy,"2614+2615+2616") then
                         allHasBuff = false
                         missingDosis[i]=enemy
@@ -504,92 +503,94 @@ function RoseSGE.Cast()
                         end
                     end
                 end
-                local enemycount = 0
-                local pneumacount = 0
-                for i,e in pairs(elist) do
-                    if e.distance2d <= 25 then
-                        if e.distance2d <= 5 then
-                            enemycount = enemycount + 1
-                            pneumacount = pneumacount + 1
-                        end
-                    end
-                end
-                if pneumacount <= 1 and level >= 90 and actionenabled.Zoe.bool and actionenabled.Pneuma.bool then
-                    if MissingBuff(Player,24300) and level >= 90 then
-                        local zoe = ActionList:Get(1, 24300)
-                        if RoseSGE.IsReady(zoe) then
-                            return RoseSGE.Action(zoe,Player)
-                        end
-                    end
-                    local pneuma = ActionList:Get(1, 24318)
-                    if RoseSGE.IsReady(pneuma) then
-                        return RoseSGE.Action(pneuma,target)
-                    end
-                end
-                if enemycount >= 1 then
-                    if level >= 82 and actionenabled.PhlegmaIII.bool then
-                        local phlegma_iii = ActionList:Get(1, 24313)
-                        if phlegma_iii.cd == 0 or phlegma_iii.cd >= 45 then
-                            return RoseSGE.Action(phlegma_iii,target)
-                        end
-                    end
-                    if level >= 72 and level <=81 and actionenabled.PhlegmaII.bool then
-                        local phlegma_ii = ActionList:Get(1, 24307)
-                        if phlegma_ii.cd == 0 or phlegma_ii.cd >= 45 then
-                            return RoseSGE.Action(phlegma_ii,target)
-                        end
-                    end
-                    if level >= 26 and level <=71 and actionenabled.Phlegma.bool then
-                        local phlegma = ActionList:Get(1, 24289)
-                        if phlegma.cd == 0 or phlegma.cd >= 45 then
-                            return RoseSGE.Action(phlegma,target)
-                        end
-                    end
-                end
-                if enemycount >= 2 then
-                    if Player.gauge[3] >= 1 then
-                        if level >= 82 and actionenabled.ToxikonII.bool then
-                            local toxikon_ii = ActionList:Get(1, 24316)
-                            if RoseSGE.IsReady(toxikon_ii) then
-                                return RoseSGE.Action(toxikon_ii,target)
-                            end
-                        end
-                        if level >= 66 and level <= 81 and actionenabled.Toxikon.bool then
-                            local toxikon = ActionList:Get(1, 24304)
-                            if RoseSGE.IsReady(toxikon) then
-                                return RoseSGE.Action(toxikon,target)
+                if HasTarget then
+                    local enemycount = 0
+                    local pneumacount = 0
+                    for i, e in pairs(elist) do
+                        if e.distance2d <= 25 then
+                            if e.distance2d <= 5 then
+                                enemycount = enemycount + 1
+                                pneumacount = pneumacount + 1
                             end
                         end
                     end
-                    if level >= 82 and actionenabled.DyskrasiaII.bool then
-                        local dyskrasia_ii = ActionList:Get(1, 24315)
-                        if RoseSGE.IsReady(dyskrasia_ii) then
-                            return RoseSGE.Action(dyskrasia_ii,Player)
+                    if pneumacount <= 1 and level >= 90 and actionenabled.Zoe.bool and actionenabled.Pneuma.bool then
+                        if MissingBuff(Player, 24300) and level >= 90 then
+                            local zoe = ActionList:Get(1, 24300)
+                            if RoseSGE.IsReady(zoe) then
+                                return RoseSGE.Action(zoe, Player)
+                            end
+                        end
+                        local pneuma = ActionList:Get(1, 24318)
+                        if RoseSGE.IsReady(pneuma) then
+                            return RoseSGE.Action(pneuma, target)
                         end
                     end
-                    if level >= 46 and level <= 81 and actionenabled.Dyskrasia.bool then
-                        local dyskrasia = ActionList:Get(1, 24297)
-                        if RoseSGE.IsReady(dyskrasia) then
-                            return RoseSGE.Action(dyskrasia,Player)
+                    if enemycount >= 1 then
+                        if level >= 82 and actionenabled.PhlegmaIII.bool then
+                            local phlegma_iii = ActionList:Get(1, 24313)
+                            if phlegma_iii.cd == 0 or phlegma_iii.cd >= 45 then
+                                return RoseSGE.Action(phlegma_iii, target)
+                            end
+                        end
+                        if level >= 72 and level <= 81 and actionenabled.PhlegmaII.bool then
+                            local phlegma_ii = ActionList:Get(1, 24307)
+                            if phlegma_ii.cd == 0 or phlegma_ii.cd >= 45 then
+                                return RoseSGE.Action(phlegma_ii, target)
+                            end
+                        end
+                        if level >= 26 and level <= 71 and actionenabled.Phlegma.bool then
+                            local phlegma = ActionList:Get(1, 24289)
+                            if phlegma.cd == 0 or phlegma.cd >= 45 then
+                                return RoseSGE.Action(phlegma, target)
+                            end
                         end
                     end
-                end
-                if level >= 82 and actionenabled.DosisIII.bool then
-                    local dosis_iii = ActionList:Get(1, 24312)
-                    if RoseSGE.IsReady(dosis_iii) then
-                        return RoseSGE.Action(dosis_iii,target)
+                    if enemycount >= 2 then
+                        if Player.gauge[3] >= 1 then
+                            if level >= 82 and actionenabled.ToxikonII.bool then
+                                local toxikon_ii = ActionList:Get(1, 24316)
+                                if RoseSGE.IsReady(toxikon_ii) then
+                                    return RoseSGE.Action(toxikon_ii, target)
+                                end
+                            end
+                            if level >= 66 and level <= 81 and actionenabled.Toxikon.bool then
+                                local toxikon = ActionList:Get(1, 24304)
+                                if RoseSGE.IsReady(toxikon) then
+                                    return RoseSGE.Action(toxikon, target)
+                                end
+                            end
+                        end
+                        if level >= 82 and actionenabled.DyskrasiaII.bool then
+                            local dyskrasia_ii = ActionList:Get(1, 24315)
+                            if RoseSGE.IsReady(dyskrasia_ii) then
+                                return RoseSGE.Action(dyskrasia_ii, Player)
+                            end
+                        end
+                        if level >= 46 and level <= 81 and actionenabled.Dyskrasia.bool then
+                            local dyskrasia = ActionList:Get(1, 24297)
+                            if RoseSGE.IsReady(dyskrasia) then
+                                return RoseSGE.Action(dyskrasia, Player)
+                            end
+                        end
                     end
-                end
-                if level >=72 and level <= 81 and actionenabled.DosisII.bool then
-                    local dosis_ii = ActionList:Get(1, 24306)
-                    if RoseSGE.IsReady(dosis_ii) then
-                        return RoseSGE.Action(dosis_ii,target)
+                    if level >= 82 and actionenabled.DosisIII.bool then
+                        local dosis_iii = ActionList:Get(1, 24312)
+                        if RoseSGE.IsReady(dosis_iii) then
+                            return RoseSGE.Action(dosis_iii, target)
+                        end
                     end
-                end
-                if level >= 1 and level <=71 and actionenabled.Dosis.bool then
-                    local dosis = ActionList:Get(1, 24283)
-                    if RoseSGE.IsReady(dosis) then
-                        return RoseSGE.Action(dosis,target)
+                    if level >= 72 and level <= 81 and actionenabled.DosisII.bool then
+                        local dosis_ii = ActionList:Get(1, 24306)
+                        if RoseSGE.IsReady(dosis_ii) then
+                            return RoseSGE.Action(dosis_ii, target)
+                        end
+                    end
+                    if level >= 1 and level <= 71 and actionenabled.Dosis.bool then
+                        local dosis = ActionList:Get(1, 24283)
+                        if RoseSGE.IsReady(dosis) then
+                            return RoseSGE.Action(dosis, target)
+                        end
                     end
                 end
             end
