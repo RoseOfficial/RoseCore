@@ -15,6 +15,13 @@ RoseSGE.classes = {
     [FFXIV.JOBS.SAGE] = true,
 } 
 
+-- 
+function RoseSGE.DebugPrint(...)
+    if RoseSGE.Settings.Debug then
+        d("[RoseSGE] ".. ...)
+    end
+end
+
 function RoseSGE.IsReady(action)
     if action and action.cdmax - action.cd < 0.5 and (action.casttime == 0 or not Player:IsMoving()) and not (Busy() and IsMounting() and IsMounted() and IsDismounting()) then
         return true
@@ -30,15 +37,11 @@ function RoseSGE.Action(action,target)
     end
     if table.valid(action) and table.valid(target) then
         if target.x and Distance2DT(Player.pos,target) <= action.range then
-            if RoseSGE.Settings.Debug then
-                d("[RoseSGE] Casting: "..action.name)
-            end
+            RoseSGE.DebugPrint("Casting: "..action.name)
             return action:Cast(target.x,target.y,target.z)
         else
             if target.distance2d <= action.range then
-                if RoseSGE.Settings.Debug then
-                    d("[RoseSGE] Casting: "..action.name)
-                end
+                RoseSGE.DebugPrint("Casting: "..action.name)
                 return action:Cast(target.id)
             end
         end
