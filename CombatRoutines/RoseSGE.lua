@@ -187,6 +187,7 @@ function RoseSGE.Cast()
                 if table.valid(plist) then
                     for i,member in pairs(plist) do
                         if IsTank(member.job) and member.hp.percent < 90 then
+                            member.IsTank = true -- We store IsTank value to avoid calling it after
                             if member.hp.percent < 70 then
                                 lowPartyHP[i] = member
                                 lowcount = lowcount + 1
@@ -196,6 +197,7 @@ function RoseSGE.Cast()
                                 lowcount = lowcount + 1
                             end
                         else
+                            member.IsTank = false -- Storing IsTank value for optimisation, I actually don't know the performance impact of calling IsTank again and again, but for sure calling it one time and storing the value for later use is better.
                             if member.hp.percent < 70 then
                                 lowPartyHP[i] = member
                                 lowcount = lowcount + 1
@@ -226,7 +228,7 @@ function RoseSGE.Cast()
                     for i,e in pairs(dplist) do
                         if IsHealer(e.job) then
                             healers[i]=e
-                        elseif IsTank(e.job) then
+                        elseif e.IsTank then
                             tanks[i]=e
                         elseif (e.job == 27 and e.level >= 12) or (e.job == 35 and e.level >= 64) then
                             raisers[i]=e
@@ -352,20 +354,22 @@ function RoseSGE.Cast()
                     if lowcount > 0 then
                         local lowest = 0
                         local hp = 100
+                        local IsTargetATank = false
                         for _,member in pairs(plist) do
                             if member.hp.percent < hp then
                                 lowest = member
                                 hp = member.hp.percent
+                                IsTargetATank = member.IsTank
                             end
                         end
                         RoseSGE.DebugPrint("Lowest HP: "..hp, lowest)
-                        if level >= 86 and IsTank(lowest.job) and SageHotbarSettings.Krasis.bool then
+                        if level >= 86 and IsTargetATank and SageHotbarSettings.Krasis.bool then
                             local krasis = ActionList:Get(1, 24317)
                             if RoseSGE.IsReady(krasis) then
                                 return RoseSGE.Action(krasis,lowest)
                             end
                         end
-                        if level >= 70 and IsTank(lowest.job) and SageHotbarSettings.Haima.bool then
+                        if level >= 70 and IsTargetATank and SageHotbarSettings.Haima.bool then
                             local haima = ActionList:Get(1, 24305)
                             if RoseSGE.IsReady(haima) then
                                 return RoseSGE.Action(haima,lowest)
