@@ -95,64 +95,26 @@ function RoseSGE.Targeting()
     end
 end
 
---[[function RoseSGE.HealFormula(lowest,level)
-    d("a")
-    if not lowest then
-        d("b")
-        return false
-    end
-    local Slider = RoseCore.Settings.SgeEvTankOverhealSingle
-    if not IsTank(lowest.job) then
-        d("c")
-        Slider = RoseCore.Settings.SgeEvPartyOverhealSingle
-    end
-    if level <= 89 and lowest.hp.percent <= (Slider - 10) then
-        d("d")
-        return true
-    end
-    if level <= 89 and lowest.hp.percent >= (Slider - 10) or lowest.hp.percent >= 100 then
-        d("e")
-        return false
-    end
-    if lowest.hp.percent <= 99 then
-        RoseSGE.PartyBuff = 1
-        RoseSGE.HealingMagicPotency1 = Player:GetStats(34)
-        RoseSGE.HealingMagicPotency2 = (569 * ((HealingMagicPotency1 * PartyBuff) - 390) / 1522) + 100
-        RoseSGE.Potency = 250
-        RoseSGE.Determination1 = Player:GetStats(44)
-        RoseSGE.Determination2 = (140 * (Determination1 - 390) / 1900 + 1000)
-        RoseSGE.Healing1 = (((Potency * HealingMagicPotency2 * Determination2) / 100) / 1000)
-        RoseSGE.WeaponDamage1 = Inventory:Get(1000):GetList()[1]:GetStat(12, true)
-        RoseSGE.WeaponDamage2 = ((390 * 115 / 1000) + WeaponDamage1)
-        RoseSGE.Healing2 = (((((Healing1 * 1000) / 1000) * WeaponDamage2) / 100) * 130) / 100
-        RoseSGE.HealingPercent = (Healing2 / lowest.hp.max) * 100
-        if (Slider - HealingPercent) >= lowest.hp.percent == true then
-            return true
-        end
-    end
-    return false
-end]]
-
 function RoseSGE.HealFormula(lowest,potency)
-    d("a")
+    RoseSGE.DebugPrint("Entering healing formula")
     if not lowest then
-        d("b")
+        RoseSGE.DebugPrint("Not lowest")
         return false
     end
     local Slider = RoseCore.Settings.SgeEvTankOverhealSingle
     if not IsTank(lowest.job) then
-        d("c")
+        RoseSGE.DebugPrint("Target to heal is not a tank, using RoseCore.Settings.SgeEvPartyOverhealSingle")
         Slider = RoseCore.Settings.SgeEvPartyOverhealSingle
     end
-    d(Slider)
-    d(lowest.name)
-    d(lowest.hp.percent)
+    RoseSGE.DebugPrint("Healing value: ".. Slider)
+    RoseSGE.DebugPrint("Healing target name: ".. lowest.name)
+    RoseSGE.DebugPrint("Healing target HP: ".. lowest.hp.percent)
     if Player.level <= 89 and lowest.hp.percent <= (Slider - 10) then
-        d("d")
+        RoseSGE.DebugPrint("Healing target HP is below ".. Slider - 10 .."%, returning true")
         return true
     end
     if Player.level <= 89 and lowest.hp.percent >= (Slider - 10) or lowest.hp.percent >= 100 then
-        d("e")
+        RoseSGE.DebugPrint("Healing target HP is above ".. Slider - 10 .."% or HP is 100%, returning false")
         return false
     end
     if lowest.hp.percent <= 99 then
