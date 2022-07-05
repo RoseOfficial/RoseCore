@@ -173,6 +173,15 @@ function RoseSGE.HealFormula(lowest,potency)
     return false
 end
 
+function RoseSGE.HasTarget()
+    local target = MGetTarget()
+    if table.valid(target) and target.incombat then
+        return true, target
+    else
+        return false, target
+    end
+end
+
 function RoseSGE.Cast()
     actionenabled = RoseCore.Settings.SgeEvHotbar
     if RoseCore.Settings.Active then
