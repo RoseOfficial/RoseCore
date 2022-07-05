@@ -3902,7 +3902,7 @@ RoseCore.Settings = {
             imageoff = ImageFolder..[[pneuma_off.png]],
         },
 		HealOutsideOfCombat = {
-            index = 29,
+            index = 44,
             name = "Heal OOC",
             visible = true,
             bool = false,
