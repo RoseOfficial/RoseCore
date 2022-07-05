@@ -123,6 +123,16 @@ end
     return false
 end]]
 
+-- Return first a bool to tell if you have a valid target or not, then the actual target
+function RoseSGE.HasTarget()
+    local target = MGetTarget()
+    if table.valid(target) and target.incombat then
+        return true, target
+    else
+        return false, target
+    end
+end
+
 function RoseSGE.Cast()
     actionenabled = RoseCore.Settings.SgeEvHotbar
     if RoseCore.Settings.Active then
@@ -133,8 +143,8 @@ function RoseSGE.Cast()
             end
         end
         RoseSGE.Targeting()
-        local target = MGetTarget()
-        if table.valid(target) and target.incombat then
+        local HasTarget, target = RoseSGE.HasTarget()
+        if HasTarget or actionenabled.HealOutsideOfCombat.bool then
             local level = Player.level
             local elist = RoseSGE.elist
             if actionenabled.Heal.bool then
