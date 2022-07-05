@@ -187,7 +187,7 @@ function RoseSGE.Cast()
                 if table.valid(plist) then
                     for i,member in pairs(plist) do
                         if IsTank(member.job) and member.hp.percent < 90 then
-                            if member.hp.percent < 50 then
+                            if member.hp.percent < 70 then
                                 lowPartyHP[i] = member
                                 lowcount = lowcount + 1
                             else
@@ -196,7 +196,7 @@ function RoseSGE.Cast()
                                 lowcount = lowcount + 1
                             end
                         else
-                            if member.hp.percent < 50 then
+                            if member.hp.percent < 70 then
                                 lowPartyHP[i] = member
                                 lowcount = lowcount + 1
                             end
