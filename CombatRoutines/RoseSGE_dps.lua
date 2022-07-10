@@ -80,7 +80,7 @@ function RoseSGE.HandleAttack(target, level, elist)
         end
     end
 
-    if pneumacount <= 1 and level >= 90 and SageHotbarSettings.Zoe.bool and SageHotbarSettings.Pneuma.bool then
+    if pneumacount >= 1 and level >= 90 and SageHotbarSettings.Zoe.bool and SageHotbarSettings.Pneuma.bool then
         local pneuma = ActionList:Get(1, 24318)
         if RoseSGE.IsReady(pneuma) then
             return RoseSGE.Action(pneuma, target)
