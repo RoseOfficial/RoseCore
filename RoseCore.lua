@@ -138,12 +138,12 @@ RoseCore.Settings = {
 	AstSavHotbarButtonSizeY = 30,
 	AstSavHotbarColumns = 1,
 	AstSavHotbarLocked = false,
-	AstSavHotbarEnabled = true,	
-	
+	AstSavHotbarEnabled = true,
+
 	AstSavTankOverheal = 5,
 	AstSavPartyOverhealAoe = 5,
 	AstSavPartyOverhealSingle = 5,
-	
+
 	-- Fight Specific
 
 	AstSavHotbar = {
@@ -326,7 +326,7 @@ RoseCore.Settings = {
 			modifierA = false,
 			imageon = ImageFolder..[[party_gcd_on.png]],
 			imageoff = ImageFolder..[[party_gcd_off.png]],
-		},		
+		},
 		PartyHo = {
 			index = 13,
 			name = "Horoscope (P)",
@@ -553,7 +553,7 @@ RoseCore.Settings = {
 			imageoff = ImageFolder..[[synastry_off.png]],
 		},
 	},
-	
+
 	--[AST] Everywhere
 	AstEvHotbarButColOn = {
 		R = 135/255,
@@ -572,7 +572,7 @@ RoseCore.Settings = {
 	AstEvHotbarButtonSizeY = 30,
 	AstEvHotbarColumns = 1,
 	AstEvHotbarLocked = false,
-	AstEvHotbarEnabled = true,	
+	AstEvHotbarEnabled = true,
 
 	AstEvTankOverhealSingle = 90,
 	AstEvPartyOverhealAOE = 75,
@@ -1004,7 +1004,7 @@ RoseCore.Settings = {
 			imageoff = ImageFolder..[[synastry_off.png]],
 		},
 	},
-	
+
 	--[Sch] Savage
 	SchSavHotbarButColOn = {
 		R = 135/255,
@@ -1028,7 +1028,7 @@ RoseCore.Settings = {
 	SchSavTankOverhealSingle = 100,
 	SchSavPartyOverhealAOE = 100,
 	SchSavPartyOverhealSingle = 100,
-	
+
 	-- Fight Specific
 
 	SchSavHotbar = {
@@ -1453,7 +1453,7 @@ RoseCore.Settings = {
 			imageoff = ImageFolder..[[expedient_off.png]],
 		},
 	},
-	
+
 	--[Sch] Everywhere
 	SchEvHotbarButColOn = {
 		R = 135/255,
@@ -1915,7 +1915,7 @@ RoseCore.Settings = {
 			imageoff = ImageFolder..[[deployment_tactics_off.png]],
 		},
 	},
-	
+
 	--[Whm] Savages
 	WhmSavHotbarButColOn = {
 		R = 135/255,
@@ -1934,12 +1934,12 @@ RoseCore.Settings = {
 	WhmSavHotbarButtonSizeY = 30,
 	WhmSavHotbarColumns = 1,
 	WhmSavHotbarLocked = false,
-	WhmSavHotbarEnabled = true,	
+	WhmSavHotbarEnabled = true,
 
 	WhmSavTankOverhealSingle = 100,
 	WhmSavPartyOverhealAOE = 100,
 	WhmSavPartyOverhealSingle = 100,
-	
+
 	-- Fight Specific
 
 	WhmSavHotbar = {
@@ -2320,7 +2320,7 @@ RoseCore.Settings = {
 			imageoff = ImageFolder..[[plenary_indulgence_off.png]],
 		},
 	},
-	
+
 	--[Whm] Everywhere
 	WhmEvHotbarButColOn = {
 		R = 135/255,
@@ -2344,7 +2344,7 @@ RoseCore.Settings = {
 	WhmEvTankOverhealSingle = 90,
 	WhmEvPartyOverhealAOE = 75,
 	WhmEvPartyOverhealSingle = 75,
-	
+
 	WhmEvHotbar = {
 		Heal = {
 			index = 1,
@@ -3913,8 +3913,23 @@ RoseCore.Settings = {
             modifierC = false,
             modifierS = false,
             modifierA = false,
-            imageon = ImageFolder..[[expedient_on.png]],
-            imageoff = ImageFolder..[[expedient_off.png]],
+            imageon = ImageFolder..[[heal_ooc_on.png]],
+            imageoff = ImageFolder..[[heal_ooc_off.png]],
+        },
+		SmartDot = {
+            index = 45,
+            name = "Smart DoT",
+            visible = true,
+            bool = false,
+            menu = "Smart DoT",
+            tooltip = "DoT all possible targets",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[smart_dot_on.png]],
+            imageoff = ImageFolder..[[smart_dot_off.png]],
         },
     },
 }
@@ -4122,39 +4137,109 @@ function RoseCore.valid(...)
 end
 local valid = RoseCore.valid
 
+function RoseCore.GetTableWithIndexFromTable(table, index)
+	local result = nil
+	for k,v in pairs(table) do
+		if k == index then
+			result = k
+			break
+		end
+	end
+	return result
+end
+
 function RoseCore.LoadSettings()
 	local tbl = FileLoad(ModuleSettings)
 	if tbl == nil then
 		local file = io.open(ModulePath..'Settings.lua', 'w')
 		file:close()
 	end
-	local function scan(tbl,tbl2,depth)
-		depth = depth or 0
-		if valid(2,tbl,tbl2) then
-			for k,v in pairs(tbl2) do
-				if type(v) == "table" then
-					if tbl[k] and valid(tbl[k]) then
-						tbl[k] = table.merge(tbl[k],scan(tbl[k],v,depth+1))
-					else
-						tbl[k] = v
+
+	if tbl ~= nil then
+		local NeedUpdateCheck = {
+			["AstEvHotbar"] = true,
+			["AstSavHotbar"] = true,
+			["SchEvHotbar"] = true,
+			["SchSavHotbar"] = true,
+			["WhmEvHotbar"] = true,
+			["WhmSavHotbar"] = true,
+			["SgeSavHotbar"] = true,
+			["SgeEvHotbar"] = true,
+		}
+		local LoadedConfig = tbl
+		local BaseConfig = table.deepcopy(RoseCore.Settings)
+
+		-- here we only checks for Hotbar table settings
+		for TableNeedCheck, _ in pairs(NeedUpdateCheck) do
+			local BaseConfigTableIndex = RoseCore.GetTableWithIndexFromTable(BaseConfig, TableNeedCheck)
+			local LoadedConfigIndex = RoseCore.GetTableWithIndexFromTable(LoadedConfig, TableNeedCheck)
+			if LoadedConfig ~= nil then
+				RoseCore.log("Starting config update check on " .. BaseConfigTableIndex)
+				for k, BaseConfigValue in pairs(BaseConfig[BaseConfigTableIndex]) do
+					local found = false
+					for SavedConfigIndex, BaseSettingsValue in pairs(LoadedConfig[LoadedConfigIndex]) do
+						if k == SavedConfigIndex then
+							--RoseCore.log("Found : " .. k .." with value : " .. SavedConfigIndex)
+							found = true
+
+							-- Those are the only "real" value that need to be saved.
+							BaseConfigValue.bool = BaseSettingsValue.bool
+							BaseConfigValue.key = BaseSettingsValue.key
+							BaseConfigValue.visible = BaseSettingsValue.visible
+							BaseConfigValue.modifierA = BaseSettingsValue.modifierA
+							BaseConfigValue.modifierC = BaseSettingsValue.modifierC
+							BaseConfigValue.modifierS = BaseSettingsValue.modifierS
+
+							break
+						end
 					end
-				else
-					if tbl[k] ~= tbl2[k] then tbl[k] = tbl2[k] end
+
+					if not found then
+						RoseCore.log("Config " .. k .. " was not found, adding it")
+					end
 				end
 			end
 		end
-		return tbl
+
+		-- Here we update all others value
+		for BaseConfigIndex, _ in pairs(BaseConfig) do
+			if NeedUpdateCheck[BaseConfigIndex] == nil then
+				local found = false
+				for LoaddedConfigIndex, LoadecConfigValue in pairs(LoadedConfig) do
+					if BaseConfigIndex == LoaddedConfigIndex then
+						found = true
+						BaseConfig[BaseConfigIndex] = LoadecConfigValue
+					end
+				end
+
+				if not found then
+					RoseCore.log("Config " .. BaseConfigIndex .. " was not found, adding it")
+				end
+			end
+		end
+
+		RoseCore.Settings = BaseConfig
 	end
-	RoseCore.Settings = scan(RoseCore.Settings,tbl)
+
+	RoseCore.log("Config was loaded and updated!")
 end
 
+-- QoL Code to avoid having big if conditions
+local TableToSave = {
+	["AstEvHotbar"] = true,
+	["AstSavHotbar"] = true,
+	["SchEvHotbar"] = true,
+	["SchSavHotbar"] = true,
+	["WhmEvHotbar"] = true,
+	["WhmSavHotbar"] = true,
+}
 local PreviousSave,lastcheck = {},0
 function RoseCore.save(force)
 	if (force or TimeSince(lastcheck) > 30000) then
 		lastcheck = Now()
 		local base = table.deepcopy(RoseCore.Settings)
 		for k, v in pairs(base) do
-			if k == "AstEvHotbar" or k == "AstSavHotbar" or k == "SchEvHotbar" or k == "SchSavHotbar" or k == "WhmEvHotbar" or k == "WhmSavHotbar" then
+			if TableToSave[k] ~= nil then
 				for m,n in pairs(v) do
 					n.name = nil
 					n.index = nil
@@ -4187,7 +4272,7 @@ function RoseCore.Init()
 end
 
 function RoseCore.Updater(k,v)
-	if RoseCore.Data.UpdateTick == nil then 
+	if RoseCore.Data.UpdateTick == nil then
 		if k == "reactions" and v == "check" then
 			io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/RoseReactions/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\RVersion.txt' -Value $json[0].tag_name; stop-process -Id $PID"]]):close()
 			RoseCore.Data.UpdateTick = true
@@ -4196,7 +4281,7 @@ function RoseCore.Updater(k,v)
 		end
 		if k == "reactions" and v == "update" then
 			io.popen([[start /b powershell -Command "Compress-Archive -Path ']] ..LuaPath.. [[TensorReactions\GeneralReactions', ']] ..LuaPath.. [[TensorReactions\TimelineReactions' -DestinationPath ]] ..LuaPath.. [[\TensorReactions\GeneralReactions\Rose\TensorReactions_$((Get-Date).ToString('MM_dd_HHmm')).zip -Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/RoseReactions/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; Invoke-WebRequest https://github.com/RoseOfficial/RoseReactions/releases/download/$tag/TensorReactions.zip -Out ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip'; Expand-Archive ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -DestinationPath ]] ..LuaPath.. [[ -Force; Remove-Item ']] ..LuaPath.. [[\TensorReactions\TensorReactions.zip' -Force; stop-process -Id $PID"]]):close()
-			io.popen([[start /b powershell -Command "Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\RStatus.txt' -Value 'Done'; stop-process -Id $PID"]]):close() 
+			io.popen([[start /b powershell -Command "Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\RStatus.txt' -Value 'Done'; stop-process -Id $PID"]]):close()
 			RoseCore.Data.UpdateTick = true
 			RoseCore.Data.UpdateVerR = true
 		end
@@ -4208,7 +4293,7 @@ function RoseCore.Updater(k,v)
 		end
 		if k == "core" and v == "update" then
 			io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/RoseOfficial/RoseCore/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; Invoke-WebRequest https://github.com/RoseOfficial/RoseCore/releases/download/$tag/RoseCore.zip -Out ']] ..LuaPath.. [[\RoseCore\RoseCore.zip'; Expand-Archive ']] ..LuaPath.. [[\RoseCore\RoseCore.zip' -DestinationPath ]] ..LuaPath.. [[ -Force; Remove-Item ']] ..LuaPath.. [[\RoseCore\RoseCore.zip' -Force; stop-process -Id $PID"]]):close()
-			io.popen([[start /b powershell -Command "Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\CStatus.txt' -Value 'Done'; stop-process -Id $PID"]]):close() 
+			io.popen([[start /b powershell -Command "Set-Content -Path ']] ..LuaPath.. [[\RoseCore\Data\CStatus.txt' -Value 'Done'; stop-process -Id $PID"]]):close()
 			RoseCore.Data.UpdateTick = true
 			RoseCore.Data.UpdateVerC = true
 		end
@@ -4222,7 +4307,7 @@ function RoseCore.VersionChecker(folder)
 		output = file:read()
 		file:close()
 	end
-	if output ~= nil then 
+	if output ~= nil then
 		RoseCore.Settings.ReactionVerLocal = output
 		save(true)
 	end
@@ -7794,7 +7879,7 @@ function RoseCore.DrawCall()
 		GUI:PopStyleColor(c)
 		GUI:End()
 		end
-		
+
 		--Hotbar
 		if TensorCore then
 			local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
@@ -8196,7 +8281,7 @@ function RoseCore.OnUpdate()
 	if TimeSince(RoseCore.Data.VersionCheckerR) >= 30000 and RoseCore.Settings.ReactionVerLocal == "0.0.0" then
 		RoseCore.VersionChecker(tostring(LuaPath).."TensorReactions/GeneralReactions/Rose/Version.txt")
 	end
-	
+
 	-- Check Version Reactions
 	if RoseCore.Data.CheckVerR == true and TimeSince(RoseCore.Data.LastCheckVerR) >= 2500 then
 		local file = io.open(tostring(LuaPath).."RoseCore/Data/RVersion.txt")
@@ -8205,7 +8290,7 @@ function RoseCore.OnUpdate()
 			output = file:read()
 			file:close()
 		end
-		if output ~= nil and RoseCore.Settings.ReactionVerLocal ~= nil and output > RoseCore.Settings.ReactionVerLocal then 
+		if output ~= nil and RoseCore.Settings.ReactionVerLocal ~= nil and output > RoseCore.Settings.ReactionVerLocal then
 			RoseCore.Data.NeedUpdateR = true
 			RoseCore.Data.UpdateTick = nil
 			RoseCore.Data.CheckVerR = nil
@@ -8217,7 +8302,7 @@ function RoseCore.OnUpdate()
 			RoseCore.Data.LastCheckVerR = nil
 		end
 	end
-	
+
 	-- Check Version Core
 	if RoseCore.Data.CheckVerC == true and TimeSince(RoseCore.Data.LastCheckVerC) >= 2500 then
 		local file = io.open(tostring(LuaPath).."RoseCore/Data/CVersion.txt")
@@ -8226,7 +8311,7 @@ function RoseCore.OnUpdate()
 			output = file:read()
 			file:close()
 		end
-		if output ~= nil and output > RoseCore.version then 
+		if output ~= nil and output > RoseCore.version then
 			RoseCore.Data.NeedUpdateC = true
 			RoseCore.Data.UpdateTick = nil
 			RoseCore.Data.CheckVerC = nil
@@ -8238,12 +8323,12 @@ function RoseCore.OnUpdate()
 			RoseCore.Data.LastCheckVerC = nil
 		end
 	end
-	
+
 	-- Update Reactions
 	if RoseCore.Data.UpdateTaskR == true then
 		if RoseCore.Data.UpdateTimerR == nil then RoseCore.Data.UpdateTimerR = Now() end
 		if TimeSince(RoseCore.Data.UpdateTimerR) >= 2500 then
-			local file = io.open(tostring(LuaPath).."RoseCore/Data/RStatus.txt") 
+			local file = io.open(tostring(LuaPath).."RoseCore/Data/RStatus.txt")
 			local output
 			if file ~= nil then
 				output = file:read()
@@ -8251,7 +8336,7 @@ function RoseCore.OnUpdate()
 			else
 				RoseCore.Data.UpdateTimerR = Now()
 			end
-			if output == "Done" then 
+			if output == "Done" then
 				--Reload
 				table.clear(RoseCore.Data)
 				RoseCore.VersionChecker(tostring(LuaPath).."TensorReactions/GeneralReactions/Rose/Version.txt")
@@ -8265,12 +8350,12 @@ function RoseCore.OnUpdate()
 			end
 		end
 	end
-	
+
 	-- Update Core
 	if RoseCore.Data.UpdateTaskC == true then
 		if RoseCore.Data.UpdateTimerC == nil then RoseCore.Data.UpdateTimerC = Now() end
 		if TimeSince(RoseCore.Data.UpdateTimerC) >= 2500 then
-			local file = io.open(tostring(LuaPath).."RoseCore/Data/CStatus.txt") 
+			local file = io.open(tostring(LuaPath).."RoseCore/Data/CStatus.txt")
 			local output
 			if file ~= nil then
 				output = file:read()
@@ -8278,7 +8363,7 @@ function RoseCore.OnUpdate()
 			else
 				RoseCore.Data.UpdateTimerC = Now()
 			end
-			if output == "Done" then 
+			if output == "Done" then
 				--Reload
 				table.clear(RoseCore.Data)
 				Reload()
