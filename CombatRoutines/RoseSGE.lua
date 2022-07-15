@@ -410,20 +410,7 @@ function RoseSGE.Cast()
                         end
                     end
                 end
-                if table.valid(PartyMembers) and level >= 10 and SageHotbarSettings.Esuna.bool then
-                    for _, member in pairs(PartyMembers) do
-                        if (table.valid(member.buffs)) then
-                            for _, buff in pairs(member.buffs) do
-                                if (buff.isdebuff and buff.dispellable and buff.duration >= 2) then
-                                    local esuna = ActionList:Get(1, 7568)
-                                    if RoseSGE.IsReady(esuna) then
-                                        return RoseSGE.Action(esuna, member)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
+
                 if table.valid(needsKardia) and level >= 4 and SageHotbarSettings.Kardia.bool then
                     local kardia = ActionList:Get(1, 24285)
                     if RoseSGE.IsReady(kardia) then
@@ -486,6 +473,21 @@ function RoseSGE.Cast()
                                 RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, PlayerCountInParty)
                             else
                                 RoseSGE.HandleSingleTargetHealing(level, IsTargetATank, lowest)
+                            end
+                        end
+
+                        if table.valid(PartyMembers) and level >= 10 and SageHotbarSettings.Esuna.bool then
+                            for _, member in pairs(PartyMembers) do
+                                if (table.valid(member.buffs)) then
+                                    for _, buff in pairs(member.buffs) do
+                                        if (buff.isdebuff and buff.dispellable and buff.duration >= 2) then
+                                            local esuna = ActionList:Get(1, 7568)
+                                            if RoseSGE.IsReady(esuna) then
+                                                return RoseSGE.Action(esuna, member)
+                                            end
+                                        end
+                                    end
+                                end
                             end
                         end
                     end
