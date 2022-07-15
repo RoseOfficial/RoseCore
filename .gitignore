@@ -1,2 +1,4 @@
 
-.vscode/settings.json
+Settings.lua
+Data/RStatus.txt
+Data/CStatus.txt
