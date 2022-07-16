@@ -331,9 +331,9 @@ function RoseSGE.Cast()
                             needShieldCount = needShieldCount + 1 -- So dumb atm, I should track if the player is already shielded but idk how to do that yet
                         end
 
-                        if member.hp.percent < RoseCore.Settings.SgeEvPartyOverhealAOE then
-                            NeedAOEHealing = NeedAOEHealing + 1
-                        end
+                        -- if member.hp.percent < RoseCore.Settings.SgeEvPartyOverhealAOE then
+                        --     NeedAOEHealing = NeedAOEHealing + 1
+                        -- end
                     end
                 end
 
@@ -471,6 +471,13 @@ function RoseSGE.Cast()
                         end
 
                         if Heal then
+                            for k, v in pairs(EntityList.myparty) do
+                                if v.hp.percent > 1 then
+                                    if v.hp.percent + v.shield < RoseCore.Settings.SgeEvPartyOverhealAOE then
+                                        NeedAOEHealing = NeedAOEHealing + 1
+                                    end
+                                end
+                            end
                             if NeedAOEHealing >= RoseSGE.GetAOECountForPartySize(PlayerCountInParty) then
                                 RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, PlayerCountInParty)
                                 if not RoseSGE.DidAOEHeal then -- Fallback if no AOE heal was done, do a single target heal
@@ -527,7 +534,7 @@ function RoseSGE.HandleAOEProtection(level, khpcount)
 
         local shieldNeededCount = 0
         for k, v in pairs(EntityList.myparty) do
-            if v.shield < 5 then
+            if v.hp.percent > 1 and v.shield < 5 then
                 shieldNeededCount = shieldNeededCount + 1
             end
         end

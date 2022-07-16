@@ -34,7 +34,7 @@ https://discord.gg/BM9MBERbA9
 
 RoseCore = {}
 
-RoseCore.version = "0.07.15"
+RoseCore.version = "0.07.17"
 
 RoseCore.GUI = {
     open = true,
