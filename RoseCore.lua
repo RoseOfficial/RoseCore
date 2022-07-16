@@ -20,6 +20,7 @@ Madao
 mushroom
 Dating Simulator
 Rhakin
+Biboup!
 and countless others
 
 But most of all, Rikudou and his gang. Its people that tell me that I can't do something that motivates me. It gave me a
@@ -33,7 +34,7 @@ https://discord.gg/BM9MBERbA9
 
 RoseCore = {}
 
-RoseCore.version = "0.05.15"
+RoseCore.version = "0.07.15"
 
 RoseCore.GUI = {
     open = true,
