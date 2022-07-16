@@ -35,6 +35,15 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
     end
 
     if AOECount > RoseSGE.GetAOECountForPartySize(PlayerCountInParty) then
+        if level >= 90 and SageHotbarSettings.Pneuma.bool and RoseSGE.HasDPSTarget then
+            local pneuma = ActionList:Get(1, 24318)
+            if RoseSGE.IsReady(pneuma) then
+                if RoseSGE.HealFormula(lowest, 600) then
+                    return RoseSGE.Action(pneuma, RoseSGE.CurrentDPSTarget)
+                end
+            end
+        end
+
         -- Same as for druochole, but this is for AOE healing.
         -- Helps with mana regen and was reported in analysis,
         -- having it first avoid caping Addersgall

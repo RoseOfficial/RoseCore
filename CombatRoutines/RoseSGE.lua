@@ -29,6 +29,8 @@ RoseSGE.AOEHealCountForPartySize = {
 RoseSGE.Skills = {}
 RoseSGE.PrognosisTime = 0
 RoseSGE.DidAOEHeal = false
+RoseSGE.CurrentDPSTarget = 0
+RoseSGE.HasDPSTarget = false
 
 function RoseSGE.DebugPrint(...)
     if RoseSGE.Settings.Debug then
@@ -277,7 +279,9 @@ function RoseSGE.Cast()
         end
         RoseSGE.Targeting()
         local HasTarget, target = RoseSGE.HasTarget()
+        RoseSGE.HasDPSTarget = HasTarget
         if HasTarget or SageHotbarSettings.HealOutsideOfCombat.bool then
+            RoseSGE.CurrentDPSTarget = target
             local level = Player.level
 
             if SageHotbarSettings.Heal.bool then

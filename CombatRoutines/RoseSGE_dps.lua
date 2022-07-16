@@ -80,24 +80,22 @@ function RoseSGE.HandleAttack(target, level, elist)
 
 
     local enemycount = 0
-    local pneumacount = 0
     for i, e in pairs(elist) do
         if e.distance2d <= 25 then
             if e.distance2d <= 5 then
                 enemycount = enemycount + 1
-                pneumacount = pneumacount + 1
             end
         end
     end
 
-    if pneumacount >= 1 and level >= 90 and SageHotbarSettings.Zoe.bool and SageHotbarSettings.Pneuma.bool then
-        local pneuma = ActionList:Get(1, 24318)
-        if RoseSGE.IsReady(pneuma) then
-            return RoseSGE.Action(pneuma, target)
-        end
-    end
-
     if enemycount >= 1 then
+        if level >= 90 and SageHotbarSettings.Pneuma.bool then
+            local pneuma = ActionList:Get(1, 24318)
+            if RoseSGE.IsReady(pneuma) then
+                return RoseSGE.Action(pneuma, target)
+            end
+        end
+
         -- Add Toxikon first as it was being capped and not used, it was a big DPS loss !
         if Player.gauge[3] >= 1 then
             if level >= 82 and SageHotbarSettings.ToxikonII.bool then
