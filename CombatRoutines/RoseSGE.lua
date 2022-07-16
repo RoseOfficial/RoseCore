@@ -151,7 +151,7 @@ function RoseSGE.IsReady(action)
         not (Busy() and IsMounting() and IsMounted() and IsDismounting()) then
         local CanUseOGCD = RoseSGE.CanUseOGCD()
         if RoseSGE.IsSkillGDC(action.id) then -- GCD
-            if not CanUseOGCD then --TODO: Test isReady
+            if not CanUseOGCD then
                 if action.cd == nil or action.cd == 0 then
                     return true
                 end
@@ -519,7 +519,7 @@ function RoseSGE.Cast()
 end
 
 function RoseSGE.HandleAOEProtection(level, khpcount)
-    if TensorCore and TensorCore.Avoidance.inUnavoidableAOE(Argus.getCurrentAOEs(), Player) then
+    if TensorCore and Argus and TensorCore.Avoidance.inUnavoidableAOE(Argus.getCurrentAOEs(), Player) then
         -- This part is to avoid casting a skill right before the AOE goes off as it would result of the
         -- spell being casted AFTER the AOE, so useless.
         -- This part can probably be imporved by just getting the Unavoidable and not the first one on the list only

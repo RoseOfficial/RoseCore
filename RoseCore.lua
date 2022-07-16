@@ -4178,20 +4178,22 @@ function RoseCore.LoadSettings()
 				RoseCore.log("Starting config update check on " .. BaseConfigTableIndex)
 				for k, BaseConfigValue in pairs(BaseConfig[BaseConfigTableIndex]) do
 					local found = false
-					for SavedConfigIndex, BaseSettingsValue in pairs(LoadedConfig[LoadedConfigIndex]) do
-						if k == SavedConfigIndex then
-							--RoseCore.log("Found : " .. k .." with value : " .. SavedConfigIndex)
-							found = true
-
-							-- Those are the only "real" value that need to be saved.
-							BaseConfigValue.bool = BaseSettingsValue.bool
-							BaseConfigValue.key = BaseSettingsValue.key
-							BaseConfigValue.visible = BaseSettingsValue.visible
-							BaseConfigValue.modifierA = BaseSettingsValue.modifierA
-							BaseConfigValue.modifierC = BaseSettingsValue.modifierC
-							BaseConfigValue.modifierS = BaseSettingsValue.modifierS
-
-							break
+					if LoadedConfig[LoadedConfigIndex] ~= nil then
+						for SavedConfigIndex, BaseSettingsValue in pairs(LoadedConfig[LoadedConfigIndex]) do
+							if k == SavedConfigIndex then
+								--RoseCore.log("Found : " .. k .." with value : " .. SavedConfigIndex)
+								found = true
+	
+								-- Those are the only "real" value that need to be saved.
+								BaseConfigValue.bool = BaseSettingsValue.bool
+								BaseConfigValue.key = BaseSettingsValue.key
+								BaseConfigValue.visible = BaseSettingsValue.visible
+								BaseConfigValue.modifierA = BaseSettingsValue.modifierA
+								BaseConfigValue.modifierC = BaseSettingsValue.modifierC
+								BaseConfigValue.modifierS = BaseSettingsValue.modifierS
+	
+								break
+							end
 						end
 					end
 
@@ -7882,7 +7884,7 @@ function RoseCore.DrawCall()
 		end
 
 		--Hotbar
-		if TensorCore then
+		if TensorCore and TensorCore.API.TensorReactions then
 			local GeneralProfile = TensorCore.API.TensorReactions.getGeneralReactionProfileName()
 
 			-- AST
@@ -8341,7 +8343,7 @@ function RoseCore.OnUpdate()
 				--Reload
 				table.clear(RoseCore.Data)
 				RoseCore.VersionChecker(tostring(LuaPath).."TensorReactions/GeneralReactions/Rose/Version.txt")
-				if TensorCore ~= nil then
+				if TensorCore ~= nil and TensorCore.API.TensorReactions then
 					TensorCore.API.TensorReactions.reloadGeneralReactions()
 					TensorCore.API.TensorReactions.reloadTimelineReactions()
 					Reload()
