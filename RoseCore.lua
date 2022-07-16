@@ -34,7 +34,7 @@ https://discord.gg/BM9MBERbA9
 
 RoseCore = {}
 
-RoseCore.version = "0.07.15"
+RoseCore.version = "0.07.17"
 
 RoseCore.GUI = {
     open = true,
@@ -3252,9 +3252,9 @@ RoseCore.Settings = {
     SgeEvHotbarLocked = false,
     SgeEvHotbarEnabled = true,
 
-    SgeEvTankOverhealSingle = 90,
-    SgeEvPartyOverhealAOE = 75,
-    SgeEvPartyOverhealSingle = 75,
+	SgeEvPartyOverhealAOE = 80,
+	SgeEvPartyOverhealSingle = 90,
+	SgeEvTankOverhealSingle = 95,
 
     SgeEvHotbar = {
         Heal = {

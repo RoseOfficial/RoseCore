@@ -28,6 +28,7 @@ RoseSGE.AOEHealCountForPartySize = {
 
 RoseSGE.Skills = {}
 RoseSGE.PrognosisTime = 0
+RoseSGE.DidAOEHeal = false
 
 function RoseSGE.DebugPrint(...)
     if RoseSGE.Settings.Debug then
@@ -280,6 +281,7 @@ function RoseSGE.Cast()
             local level = Player.level
 
             if SageHotbarSettings.Heal.bool then
+                RoseSGE.DidAOEHeal = false
                 local Heal = true
                 local elist = RoseSGE.elist
                 local lowcount = 0
@@ -329,9 +331,9 @@ function RoseSGE.Cast()
                             needShieldCount = needShieldCount + 1 -- So dumb atm, I should track if the player is already shielded but idk how to do that yet
                         end
 
-                        if member.hp.percent < RoseCore.Settings.SgeEvPartyOverhealAOE then
-                            NeedAOEHealing = NeedAOEHealing + 1
-                        end
+                        -- if member.hp.percent < RoseCore.Settings.SgeEvPartyOverhealAOE then
+                        --     NeedAOEHealing = NeedAOEHealing + 1
+                        -- end
                     end
                 end
 
@@ -469,8 +471,18 @@ function RoseSGE.Cast()
                         end
 
                         if Heal then
+                            for k, v in pairs(EntityList.myparty) do
+                                if v.hp.percent > 1 then
+                                    if v.hp.percent + v.shield < RoseCore.Settings.SgeEvPartyOverhealAOE then
+                                        NeedAOEHealing = NeedAOEHealing + 1
+                                    end
+                                end
+                            end
                             if NeedAOEHealing >= RoseSGE.GetAOECountForPartySize(PlayerCountInParty) then
                                 RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, PlayerCountInParty)
+                                if not RoseSGE.DidAOEHeal then -- Fallback if no AOE heal was done, do a single target heal
+                                    RoseSGE.HandleSingleTargetHealing(level, IsTargetATank, lowest)
+                                end
                             else
                                 RoseSGE.HandleSingleTargetHealing(level, IsTargetATank, lowest)
                             end
@@ -509,6 +521,7 @@ function RoseSGE.HandleAOEProtection(level, khpcount)
         -- This part can probably be imporved by just getting the Unavoidable and not the first one on the list only
         -- but I don't know how to do that yet.
         local ShouldCastProtection = true
+        local ShouldCastShield = false
         local CurrentAoEs = Argus.getCurrentAOEs(true)
         for k, v in pairs(CurrentAoEs) do
             local ent = TensorCore.mGetEntity(v.entityID)
@@ -519,44 +532,83 @@ function RoseSGE.HandleAOEProtection(level, khpcount)
             break -- Only get the first one on the list, maybe CurrentAoEs[1] could work to avoid a loop ?
         end
 
+        local shieldNeededCount = 0
+        for k, v in pairs(EntityList.myparty) do
+            if v.hp.percent > 1 and v.shield < 5 then
+                shieldNeededCount = shieldNeededCount + 1
+            end
+        end
+        if shieldNeededCount > 1 then
+            ShouldCastShield = true
+        end
+
+        -- 3003 - 2618
         if ShouldCastProtection then
-            if level >= 80 and SageHotbarSettings.Panhaima.bool then
+            if level >= 80 and SageHotbarSettings.Panhaima.bool and ShouldCastShield then
                 local panhaima = ActionList:Get(1, 24311)
                 if RoseSGE.IsReady(panhaima) then
                     return RoseSGE.Action(panhaima, Player)
                 end
             end
             if level >= 76 and SageHotbarSettings.Holos.bool then
+                -- Check if player don't already have the buff, can happen on normal raids with double sage.
+                local IsPlayerAlreadyBuffed = RoseSGE.Utils.GetBuff(Player, { 3003 })
                 local holos = ActionList:Get(1, 24310)
-                if RoseSGE.IsReady(holos) then
+                if RoseSGE.IsReady(holos) and IsPlayerAlreadyBuffed == nil then
                     return RoseSGE.Action(holos, Player)
                 end
             end
             if Player.gauge[2] >= 1 and SageHotbarSettings.Kerachole.bool then
+                -- Check if player don't already have the buff, can happen on normal raids with double sage.
+                local IsPlayerAlreadyBuffed = RoseSGE.Utils.GetBuff(Player, { 2618 })
                 local kerachole = ActionList:Get(1, 24298)
-                if RoseSGE.IsReady(kerachole) then
+                if RoseSGE.IsReady(kerachole) and IsPlayerAlreadyBuffed == nil then
                     return RoseSGE.Action(kerachole, Player)
                 end
             end
-        end
 
-    end
-    if level >= 80 and khpcount >= 5 and SageHotbarSettings.Panhaima.bool then
-        local panhaima = ActionList:Get(1, 24311)
-        if RoseSGE.IsReady(panhaima) then
-            return RoseSGE.Action(panhaima, Player)
+            if level >= 30 then
+                -- Will check if player already have holos / kerachole / or Eukrasian Prognosis
+                local IsPlayerAlreadyBuffed = RoseSGE.Utils.GetBuff(Player, { 3003, 2618, 2609 })
+                if IsPlayerAlreadyBuffed == nil then
+                    local eukrasiaBuff = RoseSGE.Utils.GetBuff(Player, { 2606 }, Player)
+                    if eukrasiaBuff == nil then
+                        local eukrasia = ActionList:Get(1, 24290)
+                        if RoseSGE.IsReady(eukrasia) then
+                            return RoseSGE.Action(eukrasia, Player)
+                        end
+                    else
+                        RoseSGE.DebugPrint("Casting protection EukrasianPrognosis")
+                        local EukrasianPrognosis = ActionList:Get(1, 24292)
+                        if RoseSGE.IsReady(EukrasianPrognosis) then
+                            return RoseSGE.Action(EukrasianPrognosis, Player)
+                        end
+                    end
+                end
+            end
         end
     end
-    if level >= 76 and khpcount >= 5 and SageHotbarSettings.Holos.bool then
-        local holos = ActionList:Get(1, 24310)
-        if RoseSGE.IsReady(holos) then
-            return RoseSGE.Action(holos, Player)
+
+    -- This logic should only happen in donjon and maybe in old raids with bunch of ads ?
+    -- Just mass shield / protection
+    if khpcount >= 5 then
+        if level >= 80 and SageHotbarSettings.Panhaima.bool then
+            local panhaima = ActionList:Get(1, 24311)
+            if RoseSGE.IsReady(panhaima) then
+                return RoseSGE.Action(panhaima, Player)
+            end
         end
-    end
-    if khpcount >= 5 and Player.gauge[2] >= 1 and SageHotbarSettings.Kerachole.bool then
-        local kerachole = ActionList:Get(1, 24298)
-        if RoseSGE.IsReady(kerachole) then
-            return RoseSGE.Action(kerachole, Player)
+        if level >= 76 and SageHotbarSettings.Holos.bool then
+            local holos = ActionList:Get(1, 24310)
+            if RoseSGE.IsReady(holos) then
+                return RoseSGE.Action(holos, Player)
+            end
+        end
+        if Player.gauge[2] >= 1 and SageHotbarSettings.Kerachole.bool then
+            local kerachole = ActionList:Get(1, 24298)
+            if RoseSGE.IsReady(kerachole) then
+                return RoseSGE.Action(kerachole, Player)
+            end
         end
     end
 end

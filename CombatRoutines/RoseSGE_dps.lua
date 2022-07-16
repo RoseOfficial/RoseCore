@@ -14,16 +14,26 @@ function RoseSGE.HandleAttack(target, level, elist)
         end
         table.insert(targets, target)
     else
-        for _, target in pairs(elist) do
-            if target.distance2d <= 25 then
-                local buff = RoseSGE.Utils.GetBuff(target, { 2614, 2615, 2616 }, Player)
-                if buff == nil then
-                    IsTargetMissingBuff = true
-                    table.insert(targets, target)
-                else
-                    if buff.duration <= 5 then
+        local count = 0
+        for _, _ in pairs(elist) do
+            count = count + 1
+        end
+
+        -- Avoid doing dot logic if there is more than X enemie, it's more DPS to just do mass AOE
+        -- enemie count will probably need a tweak, not sure if 3 or 4 is the right one
+        -- Allow the dot logic when player is moving like using TensorDrift
+        if count <= 3 or Player:IsMoving() then
+            for _, target in pairs(elist) do
+                if target.distance2d <= 25 then
+                    local buff = RoseSGE.Utils.GetBuff(target, { 2614, 2615, 2616 }, Player)
+                    if buff == nil then
                         IsTargetMissingBuff = true
                         table.insert(targets, target)
+                    else
+                        if buff.duration <= 5 then
+                            IsTargetMissingBuff = true
+                            table.insert(targets, target)
+                        end
                     end
                 end
             end
