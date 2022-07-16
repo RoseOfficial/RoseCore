@@ -11,6 +11,15 @@ function RoseSGE.HandleSingleTargetHealing(level, IsTargetATank, lowest)
         end
     end
 
+    if level >= 90 and SageHotbarSettings.Pneuma.bool and RoseSGE.HasDPSTarget then
+        local pneuma = ActionList:Get(1, 24318)
+        if RoseSGE.IsReady(pneuma) then
+            if RoseSGE.HealFormula(lowest, 600) then
+                return RoseSGE.Action(pneuma, RoseSGE.CurrentDPSTarget)
+            end
+        end
+    end
+
     if level >= 62 and Player.gauge[2] >= 1 and SageHotbarSettings.Taurochole.bool then
         local taurochole = ActionList:Get(1, 24303)
         if RoseSGE.IsReady(taurochole) then
