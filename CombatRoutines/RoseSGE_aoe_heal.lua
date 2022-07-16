@@ -28,6 +28,7 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
         local pepsis = ActionList:Get(1, 24301)
         if RoseSGE.IsReady(pepsis) then
             if RoseSGE.HealFormula(lowest, 450) then
+                RoseSGE.DidAOEHeal = true
                 return RoseSGE.Action(pepsis, Player)
             end
         end
@@ -41,6 +42,7 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
             local ixochole = ActionList:Get(1, 24299)
             if RoseSGE.IsReady(ixochole) then
                 if RoseSGE.HealFormula(lowest, 400) then
+                    RoseSGE.DidAOEHeal = true
                     return RoseSGE.Action(ixochole, Player)
                 end
             end
@@ -50,6 +52,7 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
             local physis_ii = ActionList:Get(1, 24302)
             if RoseSGE.IsReady(physis_ii) then
                 if RoseSGE.HealFormula(lowest, 130) then
+                    RoseSGE.DidAOEHeal = true
                     return RoseSGE.Action(physis_ii, Player)
                 end
             end
@@ -59,6 +62,7 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
             local physis = ActionList:Get(1, 24288)
             if RoseSGE.IsReady(physis) then
                 if RoseSGE.HealFormula(lowest, 100) then
+                    RoseSGE.DidAOEHeal = true
                     return RoseSGE.Action(physis, Player)
                 end
             end
@@ -71,6 +75,7 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
                 local eukrasia = ActionList:Get(1, 24290)
                 if RoseSGE.IsReady(eukrasia) then
                     if RoseSGE.HealFormula(lowest, 100) then
+                        RoseSGE.DidAOEHeal = true
                         return RoseSGE.Action(eukrasia, Player)
                     end
                 end
@@ -79,6 +84,7 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
             local eukrasianprognosis = ActionList:Get(1, 24292)
             if RoseSGE.IsReady(eukrasianprognosis) then
                 if RoseSGE.HealFormula(lowest, 100) then
+                    RoseSGE.DidAOEHeal = true
                     return RoseSGE.Action(eukrasianprognosis, Player)
                 end
             end
@@ -90,6 +96,7 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
             if RoseSGE.IsReady(prognosis) then
                 if RoseSGE.HealFormula(lowest, 300) then
                     RoseSGE.PrognosisTime = Now()
+                    RoseSGE.DidAOEHeal = true
                     return RoseSGE.Action(prognosis, Player)
                 end
             end
