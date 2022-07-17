@@ -8377,6 +8377,193 @@ function RoseCore.OnUpdate()
 	end
 end
 
+function RoseCore.GetJobSettings()
+	local TankOverHealSingle
+	local PartyOverHealSingle
+	if Player.job == 33 then -- AST
+		TankOverHealSingle = RoseCore.Settings.AstEvTankOverhealSingle
+		PartyOverHealSingle = RoseCore.Settings.AstEvPartyOverhealSingle
+	elseif Player.job == 28 or Player.job == 26 then -- SCH
+		TankOverHealSingle = RoseCore.Settings.SchEvTankOverhealSingle
+		PartyOverHealSingle = RoseCore.Settings.SchEvPartyOverhealSingle
+	elseif Player.job == 24 or Player.job == 6 then -- WHM
+		TankOverHealSingle = RoseCore.Settings.WhmEvTankOverhealSingle
+		PartyOverHealSingle = RoseCore.Settings.WhmEvPartyOverhealSingle
+	elseif Player.job == 40 then -- SGE
+		TankOverHealSingle = RoseCore.Settings.SgeEvTankOverhealSingle
+		PartyOverHealSingle = RoseCore.Settings.SgeEvPartyOverhealSingle
+	end
+
+	if TankOverHealSingle == nil then
+		TankOverHealSingle = 95
+		PartyOverHealSingle = 90
+		RoseCore.log("Job Settings not found, using default values.")
+	end
+
+	return TankOverHealSingle, PartyOverHealSingle
+end
+
+function RoseCore.HealFormula(lowest, potency)
+    if not lowest then
+        return false
+    end
+
+	local TankOverHealSingle, PartyOverHealSingle = RoseCore.GetJobSettings()
+    local Slider = TankOverHealSingle
+    if not IsTank(lowest.job) then
+        Slider = PartyOverHealSingle
+    end
+    if Player.level <= 89 and lowest.hp.percent <= (Slider - 10) then
+        return true
+    end
+    if Player.level <= 89 and lowest.hp.percent >= (Slider - 10) or lowest.hp.percent >= 100 then
+        return false
+    end
+    if lowest.hp.percent <= 99 then
+        RoseSGE.PartyBuff = 1
+        RoseSGE.HealingMagicPotency1 = Player:GetStats(34)
+        RoseSGE.HealingMagicPotency2 = (569 * ((RoseSGE.HealingMagicPotency1 * RoseSGE.PartyBuff) - 390) / 1522) + 100
+        RoseSGE.Determination1 = Player:GetStats(44)
+        RoseSGE.Determination2 = (140 * (RoseSGE.Determination1 - 390) / 1900 + 1000)
+        RoseSGE.Healing1 = (((potency * RoseSGE.HealingMagicPotency2 * RoseSGE.Determination2) / 100) / 1000)
+        RoseSGE.WeaponDamage1 = Inventory:Get(1000):GetList()[1]:GetStat(12, true)
+        RoseSGE.WeaponDamage2 = ((390 * 115 / 1000) + RoseSGE.WeaponDamage1)
+        RoseSGE.Healing2 = (((((RoseSGE.Healing1 * 1000) / 1000) * RoseSGE.WeaponDamage2) / 100) * 130) / 100
+        RoseSGE.HealingPercent = (RoseSGE.Healing2 / lowest.hp.max) * 100
+        if (Slider - RoseSGE.HealingPercent) >= lowest.hp.percent == true then
+            return true
+        end
+    end
+    return false
+end
+
+function RoseCore.HasTarget()
+    local target = MGetTarget()
+    if table.valid(target) and target.incombat then
+        return true, target
+    else
+        return false, target
+    end
+end
+
+
+RoseCore.Skills = {}
+
+function RoseCore.GetSkill(SkillID)
+    if not SkillID then
+        return nil
+    end
+    if not RoseCore.Skills[SkillID] then
+        RoseCore.log("Skill not found: " .. tostring(SkillID))
+    else
+        return RoseCore.Skills[SkillID]
+    end
+end
+
+-- This utils function register a skill and save some data so we don't have to request it everytime
+function RoseCore.RegisterSkill(SkillID, isGCD)
+    local action = ActionList:Get(1, SkillID)
+    if action then
+        RoseCore.Skills[SkillID] = {
+            Name = action.name,
+            ID = SkillID,
+            IsGCD = isGCD,
+            level = action.level,
+            range = action.range,
+            radius = action.radius,
+        }
+        RoseCore.log("Registered Skill: " .. action.name .. " (" .. SkillID .. ")")
+    else
+        RoseCore.log("Action with ID " .. SkillID .. " could not be find, is it valid ? Report to a dev.")
+    end
+end
+
+local BaseSkillsForJobs = {
+	[33] = 3596,
+	[28] = 17869,
+	[26] = 17869,
+	[24] = 119,
+	[6] = 116,
+	[40] = 24283,
+}
+
+-- So yeah this is the Weaving logic, working great for me, but I'm not sure if it's the best way to do it.
+function RoseCore.CanUseOGCD()
+	if BaseSkillsForJobs[Player.job] then
+		local BaseAction = ActionList:Get(1, BaseSkillsForJobs[Player.job])
+		if BaseAction then
+			if BaseAction.cd ~= nil or BaseAction.cd ~= 0 then
+				local cdOn100 = (BaseAction.cd * 100) / BaseAction.cdmax
+				if cdOn100 <= 40 then -- 40% of the CD is left
+					return true
+				else
+					return false
+				end
+			else
+				return false
+			end
+		else
+			-- How ??
+		end
+	else
+		RoseCore.log("Job not found: " .. tostring(Player.job) .. " - RoseCore is trying to do logic on a job not registered, what's going on ?")
+		return false
+	end
+end
+
+function RoseCore.IsSkillGDC(SkillID)
+    if SkillID == nil then
+        return false
+    end
+    if RoseCore.Skills[SkillID] == nil then
+        return true -- GCD by default
+    end
+    if RoseCore.Skills[SkillID].IsGCD then
+        return true
+    end
+    return false
+end
+
+function RoseCore.IsReady(action)
+    if action and (action.casttime == 0 or not Player:IsMoving()) and
+        not (Busy() and IsMounting() and IsMounted() and IsDismounting()) then
+        local CanUseOGCD = RoseCore.CanUseOGCD()
+        if RoseCore.IsSkillGDC(action.id) then -- GCD
+            if not CanUseOGCD then
+                if action.cd == nil or action.cd == 0 then
+                    return true
+                end
+            end
+        else -- OGCD
+            if CanUseOGCD then
+                if action.cd == nil or action.cd == 0 then
+                    return true
+                end
+            end
+        end
+    end
+end
+
+function RoseCore.Action(action, target)
+    if type(action) == "number" then
+        action = ActionList:Get(1, action)
+    end
+    if not target then
+        target = Player
+    end
+    if table.valid(action) and table.valid(target) then
+        if target.x and Distance2DT(Player.pos, target) <= action.range then
+            RoseCore.log("Casting: " .. action.name)
+            return action:Cast(target.x, target.y, target.z)
+        else
+            if target.distance2d <= action.range then
+                RoseCore.log("Casting: " .. action.name)
+                return action:Cast(target.id)
+            end
+        end
+    end
+end
+
 RegisterEventHandler("Module.Initalize", RoseCore.Init, "RoseCore.Init")
 RegisterEventHandler("Gameloop.Draw", RoseCore.DrawCall, "RoseCore.DrawCall")
 RegisterEventHandler("Gameloop.Update", RoseCore.OnUpdate, "RoseCore.OnUpdate")

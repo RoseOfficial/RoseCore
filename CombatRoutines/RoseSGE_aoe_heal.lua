@@ -26,10 +26,10 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
     RoseSGE.DebugPrint("HaveBuff: " .. PepsiCount .. "/" .. totalPlayerCount .. " | HaveBuffOn100: " .. haveBuffOn100)
     if haveBuffOn100 >= 50 and level >= 58 and SageHotbarSettings.Pepsis.bool then
         local pepsis = ActionList:Get(1, 24301)
-        if RoseSGE.IsReady(pepsis) then
-            if RoseSGE.HealFormula(lowest, 450) then
+        if RoseCore.IsReady(pepsis) then
+            if RoseCore.HealFormula(lowest, 450) then
                 RoseSGE.DidAOEHeal = true
-                return RoseSGE.Action(pepsis, Player)
+                return RoseCore.Action(pepsis, Player)
             end
         end
     end
@@ -37,9 +37,9 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
     if AOECount > RoseSGE.GetAOECountForPartySize(PlayerCountInParty) then
         if level >= 90 and SageHotbarSettings.Pneuma.bool and RoseSGE.HasDPSTarget then
             local pneuma = ActionList:Get(1, 24318)
-            if RoseSGE.IsReady(pneuma) then
-                if RoseSGE.HealFormula(lowest, 600) then
-                    return RoseSGE.Action(pneuma, RoseSGE.CurrentDPSTarget)
+            if RoseCore.IsReady(pneuma) then
+                if RoseCore.HealFormula(lowest, 600) then
+                    return RoseCore.Action(pneuma, RoseSGE.CurrentDPSTarget)
                 end
             end
         end
@@ -49,30 +49,30 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
         -- having it first avoid caping Addersgall
         if level >= 52 and Player.gauge[2] >= 1 and SageHotbarSettings.Ixochole.bool then
             local ixochole = ActionList:Get(1, 24299)
-            if RoseSGE.IsReady(ixochole) then
-                if RoseSGE.HealFormula(lowest, 400) then
+            if RoseCore.IsReady(ixochole) then
+                if RoseCore.HealFormula(lowest, 400) then
                     RoseSGE.DidAOEHeal = true
-                    return RoseSGE.Action(ixochole, Player)
+                    return RoseCore.Action(ixochole, Player)
                 end
             end
         end
 
         if level >= 60 and SageHotbarSettings.PhysisII.bool then
             local physis_ii = ActionList:Get(1, 24302)
-            if RoseSGE.IsReady(physis_ii) then
-                if RoseSGE.HealFormula(lowest, 130) then
+            if RoseCore.IsReady(physis_ii) then
+                if RoseCore.HealFormula(lowest, 130) then
                     RoseSGE.DidAOEHeal = true
-                    return RoseSGE.Action(physis_ii, Player)
+                    return RoseCore.Action(physis_ii, Player)
                 end
             end
         end
 
         if level >= 20 and level <= 59 and SageHotbarSettings.Physis.bool then
             local physis = ActionList:Get(1, 24288)
-            if RoseSGE.IsReady(physis) then
-                if RoseSGE.HealFormula(lowest, 100) then
+            if RoseCore.IsReady(physis) then
+                if RoseCore.HealFormula(lowest, 100) then
                     RoseSGE.DidAOEHeal = true
-                    return RoseSGE.Action(physis, Player)
+                    return RoseCore.Action(physis, Player)
                 end
             end
         end
@@ -82,19 +82,19 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
             SageHotbarSettings.EukrasianPrognosis.bool then
             if MissingBuff(Player, 2606) then
                 local eukrasia = ActionList:Get(1, 24290)
-                if RoseSGE.IsReady(eukrasia) then
-                    if RoseSGE.HealFormula(lowest, 100) then
+                if RoseCore.IsReady(eukrasia) then
+                    if RoseCore.HealFormula(lowest, 100) then
                         RoseSGE.DidAOEHeal = true
-                        return RoseSGE.Action(eukrasia, Player)
+                        return RoseCore.Action(eukrasia, Player)
                     end
                 end
             end
 
             local eukrasianprognosis = ActionList:Get(1, 24292)
-            if RoseSGE.IsReady(eukrasianprognosis) then
-                if RoseSGE.HealFormula(lowest, 100) then
+            if RoseCore.IsReady(eukrasianprognosis) then
+                if RoseCore.HealFormula(lowest, 100) then
                     RoseSGE.DidAOEHeal = true
-                    return RoseSGE.Action(eukrasianprognosis, Player)
+                    return RoseCore.Action(eukrasianprognosis, Player)
                 end
             end
         end
@@ -102,11 +102,11 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
         -- GCD Heal
         if level >= 10 and SageHotbarSettings.Prognosis.bool then
             local prognosis = ActionList:Get(1, 24286)
-            if RoseSGE.IsReady(prognosis) then
-                if RoseSGE.HealFormula(lowest, 300) then
+            if RoseCore.IsReady(prognosis) then
+                if RoseCore.HealFormula(lowest, 300) then
                     RoseSGE.PrognosisTime = Now()
                     RoseSGE.DidAOEHeal = true
-                    return RoseSGE.Action(prognosis, Player)
+                    return RoseCore.Action(prognosis, Player)
                 end
             end
         end
