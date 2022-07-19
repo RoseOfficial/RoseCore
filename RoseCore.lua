@@ -2342,9 +2342,9 @@ RoseCore.Settings = {
 	WhmEvHotbarLocked = false,
 	WhmEvHotbarEnabled = true,
 
-	WhmEvTankOverhealSingle = 90,
 	WhmEvPartyOverhealAOE = 75,
-	WhmEvPartyOverhealSingle = 75,
+	WhmEvPartyOverhealSingle = 85,
+	WhmEvTankOverhealSingle = 95,
 
 	WhmEvHotbar = {
 		Heal = {
@@ -2782,6 +2782,66 @@ RoseCore.Settings = {
 			imageon = ImageFolder..[[liturgy_of_the_bell_on.png]],
 			imageoff = ImageFolder..[[liturgy_of_the_bell_off.png]],
 		},
+		Raise = {
+			index = 30,
+			name = "Raise",
+			visible = false,
+			bool = true,
+			menu = "Raise",
+			tooltip = "Enable/Disable raise party members",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[raise_on.png]],
+			imageoff = ImageFolder..[[raise_off.png]],
+		},
+		DPS = {
+			index = 31,
+			name = "DPS",
+			visible = false,
+			bool = true,
+			menu = "DPS",
+			tooltip = "Enable/Disable DPS abilities",
+			key = -1,
+			keyname = "None",
+			modifierC = false,
+			modifierS = false,
+			modifierA = false,
+			imageon = ImageFolder..[[dps_on.png]],
+			imageoff = ImageFolder..[[dps_off.png]],
+		},
+		SmartDot = {
+            index = 32,
+            name = "Smart DoT",
+            visible = true,
+            bool = false,
+            menu = "Smart DoT",
+            tooltip = "DoT all possible targets",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[smart_dot_on.png]],
+            imageoff = ImageFolder..[[smart_dot_off.png]],
+        },
+		HealOutsideOfCombat = {
+            index = 33,
+            name = "Heal OOC",
+            visible = true,
+            bool = false,
+            menu = "Heal Outside of combat",
+            tooltip = "Heal outside of combat / Without a target",
+            key = -1,
+            keyname = "None",
+            modifierC = false,
+            modifierS = false,
+            modifierA = false,
+            imageon = ImageFolder..[[heal_ooc_on.png]],
+            imageoff = ImageFolder..[[heal_ooc_off.png]],
+        },
 	},
     --[Sge] Savage
     SgeSavHotbarButColOn = {
@@ -8082,103 +8142,110 @@ function RoseCore.DrawCall()
 					end
 				end
 			end
-
+		
 			--WHM
 			if (Player.Job == 24 or Player.Job == 6) then
 				if RoseCore.Settings.WhmEvHotbarEnabled then
-					if GeneralProfile ~= nil and string.find(GeneralProfile, "Everywhere", 1, true) and string.find(GeneralProfile, "WHM", 1, true) then
-						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
-						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.WhmEvHotbarBgT/255)
-						GUI:Begin("RoseWhmEvHotbar", true, (function() if RoseCore.Settings.WhmEvHotbarLocked then
-							return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoMove
+
+					GUI:SetNextWindowSize(200, 200, GUI.SetCond_FirstUseEver)
+					GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.WhmEvHotbarBgT / 255)
+					GUI:Begin("RoseWhmEvHotbar", true, (function() if RoseCore.Settings.WhmEvHotbarLocked then
+							return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse +
+								GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoMove
 						else
-							return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize
-						end end)())
-						GUI:PopStyleColor(1)
-						local Hotbar = {}
-						for m,n in pairs(RoseCore.Settings.WhmEvHotbar) do
-							if n.visible then
-								table.insert(Hotbar, n)
-							end
+							return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse +
+								GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize
 						end
-						table.sort(Hotbar, function(a,b) return a.index < b.index end)
-						local count
-						if count == nil then count = 0 end
-						for k,v in pairs(Hotbar) do
-							local settingsOn = RoseCore.Settings.WhmEvHotbarButColOn
-							local settingsOff = RoseCore.Settings.WhmEvHotbarButColOff
-							local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
-							local butx,buty = RoseCore.Settings.WhmEvHotbarButtonSizeX,RoseCore.Settings.WhmEvHotbarButtonSizeY
-							GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
-							GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
-							if count % RoseCore.Settings.WhmEvHotbarColumns ~= 0 then GUI:SameLine(0,5) end
-							GUI:BeginChild("##WhmEvButton"..tostring(k), butx, buty, false, GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse)
-							count = count + 1
-							local x,y = GUI:CalcTextSize(v.name)
-							GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
-							GUI:Text(v.name)
-							GUI:PopStyleColor()
-							GUI:PopStyleVar()
-							GUI:EndChild()
-							if GUI:IsItemClicked(0) then
-								v.bool = not v.bool
-								save(true)
-							end
-							if RoseCore.KeybindsPressed(v) then
-								v.bool = not v.bool
-								save(true)
-							end
+					end)())
+					GUI:PopStyleColor(1)
+					local Hotbar = {}
+					for m, n in pairs(RoseCore.Settings.WhmEvHotbar) do
+						if n.visible then
+							table.insert(Hotbar, n)
 						end
-						GUI:End()
 					end
-				end
-				if RoseCore.Settings.WhmSavHotbarEnabled then
-					if GeneralProfile ~= nil and string.find(GeneralProfile, "Savage", 1, true) and string.find(GeneralProfile, "WHM", 1, true) then
-						GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
-						GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.WhmSavHotbarBgT/255)
-						GUI:Begin("RoseWhmSavHotbar", true, (function() if RoseCore.Settings.WhmSavHotbarLocked then
-							return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoMove
-						else
-							return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize
-						end end)())
-						GUI:PopStyleColor(1)
-						local Hotbar = {}
-						for m,n in pairs(RoseCore.Settings.WhmSavHotbar) do
-							if n.visible then
-								table.insert(Hotbar, n)
-							end
+					table.sort(Hotbar, function(a, b) return a.index < b.index end)
+					local count
+					if count == nil then count = 0 end
+					for k, v in pairs(Hotbar) do
+						local settingsOn = RoseCore.Settings.WhmEvHotbarButColOn
+						local settingsOff = RoseCore.Settings.WhmEvHotbarButColOff
+						local r, g, b, t = (
+							function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff
+								.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
+						local butx, buty = RoseCore.Settings.WhmEvHotbarButtonSizeX, RoseCore.Settings.WhmEvHotbarButtonSizeY
+						GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding, 5)
+						GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
+						if count % RoseCore.Settings.WhmEvHotbarColumns ~= 0 then GUI:SameLine(0, 5) end
+						GUI:BeginChild("##WhmEvButton" .. tostring(k), butx, buty, false,
+							GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar +
+							GUI.WindowFlags_NoScrollWithMouse)
+						count = count + 1
+						local x, y = GUI:CalcTextSize(v.name)
+						GUI:SetCursorPos(butx / 2 - x / 2, buty / 2 - y / 2)
+						GUI:Text(v.name)
+						GUI:PopStyleColor()
+						GUI:PopStyleVar()
+						GUI:EndChild()
+						if GUI:IsItemClicked(0) then
+							v.bool = not v.bool
+							save(true)
 						end
-						table.sort(Hotbar, function(a,b) return a.index < b.index end)
-						local count
-						if count == nil then count = 0 end
-						for k,v in pairs(Hotbar) do
-							local settingsOn = RoseCore.Settings.WhmSavHotbarButColOn
-							local settingsOff = RoseCore.Settings.WhmSavHotbarButColOff
-							local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
-							local butx,buty = RoseCore.Settings.WhmSavHotbarButtonSizeX,RoseCore.Settings.WhmSavHotbarButtonSizeY
-							GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
-							GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
-							if count % RoseCore.Settings.WhmSavHotbarColumns ~= 0 then GUI:SameLine(0,5) end
-							GUI:BeginChild("##WhmSavButton"..tostring(k), butx, buty, false, GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse)
-							count = count + 1
-							local x,y = GUI:CalcTextSize(v.name)
-							GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
-							GUI:Text(v.name)
-							GUI:PopStyleColor()
-							GUI:PopStyleVar()
-							GUI:EndChild()
-							if GUI:IsItemClicked(0) then
-								v.bool = not v.bool
-								save(true)
-							end
-							if RoseCore.KeybindsPressed(v) then
-								v.bool = not v.bool
-								save(true)
-							end
+						if RoseCore.KeybindsPressed(v) then
+							v.bool = not v.bool
+							save(true)
 						end
-						GUI:End()
 					end
+					GUI:End()
+
 				end
+				-- if RoseCore.Settings.WhmSavHotbarEnabled then
+				-- 	if GeneralProfile ~= nil and string.find(GeneralProfile, "Savage", 1, true) and string.find(GeneralProfile, "WHM", 1, true) then
+				-- 		GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
+				-- 		GUI:PushStyleColor(GUI.Col_WindowBg, BgColR, BgColG, BgColB, RoseCore.Settings.WhmSavHotbarBgT/255)
+				-- 		GUI:Begin("RoseWhmSavHotbar", true, (function() if RoseCore.Settings.WhmSavHotbarLocked then
+				-- 			return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoMove
+				-- 		else
+				-- 			return GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoCollapse + GUI.WindowFlags_AlwaysAutoResize
+				-- 		end end)())
+				-- 		GUI:PopStyleColor(1)
+				-- 		local Hotbar = {}
+				-- 		for m,n in pairs(RoseCore.Settings.WhmSavHotbar) do
+				-- 			if n.visible then
+				-- 				table.insert(Hotbar, n)
+				-- 			end
+				-- 		end
+				-- 		table.sort(Hotbar, function(a,b) return a.index < b.index end)
+				-- 		local count
+				-- 		if count == nil then count = 0 end
+				-- 		for k,v in pairs(Hotbar) do
+				-- 			local settingsOn = RoseCore.Settings.WhmSavHotbarButColOn
+				-- 			local settingsOff = RoseCore.Settings.WhmSavHotbarButColOff
+				-- 			local r,g,b,t = (function() if v.bool == true then return settingsOn.R, settingsOn.G, settingsOn.B, settingsOn.T else return settingsOff.R, settingsOff.G, settingsOff.B, settingsOff.T end end)()
+				-- 			local butx,buty = RoseCore.Settings.WhmSavHotbarButtonSizeX,RoseCore.Settings.WhmSavHotbarButtonSizeY
+				-- 			GUI:PushStyleVar(GUI.StyleVar_ChildWindowRounding,5)
+				-- 			GUI:PushStyleColor(GUI.Col_ChildWindowBg, r, g, b, t)
+				-- 			if count % RoseCore.Settings.WhmSavHotbarColumns ~= 0 then GUI:SameLine(0,5) end
+				-- 			GUI:BeginChild("##WhmSavButton"..tostring(k), butx, buty, false, GUI.WindowFlags_NoSavedSettings + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse)
+				-- 			count = count + 1
+				-- 			local x,y = GUI:CalcTextSize(v.name)
+				-- 			GUI:SetCursorPos(butx/2-x/2,buty/2-y/2)
+				-- 			GUI:Text(v.name)
+				-- 			GUI:PopStyleColor()
+				-- 			GUI:PopStyleVar()
+				-- 			GUI:EndChild()
+				-- 			if GUI:IsItemClicked(0) then
+				-- 				v.bool = not v.bool
+				-- 				save(true)
+				-- 			end
+				-- 			if RoseCore.KeybindsPressed(v) then
+				-- 				v.bool = not v.bool
+				-- 				save(true)
+				-- 			end
+				-- 		end
+				-- 		GUI:End()
+				-- 	end
+				-- end
 			end
 		end
 
@@ -8530,17 +8597,27 @@ function RoseCore.IsReady(action)
         local CanUseOGCD = RoseCore.CanUseOGCD()
         if RoseCore.IsSkillGDC(action.id) then -- GCD
             if not CanUseOGCD then
-                if action.cd == nil or action.cd == 0 then
+                if action.cd == nil or action.cd == 0 then -- Add stack check
                     return true
+				else
+					return false
                 end
+			else
+				return false
             end
         else -- OGCD
             if CanUseOGCD then
-                if action.cd == nil or action.cd == 0 then
+                if not action.isoncd or action.cd == nil or action.cd == 0 then
                     return true
+				else
+					return false
                 end
+			else
+				return false
             end
         end
+	else
+		return false
     end
 end
 
@@ -8553,11 +8630,11 @@ function RoseCore.Action(action, target)
     end
     if table.valid(action) and table.valid(target) then
         if target.x and Distance2DT(Player.pos, target) <= action.range then
-            RoseCore.log("Casting: " .. action.name)
+            --RoseCore.log("Casting: " .. action.name)
             return action:Cast(target.x, target.y, target.z)
         else
             if target.distance2d <= action.range then
-                RoseCore.log("Casting: " .. action.name)
+                --RoseCore.log("Casting: " .. action.name)
                 return action:Cast(target.id)
             end
         end

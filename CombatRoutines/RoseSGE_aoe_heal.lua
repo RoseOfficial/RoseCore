@@ -2,7 +2,7 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
     local PepsiCount = 0
     local AOECount = 0
     for i, e in pairs(lowPartyHP) do
-        local buff = RoseSGE.Utils.GetBuff(e, { 2607, 2606 }, Player)
+        local buff = RoseCore.Utils.GetBuff(e, { 2607, 2606 }, Player)
         if e.distance2d <= 15 and buff ~= nil then
             PepsiCount = PepsiCount + 1
         end
@@ -23,7 +23,6 @@ function RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, P
     -- This make the skill less used, but as it was used in a useless way before not a big deal,
     -- also looking at The Balance tutorial, this skill is not that often used, so it should be alright now.
     local haveBuffOn100 = (PepsiCount * 100) / totalPlayerCount
-    RoseSGE.DebugPrint("HaveBuff: " .. PepsiCount .. "/" .. totalPlayerCount .. " | HaveBuffOn100: " .. haveBuffOn100)
     if haveBuffOn100 >= 50 and level >= 58 and SageHotbarSettings.Pepsis.bool then
         local pepsis = ActionList:Get(1, 24301)
         if RoseCore.IsReady(pepsis) then

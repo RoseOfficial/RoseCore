@@ -30,6 +30,7 @@ RoseSGE.PrognosisTime = 0
 RoseSGE.DidAOEHeal = false
 RoseSGE.CurrentDPSTarget = 0
 RoseSGE.HasDPSTarget = false
+RoseSGE.AlreadyDidAOE = 0
 
 function RoseSGE.DebugPrint(...)
     if RoseSGE.Settings.Debug then
@@ -140,7 +141,7 @@ function RoseSGE.Cast()
                 local needsKardia = {}
                 local totalPlayerCount = 0
                 local needShieldCount = 0
-                local PartyMembers, PartyMembersDead = RoseSGE.Utils.GetPartyList()
+                local PartyMembers, PartyMembersDead = RoseCore.Utils.GetPartyList()
                 local NeedAOEHealing = 0
 
                 -- Idk if there is a better way to do this ?
@@ -170,7 +171,7 @@ function RoseSGE.Cast()
                             end
                         end
                         local kardiatime = 0
-                        if member.IsTank and RoseSGE.Utils.HasTankStance(member) and MissingBuff(member, 2605) and
+                        if member.IsTank and RoseCore.Utils.HasTankStance(member) and MissingBuff(member, 2605) and
                             TimeSince(kardiatime) > 10000 then
                             kardiatime = Now()
                             needsKardia[i] = member
@@ -311,17 +312,42 @@ function RoseSGE.Cast()
                         end
 
                         if Heal then
+                            local count = 0
+
                             for k, v in pairs(EntityList.myparty) do
+                                count = count + 1
                                 if v.hp.percent > 1 then
-                                    if v.hp.percent + v.shield < RoseCore.Settings.SgeEvPartyOverhealAOE then
+                                    if v.hp.percent < RoseCore.Settings.WhmEvPartyOverhealAOE then
                                         NeedAOEHealing = NeedAOEHealing + 1
                                     end
                                 end
                             end
+
+                            -- Fallback if no members, will happen in trust
+                            if count == 0 then
+                                for k,v in pairs(PartyMembers) do
+                                    if v.hp.percent > 1 then
+                                        if v.hp.percent < RoseCore.Settings.WhmEvPartyOverhealAOE then
+                                            NeedAOEHealing = NeedAOEHealing + 1
+                                        end
+                                    end 
+                                end
+                            end
+
                             if NeedAOEHealing >= RoseSGE.GetAOECountForPartySize(PlayerCountInParty) then
-                                RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, PlayerCountInParty)
-                                if not RoseSGE.DidAOEHeal then -- Fallback if no AOE heal was done, do a single target heal
-                                    RoseSGE.HandleSingleTargetHealing(level, IsTargetATank, lowest)
+                                if RoseSGE.AlreadyDidAOE <= 0 then
+                                    RoseSGE.HandleAOEHealing(level, lowPartyHP, totalPlayerCount, lowest, PlayerCountInParty)
+                                    if not RoseSGE.DidAOEHeal then -- Fallback if no AOE heal was done, do a single target heal
+                                        RoseSGE.HandleSingleTargetHealing(level, IsTargetATank, lowest)
+                                    else
+                                        RoseSGE.AlreadyDidAOE = 15
+                                    end
+                                else
+                                    RoseSGE.AlreadyDidAOE = RoseSGE.AlreadyDidAOE - 1
+                                    if RoseSGE.AlreadyDidAOE <= 0 then
+                                        RoseSGE.AlreadyDidAOE = 0
+                                        RoseSGE.DebugPrint("AOE Unlocked again")
+                                    end
                                 end
                             else
                                 RoseSGE.HandleSingleTargetHealing(level, IsTargetATank, lowest)
@@ -392,7 +418,7 @@ function RoseSGE.HandleAOEProtection(level, khpcount)
             end
             if level >= 76 and SageHotbarSettings.Holos.bool then
                 -- Check if player don't already have the buff, can happen on normal raids with double sage.
-                local IsPlayerAlreadyBuffed = RoseSGE.Utils.GetBuff(Player, { 3003 })
+                local IsPlayerAlreadyBuffed = RoseCore.Utils.GetBuff(Player, { 3003 })
                 local holos = ActionList:Get(1, 24310)
                 if RoseCore.IsReady(holos) and IsPlayerAlreadyBuffed == nil then
                     return RoseCore.Action(holos, Player)
@@ -400,7 +426,7 @@ function RoseSGE.HandleAOEProtection(level, khpcount)
             end
             if Player.gauge[2] >= 1 and SageHotbarSettings.Kerachole.bool then
                 -- Check if player don't already have the buff, can happen on normal raids with double sage.
-                local IsPlayerAlreadyBuffed = RoseSGE.Utils.GetBuff(Player, { 2618 })
+                local IsPlayerAlreadyBuffed = RoseCore.Utils.GetBuff(Player, { 2618 })
                 local kerachole = ActionList:Get(1, 24298)
                 if RoseCore.IsReady(kerachole) and IsPlayerAlreadyBuffed == nil then
                     return RoseCore.Action(kerachole, Player)
@@ -409,9 +435,9 @@ function RoseSGE.HandleAOEProtection(level, khpcount)
 
             if level >= 30 then
                 -- Will check if player already have holos / kerachole / or Eukrasian Prognosis
-                local IsPlayerAlreadyBuffed = RoseSGE.Utils.GetBuff(Player, { 3003, 2618, 2609 })
+                local IsPlayerAlreadyBuffed = RoseCore.Utils.GetBuff(Player, { 3003, 2618, 2609 })
                 if IsPlayerAlreadyBuffed == nil then
-                    local eukrasiaBuff = RoseSGE.Utils.GetBuff(Player, { 2606 }, Player)
+                    local eukrasiaBuff = RoseCore.Utils.GetBuff(Player, { 2606 }, Player)
                     if eukrasiaBuff == nil then
                         local eukrasia = ActionList:Get(1, 24290)
                         if RoseCore.IsReady(eukrasia) then

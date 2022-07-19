@@ -4,7 +4,7 @@ function RoseSGE.HandleAttack(target, level, elist)
     local IsTargetMissingBuff = false
 
     if not SageHotbarSettings.SmartDot.bool then
-        local buff = RoseSGE.Utils.GetBuff(target, { 2614, 2615, 2616 }, Player)
+        local buff = RoseCore.Utils.GetBuff(target, { 2614, 2615, 2616 }, Player)
         if buff == nil then
             IsTargetMissingBuff = true
         else
@@ -25,7 +25,7 @@ function RoseSGE.HandleAttack(target, level, elist)
         if count <= 3 or Player:IsMoving() then
             for _, target in pairs(elist) do
                 if target.distance2d <= 25 then
-                    local buff = RoseSGE.Utils.GetBuff(target, { 2614, 2615, 2616 }, Player)
+                    local buff = RoseCore.Utils.GetBuff(target, { 2614, 2615, 2616 }, Player)
                     if buff == nil then
                         IsTargetMissingBuff = true
                         table.insert(targets, target)
@@ -41,7 +41,7 @@ function RoseSGE.HandleAttack(target, level, elist)
     end
 
     if level >= 30 and SageHotbarSettings.Eukrasia.bool and IsTargetMissingBuff then
-        local eukrasiaBuff = RoseSGE.Utils.GetBuff(Player, { 2606 }, Player)
+        local eukrasiaBuff = RoseCore.Utils.GetBuff(Player, { 2606 }, Player)
         if eukrasiaBuff == nil then
             local eukrasia = ActionList:Get(1, 24290)
             if RoseCore.IsReady(eukrasia) then

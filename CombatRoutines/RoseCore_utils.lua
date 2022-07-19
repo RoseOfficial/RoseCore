@@ -1,8 +1,8 @@
-RoseSGE.Utils = {}
+RoseCore.Utils = {}
 
-function RoseSGE.Utils.GetPartyList()
+function RoseCore.Utils.GetPartyList()
     local PartyMembersDead = {}
-    local PartyMembers = RoseSGE.PartyMembers
+    local PartyMembers = MEntityList("alive,chartype=4,myparty,targetable,maxdistance=30") or {}
     PartyMembers[Player.id] = Player -- Adding Player to PartyMembers
     local EntityList = MEntityList("alive,targetable,type=2,chartype=9,maxdistance2d=30")
     if table.valid(EntityList) then
@@ -34,13 +34,13 @@ function RoseSGE.Utils.GetPartyList()
 end
 
 
-function RoseSGE.Utils.HasTankStance(target)
+function RoseCore.Utils.HasTankStance(target)
     if table.valid(target) and HasBuffs(target, "34,79,91,392,393,743,1833,2843,3124") then
         return true
     end
 end
 
-function RoseSGE.Utils.GetBuff(target, buffIDTable, owner)
+function RoseCore.Utils.GetBuff(target, buffIDTable, owner)
     if (table.valid(target.buffs)) then
         for k, v in pairs(buffIDTable) do
             for _, buff in pairs(target.buffs) do
@@ -59,7 +59,7 @@ function RoseSGE.Utils.GetBuff(target, buffIDTable, owner)
     return nil
 end
 
-function RoseSGE.Utils.IsPlayerInRaid()
+function RoseCore.Utils.IsPlayerInRaid()
     local IsInRaid = false
 
     local PlayerCountInParty = 0
