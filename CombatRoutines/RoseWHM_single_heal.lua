@@ -11,7 +11,7 @@ function RoseWHM.HandleSingleTargetHealing(level, IsTargetATank, lowest)
         end
     end
 
-    if lowest.hp.percent < 10 then
+    if lowest.hp.percent < 10 and not RoseWHM.IsInSavage then
         local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("Benediction")
         if spell ~= nil then
             local action = ActionList:Get(1, spell.ID)

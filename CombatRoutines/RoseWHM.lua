@@ -30,6 +30,8 @@ RoseWHM.CurrentDPSTarget = 0
 RoseWHM.HasDPSTarget = false
 RoseWHM.MainTank = 0
 RoseWHM.AlreadyDidAOE = 0
+RoseWHM.ActionQueue = {}
+RoseWHM.IsInSavage = false
 
 RoseWHM.Spells = {
     Aero = {
@@ -279,6 +281,12 @@ function RoseWHM.Targeting()
     end
 end
 
+function RoseWHM.AddActionToQeue(actionName)
+    table.insert(RoseWHM.ActionQueue, {
+        actionName = actionName
+    })
+end
+
 function RoseWHM.Cast()
     WhmHotbarSettings = RoseCore.Settings.WhmEvHotbar
     if RoseCore.Settings.Active then
@@ -423,6 +431,21 @@ function RoseWHM.Cast()
                     end
                 end
 
+                for k,v in pairs(RoseWHM.ActionQueue) do
+                    local spell = RoseWHM.GetCorrectSpellForCurrentLevel(v.actionName)
+                    if spell ~= nil then
+                        local action = ActionList:Get(1, spell.ID)
+                        if RoseCore.IsReady(action) then
+                            table.remove(RoseWHM.ActionQueue, k)
+                            return RoseCore.Action(action, Player)
+                        end
+                    else
+                        RoseWHM.DebugPrint("Action " .. v.actionName .. " in ActionQueue was not found by GetCorrectSpellForCurrentLevel")
+                        table.remove(RoseWHM.ActionQueue, k)
+                        break
+                    end
+                end
+
                 local khpcount = 0
                 if table.valid(elist) then
                     for i, e in pairs(elist) do
@@ -431,7 +454,7 @@ function RoseWHM.Cast()
                         end
                     end
                 end
-                if level >= 50 then
+                if level >= 50 and not RoseWHM.IsInSavage then
                     RoseWHM.HandleAOEProtection(level, khpcount, currentTanks)
                 end
                 if lowcount > 0 then
