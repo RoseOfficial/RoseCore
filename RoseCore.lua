@@ -8561,7 +8561,7 @@ function RoseCore.CanUseOGCD()
 		if BaseAction then
 			if BaseAction.cd ~= nil or BaseAction.cd ~= 0 then
 				local cdOn100 = (BaseAction.cd * 100) / BaseAction.cdmax
-				if cdOn100 <= 40 then -- 40% of the CD is left
+				if cdOn100 <= 35 then -- 40% of the CD is left
 					return true
 				else
 					return false
@@ -8639,6 +8639,38 @@ function RoseCore.Action(action, target)
             end
         end
     end
+end
+
+-- HP Cache is a cache system for entity HP
+-- It's used to wait sync from server to get new HP count before doing any new heal for entity
+RoseCore.HPCache = {}
+function RoseCore.IsEntityInHealthCache(entity)
+	if RoseCore.HPCache[entity.id] ~= nil then
+		return true
+	else
+		return false
+	end
+end
+
+function RoseCore.AddEntityToHealthCache(entity)
+	if entity ~= 0 then
+		RoseCore.HPCache[entity.id] = entity.hp.percent
+		RoseCore.log("Added " .. entity.id .. " to HP Cache")
+	end
+end
+
+function RoseCore.UpdateEntityHealthCache(entity)
+	if entity ~= 0 then
+		if RoseCore.HPCache[entity.id] ~= nil then
+			if entity.hp.percent ~= RoseCore.HPCache[entity.id] then
+				local result = entity.hp.percent - RoseCore.HPCache[entity.id]
+				if result < -4 or result > 4 then
+					RoseCore.log("Removed " .. entity.id .. " from HP Cache (".. tostring(RoseCore.HPCache[entity.id]) .." cache to ".. tostring(entity.hp.percent) ..")")
+					RoseCore.HPCache[entity.id] = nil
+				end
+			end
+		end
+	end
 end
 
 RegisterEventHandler("Module.Initalize", RoseCore.Init, "RoseCore.Init")
