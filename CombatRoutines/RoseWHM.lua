@@ -32,6 +32,7 @@ RoseWHM.MainTank = 0
 RoseWHM.AlreadyDidAOE = 0
 RoseWHM.ActionQueue = {}
 RoseWHM.IsInSavage = false
+RoseWHM.AlreadyCastedProtectionForAOE = {}
 
 RoseWHM.Spells = {
     Aero = {
@@ -281,10 +282,16 @@ function RoseWHM.Targeting()
     end
 end
 
-function RoseWHM.AddActionToQeue(actionName)
+function RoseWHM.AddActionToQueue(actionName, settings)
     table.insert(RoseWHM.ActionQueue, {
-        actionName = actionName
+        actionName = actionName,
+        settings = settings
     })
+    RoseWHM.DebugPrint("Adding action to queue: " .. actionName)
+end
+
+function RoseWHM.ClearActionQueue()
+    RoseWHM.ActionQueue = {}
 end
 
 function RoseWHM.Cast()
@@ -336,7 +343,7 @@ function RoseWHM.Cast()
                             end
                             table.insert(currentTanks, member)
                             if RoseCore.Utils.HasTankStance(member) then
-                                RoseWHM.MainTank = member
+                                RoseWHM.MainTank = member --TODO: Improve with emnity detection
                             end
                         else
                             member.IsTank = false -- Storing IsTank value for optimisation, I actually don't know the performance impact of calling IsTank again and again, but for sure calling it one time and storing the value for later use is better.
@@ -431,16 +438,25 @@ function RoseWHM.Cast()
                     end
                 end
 
-                for k,v in pairs(RoseWHM.ActionQueue) do
+                for k, v in pairs(RoseWHM.ActionQueue) do
                     local spell = RoseWHM.GetCorrectSpellForCurrentLevel(v.actionName)
                     if spell ~= nil then
                         local action = ActionList:Get(1, spell.ID)
                         if RoseCore.IsReady(action) then
+                            local target
+                            if v.settings.target == "self" then
+                                target = Player
+                            elseif v.settings.target == "MT" then
+                                target = RoseWHM.MainTank
+                            end
+
+                            RoseWHM.DebugPrint("Executing " .. v.actionName .. " on " .. v.settings.target)
                             table.remove(RoseWHM.ActionQueue, k)
-                            return RoseCore.Action(action, Player)
+                            return RoseCore.Action(action, target)
                         end
                     else
-                        RoseWHM.DebugPrint("Action " .. v.actionName .. " in ActionQueue was not found by GetCorrectSpellForCurrentLevel")
+                        RoseWHM.DebugPrint("Action " ..
+                            v.actionName .. " in ActionQueue was not found by GetCorrectSpellForCurrentLevel")
                         table.remove(RoseWHM.ActionQueue, k)
                         break
                     end
@@ -454,22 +470,26 @@ function RoseWHM.Cast()
                         end
                     end
                 end
-                if level >= 50 and not RoseWHM.IsInSavage then
+                if RoseWHM.IsInSavage == false then
                     RoseWHM.HandleAOEProtection(level, khpcount, currentTanks)
+                    RoseWHM.HandleTankProtection(khpcount, currentTanks)
                 end
                 if lowcount > 0 then
                     local lowest = 0
                     local hp = 100
                     local IsTargetATank = false
                     for _, member in pairs(PartyMembers) do
-                        if member.hp.percent < hp then
-                            lowest = member
-                            hp = member.hp.percent
-                            IsTargetATank = member.IsTank
+                        RoseCore.UpdateEntityHealthCache(member)
+                        if not RoseCore.IsEntityInHealthCache(member) then
+                            if member.hp.percent < hp then
+                                lowest = member
+                                hp = member.hp.percent
+                                IsTargetATank = member.IsTank
+                            end
                         end
                     end
 
-                    if Heal then
+                    if Heal and lowest ~= 0 then
                         local count = 0
 
                         for k, v in pairs(EntityList.myparty) do
@@ -498,6 +518,7 @@ function RoseWHM.Cast()
                                 if not RoseWHM.DidAOEHeal then -- Fallback if no AOE heal was done, do a single target heal
                                     RoseWHM.HandleSingleTargetHealing(level, IsTargetATank, lowest)
                                 else
+                                    RoseCore.AddEntityToHealthCache(lowest)
                                     RoseWHM.AlreadyDidAOE = 15
                                 end
                             else
@@ -536,71 +557,29 @@ function RoseWHM.Cast()
     end
 end
 
-function RoseWHM.HandleAOEProtection(level, khpcount, tanks)
-    if TensorCore and Argus then
-        local CurrentAoEs = Argus.getCurrentAOEs(true)
-        if TensorCore.Avoidance.inUnavoidableAOE(CurrentAoEs, Player) then
-            -- This part is to avoid casting a skill right before the AOE goes off as it would result of the
-            -- spell being casted AFTER the AOE, so useless.
-            -- This part can probably be imporved by just getting the Unavoidable and not the first one on the list only
-            -- but I don't know how to do that yet.
-            local ShouldCastProtection = true
-            local ShouldCastShield = false
-            local CurrentAoEs = CurrentAoEs
-            for k, v in pairs(CurrentAoEs) do
-                local ent = TensorCore.mGetEntity(v.entityID)
-                local TimeUntilBoom = ent.castinginfo.casttime - ent.castinginfo.channeltime
-                if TimeUntilBoom <= 0.7 then -- 0.7s or under, cast are not allowed
-                    ShouldCastProtection = false
-                end
-                break -- Only get the first one on the list, maybe CurrentAoEs[1] could work to avoid a loop ?
-            end
-
-            local shieldNeededCount = 0
-            for k, v in pairs(EntityList.myparty) do
-                if v.hp.percent > 1 and v.shield < 5 then
-                    shieldNeededCount = shieldNeededCount + 1
-                end
-            end
-            if shieldNeededCount > 1 then
-                ShouldCastShield = true
-            end
-
-            -- 3003 - 2618
-            if ShouldCastProtection then
-                local buffLiturgy = RoseCore.Utils.GetBuff(Player, { 2709 })
-                if buffLiturgy == nil then
-                    local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("Liturgy") -- 2709
-                    if spell ~= nil then
-                        local action = ActionList:Get(1, spell.ID)
-                        if RoseCore.IsReady(action) then
-                            return RoseCore.Action(action, Player)
-                        end
-                    end
-                end
-
-                if buffLiturgy == nil then
-                    local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("PlenaryIndulgence")
-                    if spell ~= nil then
-                        local action = ActionList:Get(1, spell.ID)
-                        if RoseCore.IsReady(action) then
-                            return RoseCore.Action(action, Player)
-                        end
-                    end
-                end
-
-                if buffLiturgy == nil then
-                    local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("Temperance")
-                    if spell ~= nil then
-                        local action = ActionList:Get(1, spell.ID)
-                        if RoseCore.IsReady(action) then
-                            return RoseCore.Action(action, Player)
-                        end
-                    end
-                end
+function RoseWHM.ClearAoeCach(currentAOE)
+    local AOEToRemove = {}
+    for k, v in pairs(RoseWHM.AlreadyCastedProtectionForAOE) do
+        local found = false
+        for i, j in pairs(currentAOE) do
+            if k == j.aoeID then
+                found = true
             end
         end
+        if not found then
+            RoseWHM.DebugPrint("AOE " .. k .. " was removed from the cache")
+            table.insert(AOEToRemove, k)
+        end
+    end
 
+    for k, v in pairs(AOEToRemove) do
+        RoseWHM.AlreadyCastedProtectionForAOE[v] = nil
+    end
+end
+
+function RoseWHM.HandleTankProtection(khpcount, tanks)
+    if TensorCore and Argus then
+        local CurrentAoEs = Argus.getCurrentAOEs(true)
         for k, v in pairs(tanks) do
             if TensorCore.Avoidance.inUnavoidableAOE(CurrentAoEs, v) then
                 local buffDevineBension = RoseCore.Utils.GetBuff(v, { 1218 })
@@ -671,6 +650,97 @@ function RoseWHM.HandleAOEProtection(level, khpcount, tanks)
                         end
                     end
                 end
+            end
+        end
+    end
+end
+
+function RoseWHM.HandleAOEProtection(level, khpcount, tanks)
+    if TensorCore and Argus then
+        local CurrentAoEs = Argus.getCurrentAOEs(true)
+        RoseWHM.ClearAoeCach(CurrentAoEs)
+        if TensorCore.Avoidance.inUnavoidableAOE(CurrentAoEs, Player) then
+            -- This part is to avoid casting a skill right before the AOE goes off as it would result of the
+            -- spell being casted AFTER the AOE, so useless.
+            -- This part can probably be imporved by just getting the Unavoidable and not the first one on the list only
+            -- but I don't know how to do that yet.
+            local currentAoeID = 0
+            local ShouldCastProtection = true
+            local CurrentAoEs = CurrentAoEs
+            for k, v in pairs(CurrentAoEs) do
+                local ent = TensorCore.mGetEntity(v.entityID)
+                local TimeUntilBoom = ent.castinginfo.casttime - ent.castinginfo.channeltime
+                if TimeUntilBoom <= 0.7 then -- 0.7s or under, cast are not allowed
+                    ShouldCastProtection = false
+                end
+                currentAoeID = v.aoeID
+                break -- Only get the first one on the list, maybe CurrentAoEs[1] could work to avoid a loop ?
+            end
+
+            local shieldNeededCount = 0
+            for k, v in pairs(EntityList.myparty) do
+                if v.hp.percent > 1 and v.shield < 5 then
+                    shieldNeededCount = shieldNeededCount + 1
+                end
+            end
+
+            -- 3003 - 2618
+            if ShouldCastProtection and RoseWHM.AlreadyCastedProtectionForAOE[currentAoeID] == nil then
+                local buffLiturgy = RoseCore.Utils.GetBuff(Player, { 2709 })
+                if buffLiturgy == nil then
+                    local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("Liturgy") -- 2709
+                    if spell ~= nil then
+                        local action = ActionList:Get(1, spell.ID)
+                        if RoseCore.IsReady(action) then
+                            RoseWHM.AlreadyCastedProtectionForAOE[currentAoeID] = true
+                            RoseWHM.AddActionToQueue("Liturgy", {
+                                target = "self"
+                            })
+                            return
+                            --return RoseCore.Action(action, Player)
+                        end
+                    end
+                end
+
+                local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("Temperance")
+                if spell ~= nil then
+                    local action = ActionList:Get(1, spell.ID)
+                    if RoseCore.IsReady(action) then
+                        RoseWHM.AlreadyCastedProtectionForAOE[currentAoeID] = true
+                        RoseWHM.AddActionToQueue("Temperance", {
+                            target = "self"
+                        })
+                        return
+                        --return RoseCore.Action(action, Player)
+                    end
+                end
+
+
+                local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("PlenaryIndulgence")
+                if spell ~= nil then
+                    local action = ActionList:Get(1, spell.ID)
+                    if RoseCore.IsReady(action) then
+                        RoseWHM.AlreadyCastedProtectionForAOE[currentAoeID] = true
+                        RoseWHM.AddActionToQueue("PlenaryIndulgence", {
+                            target = "self"
+                        })
+                        return
+                        --return RoseCore.Action(action, Player)
+                    end
+                end
+
+                local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("Asylum")
+                if spell ~= nil then
+                    local action = ActionList:Get(1, spell.ID)
+                    if RoseCore.IsReady(action) then
+                        RoseWHM.AlreadyCastedProtectionForAOE[currentAoeID] = true
+                        RoseWHM.AddActionToQueue("Asylum", {
+                            target = "MT"
+                        })
+                        return
+                    end
+                end
+
             end
         end
 

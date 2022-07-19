@@ -5,6 +5,7 @@ function RoseWHM.HandleSingleTargetHealing(level, IsTargetATank, lowest)
             local action = ActionList:Get(1, spell.ID)
             if RoseCore.IsReady(action) then
                 if RoseCore.HealFormula(lowest, spellValue.potency - 300) then
+                    RoseCore.AddEntityToHealthCache(lowest)
                     return RoseCore.Action(action, lowest)
                 end
             end
@@ -16,20 +17,25 @@ function RoseWHM.HandleSingleTargetHealing(level, IsTargetATank, lowest)
         if spell ~= nil then
             local action = ActionList:Get(1, spell.ID)
             if RoseCore.IsReady(action) then
+                RoseCore.AddEntityToHealthCache(lowest)
                 return RoseCore.Action(action, lowest)
             end
         end
     end
 
-    local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("Tetragrammaton")
-    if spell ~= nil then
-        local action = ActionList:Get(1, spell.ID)
-        if RoseCore.IsReady(action) then
-            if RoseCore.HealFormula(lowest, spellValue.potency) then
-                return RoseCore.Action(action, lowest)
+    if not RoseWHM.IsInSavage then
+        local spell, spellValue = RoseWHM.GetCorrectSpellForCurrentLevel("Tetragrammaton")
+        if spell ~= nil then
+            local action = ActionList:Get(1, spell.ID)
+            if RoseCore.IsReady(action) then
+                if RoseCore.HealFormula(lowest, spellValue.potency) then
+                    RoseCore.AddEntityToHealthCache(lowest)
+                    return RoseCore.Action(action, lowest)
+                end
             end
         end
     end
+
 
     if RoseWHM.HasDPSTarget and RoseWHM.MainTank ~= 0 then
         local regen = RoseCore.Utils.GetBuff(RoseWHM.MainTank, { 158 })
@@ -57,6 +63,7 @@ function RoseWHM.HandleSingleTargetHealing(level, IsTargetATank, lowest)
         local action = ActionList:Get(1, spell.ID)
         if RoseCore.IsReady(action) then
             if RoseCore.HealFormula(lowest, spellValue.potency) then
+                RoseCore.AddEntityToHealthCache(lowest)
                 return RoseCore.Action(action, lowest)
             end
         end
@@ -65,6 +72,7 @@ function RoseWHM.HandleSingleTargetHealing(level, IsTargetATank, lowest)
         if freeCure ~= nil then
             local action = ActionList:Get(1, spell.ID)
             if RoseCore.IsReady(action) then
+                RoseCore.AddEntityToHealthCache(lowest)
                 return RoseCore.Action(action, lowest)
             end
         end
@@ -75,6 +83,7 @@ function RoseWHM.HandleSingleTargetHealing(level, IsTargetATank, lowest)
         local action = ActionList:Get(1, spell.ID)
         if RoseCore.IsReady(action) then
             if RoseCore.HealFormula(lowest, spellValue.potency) then
+                RoseCore.AddEntityToHealthCache(lowest)
                 return RoseCore.Action(action, lowest)
             end
         end
