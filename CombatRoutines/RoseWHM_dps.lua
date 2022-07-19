@@ -22,6 +22,18 @@ function RoseWHM.HandleAttack(target, level, elist)
         end
     end
 
+    if inRangeEnemy >= 1 and RoseWHM.HasDPSTarget then
+        local spell = RoseWHM.GetCorrectSpellForCurrentLevel("AfflactusMisery")
+        if spell ~= nil then
+            if Player.gauge[3] == 3 then
+                local action = ActionList:Get(1, spell.ID)
+                if RoseCore.IsReady(action) then
+                    return RoseCore.Action(action, target)
+                end
+            end
+        end
+    end
+
     if not WhmHotbarSettings.SmartDot.bool then
         local buff = RoseCore.Utils.GetBuff(target, { 143, 144, 798, 1871 }, Player)
         if buff == nil then
@@ -88,15 +100,6 @@ function RoseWHM.HandleAttack(target, level, elist)
     end
 
     if inRangeEnemy >= 1 and RoseWHM.HasDPSTarget then
-        local spell = RoseWHM.GetCorrectSpellForCurrentLevel("AfflactusMisery")
-        if spell ~= nil then
-            if Player.gauge[3] == 3 then
-                local action = ActionList:Get(1, spell.ID)
-                if RoseCore.IsReady(action) then
-                    return RoseCore.Action(action, target)
-                end
-            end
-        end
 
         local spell = RoseWHM.GetCorrectSpellForCurrentLevel("Stone")
         if spell ~= nil then
