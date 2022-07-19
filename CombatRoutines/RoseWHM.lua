@@ -518,7 +518,12 @@ function RoseWHM.Cast()
                                 if not RoseWHM.DidAOEHeal then -- Fallback if no AOE heal was done, do a single target heal
                                     RoseWHM.HandleSingleTargetHealing(level, IsTargetATank, lowest)
                                 else
-                                    RoseCore.AddEntityToHealthCache(lowest)
+                                    for _, member in pairs(lowPartyHP) do
+                                        if member.distance2d <= 15 then
+                                            RoseCore.AddEntityToHealthCache(member)
+                                        end
+                                    end
+                                    
                                     RoseWHM.AlreadyDidAOE = 15
                                 end
                             else
