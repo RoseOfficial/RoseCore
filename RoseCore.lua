@@ -8621,6 +8621,14 @@ function RoseCore.IsReady(action)
     end
 end
 
+function RoseCore.WasActionUsed(action)
+	if action.cd == nil or action.cd == 0 then
+		return false
+	else
+		return true
+	end
+end
+
 function RoseCore.Action(action, target)
     if type(action) == "number" then
         action = ActionList:Get(1, action)

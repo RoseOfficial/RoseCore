@@ -439,6 +439,16 @@ function RoseWHM.Cast()
                 end
 
                 for k, v in pairs(RoseWHM.ActionQueue) do
+                    if v.shouldBeUsed then
+                        local spell = RoseWHM.GetCorrectSpellForCurrentLevel(v.actionName)
+                        if RoseCore.WasActionUsed(ActionList:Get(1, spell.ID)) then
+                            RoseWHM.DebugPrint("Removed " .. v.actionName .. " from the queue")
+                            table.remove(RoseWHM.ActionQueue, k)
+                        end
+                    end
+                end
+
+                for k, v in pairs(RoseWHM.ActionQueue) do
                     local spell = RoseWHM.GetCorrectSpellForCurrentLevel(v.actionName)
                     if spell ~= nil then
                         local action = ActionList:Get(1, spell.ID)
@@ -451,7 +461,7 @@ function RoseWHM.Cast()
                             end
 
                             RoseWHM.DebugPrint("Executing " .. v.actionName .. " on " .. v.settings.target)
-                            table.remove(RoseWHM.ActionQueue, k)
+                            v.shouldBeUsed = true
                             return RoseCore.Action(action, target)
                         end
                     else
