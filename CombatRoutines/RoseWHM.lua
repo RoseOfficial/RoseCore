@@ -504,8 +504,10 @@ function RoseWHM.SingleTargetHealing(targetingResult)
             lastHealTime = os.clock()
             return
         end
-        if level >= RoseWHM.Spells.Aquaveil.level and RoseWHM.CastSpellIfReady(RoseWHM.Spells.Aquaveil.id, Player.id) then
-            d(string.format("Casting spell: %s", RoseWHM.Spells.Aquaveil.name))
+        for _, member in pairs(partyMembers) do
+            if RoseWHM.GetRoleByJob(member.job) == 'Tank' and level >= RoseWHM.Spells.Aquaveil.level and RoseWHM.CastSpellIfReady(RoseWHM.Spells.Aquaveil.id, member.id) then
+                d(string.format("Casting spell: %s", RoseWHM.Spells.Aquaveil.name))
+            end
         end
         local singleTargetHealSpells = {
             {spell = RoseWHM.Spells.Temperance, level = RoseWHM.Spells.Temperance.level, condition = lowest.hp.percent <= 50},
