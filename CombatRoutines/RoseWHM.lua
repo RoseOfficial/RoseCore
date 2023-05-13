@@ -83,6 +83,7 @@ function RoseWHM.GetRoleByJob(job)
     local tankJobs = {1, 3, 19, 21, 32, 37}
     if table.contains(tankJobs, job) then
         return "tank"
+    end
     return nil
 end
 
@@ -341,6 +342,7 @@ function RoseWHM.UseSprint()
             sprintAction:Cast(Player.id)
             return true
         end
+    end
     return false
 end
 
@@ -586,5 +588,4 @@ end
 
 function RoseWHM.OnUpdate()
 end
-
 return RoseWHM
