@@ -332,24 +332,6 @@ function RoseWHM.GetBestPartyHealTarget()
     return lowest
 end
 
-function RoseWHM.HealTarget(lowest)
-    local level = Player.level
-    if lowest and lowest.hp.percent < 100 then
-        local healSpells = {
-            {spell = RoseWHM.Spells.AfflatusSolace, level = RoseWHM.Spells.AfflatusSolace.level, condition = Player.gauge[2] >= 1},
-            {spell = RoseWHM.Spells.Regen, level = RoseWHM.Spells.Regen.level, condition = not RoseWHM.HasBuff(lowest.id, 158)},
-            {spell = RoseWHM.Spells.CureII, level = RoseWHM.Spells.CureII.level},
-            {spell = RoseWHM.Spells.Cure, level = RoseWHM.Spells.Cure.level}
-        }
-        for _, entry in ipairs(healSpells) do
-            local spell = entry.spell
-            if level >= entry.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, lowest.id) then
-                return
-            end
-        end
-    end
-end
-
 local lastTargetCheck = 0
 function RoseWHM.Targeting()
     RoseWHM.elist = MEntityList("alive,attackable,incombat,maxdistance=30")
@@ -481,8 +463,6 @@ function RoseWHM.HasBuff(target, buffID)
 end
 
 function RoseWHM.Cast()
-    RoseWHM.FollowTank()
-
     if RoseWHM.HasBuff(Player, 418) then
         return false
     end
@@ -517,8 +497,18 @@ function RoseWHM.SingleTargetHealing(targetingResult)
     if currentTime - lastHealTime < healDelay then return end
     local lowest = RoseWHM.GetBestPartyHealTarget(targetingResult)
     local level = Player.level
+    local divineBenison = RoseWHM.Spells.DivineBenison
     if lowest and lowest.hp.percent < 80 then
-        local healSpells = {
+        if level >= divineBenison.level and RoseWHM.CastSpellIfReady(divineBenison.id, lowest) then
+            d(string.format("Casting spell: %s", divineBenison.name))
+            lastHealTime = os.clock()
+            return
+        end
+        if level >= RoseWHM.Spells.Aquaveil.level and RoseWHM.CastSpellIfReady(RoseWHM.Spells.Aquaveil.id, Player.id) then
+            d(string.format("Casting spell: %s", RoseWHM.Spells.Aquaveil.name))
+        end
+        local singleTargetHealSpells = {
+            {spell = RoseWHM.Spells.Temperance, level = RoseWHM.Spells.Temperance.level, condition = lowest.hp.percent <= 50},
             {spell = RoseWHM.Spells.Benediction, level = RoseWHM.Spells.Benediction.level, condition = lowest.hp.percent < 10},
             {spell = RoseWHM.Spells.Tetragrammaton, level = RoseWHM.Spells.Tetragrammaton.level},
             {spell = RoseWHM.Spells.AfflatusSolace, level = RoseWHM.Spells.AfflatusSolace.level, condition = Player.gauge[2] >= 1},
@@ -526,12 +516,17 @@ function RoseWHM.SingleTargetHealing(targetingResult)
             {spell = RoseWHM.Spells.CureII, level = RoseWHM.Spells.CureII.level, condition = lowest.hp.percent < 60 and not Player:IsMoving()},
             {spell = RoseWHM.Spells.Cure, level = RoseWHM.Spells.Cure.level, condition = lowest.hp.percent < 60 and not Player:IsMoving()}
         }
-        for _, entry in ipairs(healSpells) do
+        for _, entry in ipairs(singleTargetHealSpells) do
             local spell = entry.spell
-            if level >= entry.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, lowest.id) then
-                d(string.format("Casting spell: %s", spell.name))
-                lastHealTime = os.clock()
-                return
+            if level >= spell.level and (entry.condition == nil or entry.condition) then
+                if level >= thinAir.level and RoseWHM.CastSpellIfReady(thinAir.id, Player.id) then
+                    d(string.format("Casting spell: %s", thinAir.name))
+                end
+                if RoseWHM.CastSpellIfReady(spell.id, entry.target) then
+                    d(string.format("Casting spell: %s", spell.name))
+                    lastHealTime = os.clock()
+                    return
+                end
             end
         end
     end
@@ -571,10 +566,15 @@ function RoseWHM.AOEHealing(partyMembers, lowest)
 
             for _, entry in ipairs(aoeHealSpells) do
                 local spell = entry.spell
-                if level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, entry.target) then
-                    d(string.format("Casting spell: %s", spell.name))
-                    lastHealTime = os.clock()
-                    return
+                if level >= spell.level and (entry.condition == nil or entry.condition) then
+                    if level >= thinAir.level and RoseWHM.CastSpellIfReady(thinAir.id, Player.id) then
+                        d(string.format("Casting spell: %s", thinAir.name))
+                    end
+                    if RoseWHM.CastSpellIfReady(spell.id, entry.target) then
+                        d(string.format("Casting spell: %s", spell.name))
+                        lastHealTime = os.clock()
+                        return
+                    end
                 end
             end
         end
@@ -594,6 +594,8 @@ function RoseWHM.SingleTargetDamage()
         local singleTargetDmgSpells = {
             {spell = RoseWHM.Spells.Assize, radius = 15, condition = currentTarget.distance2d <= 15},
             {spell = RoseWHM.Spells.GlareIII, condition = not Player:IsMoving()},
+            {spell = RoseWHM.Spells.StoneIV, condition = not Player:IsMoving()},
+            {spell = RoseWHM.Spells.StoneIII, condition = not Player:IsMoving()},
             {spell = RoseWHM.Spells.StoneII, condition = not Player:IsMoving()},
             {spell = RoseWHM.Spells.Stone, condition = not Player:IsMoving()}
         }
