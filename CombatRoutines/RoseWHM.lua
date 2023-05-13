@@ -70,7 +70,6 @@ function RoseWHM.Debug(context, message)
     end
 end
 
--- Utility function: table.contains
 function table.contains(table, value)
     for _, v in pairs(table) do
         if v == value then
@@ -84,9 +83,6 @@ function RoseWHM.GetRoleByJob(job)
     local tankJobs = {1, 3, 19, 21, 32, 37}
     if table.contains(tankJobs, job) then
         return "tank"
-    else
-        -- Add other role checks for DPS and Healer jobs if necessary
-    end
     return nil
 end
 
@@ -104,7 +100,6 @@ function RoseWHM.SearchEntities(searchString)
 end
 
 function RoseWHM.ShouldApplyDoT(enemies)
-    -- d("RoseWHM.ShouldApplyDoT called")
     local playerId = Player.id
     local Aero = buffIDTable.Aero
     local AeroII = buffIDTable.AeroII
@@ -112,23 +107,17 @@ function RoseWHM.ShouldApplyDoT(enemies)
     if not enemies then
         return false, nil
     end
-
     for _, enemy in pairs(enemies) do
         local hasDoTBuff = false
-
         for _, buff in pairs(enemy.buffs) do
             if (buff.id == Aero or buff.id == AeroII or buff.id == Dia) and tonumber(buff.ownerid) == tonumber(playerId) then
                 hasDoTBuff = true
-
                 if buff.duration <= 3 then
-                    -- d("DoT duration is less than or equal to 3")
                     return true, enemy
                 end
             end
         end
-
         if not hasDoTBuff then
-            -- d("Enemy does not have a DoT buff")
             return true, enemy
         end
     end
@@ -137,25 +126,14 @@ end
 
 function RoseWHM.ActionIsReady(id)
     if (MIsLoading() or not ActionList:IsReady()) then
-        -- d("Action list is not ready or game is loading.")
         return false
     end
-
     local id = tonumber(id) or 0
-
     local action = ActionList:Get(1, id)
     if (table.valid(action)) then
         local isOffCooldown = action.cd <= 0
         local currentMP = Player.mp.current
         local hasEnoughResources = currentMP >= action.cost
-
-        if not isOffCooldown then
-            -- d(string.format("Spell with ID: %d is on cooldown", id))
-        end
-        if not hasEnoughResources then
-            -- d(string.format("Not enough resources to cast spell with ID: %d", id))
-        end
-
         return isOffCooldown and hasEnoughResources
     end
     return false
@@ -174,14 +152,12 @@ function RoseWHM.GetBestRevive(party, role)
     party = IsNull(party, false)
     role = role or ""
     range = 30
-
     local el = nil
     if (party) then
         el = MEntityList("myparty,friendly,chartype=4,targetable,dead,maxdistance=" .. tostring(range))
     else
         el = MEntityList("friendly,dead,chartype=4,targetable,maxdistance=" .. tostring(range))
     end
-
     if (table.valid(el)) then
         local roleTable = GetRoleTable(role)
         for id, entity in pairs(el) do
@@ -190,29 +166,23 @@ function RoseWHM.GetBestRevive(party, role)
                 return entity
             end
         end
-    else
-        RoseWHM.Debug("No valid revive targets found")
     end
-
     return nil
 end
 
 function RoseWHM.GetDeadPartyMembers()
     local deadMembers = {}
     local party = EntityList("type=1,chartype=4")
-
     for _, member in pairs(party) do
         if member.hp.percent == 0 then
             deadMembers[member.id] = member
         end
     end
-
     return deadMembers
 end
 
 function RoseWHM.HandleRaise()
     local PartyMembersDead = RoseWHM.GetDeadPartyMembers()
-
     if table.valid(PartyMembersDead) and Player.level >= 12 and Player.mp.percent >= 24 then
         local raiseId = RoseWHM.Spells.Raise.id
         local swiftcastId = RoseWHM.Spells.SwiftCast.id
@@ -221,23 +191,14 @@ function RoseWHM.HandleRaise()
         if table.valid(raiseTarget) and MissingBuffs(raiseTarget, "148+1140") then
             local reztime = 0
             if Player.level >= 18 and RoseWHM.CastSpellIfReady(swiftcastId, Player.id) then
-                RoseWHM.Debug("raise", "Using Swiftcast")
                 return RoseWHM.SwiftcastRaise(raiseTarget)
             elseif RoseWHM.CastSpellIfReady(raiseId, raiseTarget.id) then
                 if TimeSince(reztime) > 2000 then
-                    --SendTextCommand("/p Rezzing <t>")
                     reztime = Now()
-                    RoseWHM.Debug("raise", "Casting Raise")
                     return RoseWHM.CastSpellIfReady(raiseId, raiseTarget.id)
                 end
-            else
-                RoseWHM.Debug("raise", "Raise spell is not ready")
             end
-        else
-            RoseWHM.Debug("raise", "No valid raise target or target has Raise immunity")
         end
-    else
-        RoseWHM.Debug("raise", "No dead party members or insufficient level/MP")
     end
 end
 
@@ -245,35 +206,25 @@ function RoseWHM.SwiftcastRaise(target)
     if target then
         local swiftcastId = RoseWHM.Spells.SwiftCast.id
         local raiseId = RoseWHM.Spells.Raise.id
-
         RoseWHM.CastSpellIfReady(swiftcastId, Player.id)
-
         local swiftcastApplied = false
         local startTime = os.clock()
         while not swiftcastApplied and os.clock() - startTime < 3 do
             local swiftcastBuff = HasBuff(Player,167)
             if swiftcastBuff then
-                RoseWHM.Debug("Swiftcast applied")
                 swiftcastApplied = true
             else
                 coroutine.yield()
             end
         end
-
         if swiftcastApplied then
-            RoseWHM.Debug("Casting Raise with Swiftcast")
             RoseWHM.CastSpellIfReady(raiseId, target.id)
-        else
-            RoseWHM.Debug("Swiftcast not applied, unable to cast Raise with Swiftcast")
         end
-    else
-        RoseWHM.Debug("No valid target for Swiftcast Raise")
     end
 end
 
 function RoseWHM.CheckEnemiesForDoTDebuffs()
     local enemiesWithDebuffs = {}
-
     if table.valid(RoseWHM.elist) then
         for _, enemy in pairs(RoseWHM.elist) do
             for _, buff in pairs(enemy.buffs) do
@@ -290,15 +241,12 @@ end
 function RoseWHM.GetHealableTargets(range, hp, whitelist, npc)
     local search = ""
     local healables = {}
-
     if npc then
         search = "alive,targetable,maxdistance=" .. tostring(range)
     else
         search = "alive,friendly,chartype=4,myparty,targetable,maxdistance=" .. tostring(range)
     end
-
     if (whitelist ~= "") then search = search .. ",contentid=" .. tostring(whitelist) end
-
     local el = MEntityList(search)
     if (table.valid(el)) then
         for i, entity in pairs(el) do
@@ -307,11 +255,9 @@ function RoseWHM.GetHealableTargets(range, hp, whitelist, npc)
             end
         end
     end
-
     if Player.hp.percent <= hp then
         healables[Player.id] = Player
     end
-
     return healables
 end
 
@@ -319,16 +265,13 @@ function RoseWHM.GetBestPartyHealTarget()
     local range = range or ml_global_information.AttackRange
     local hp = hp or 95
     local whitelist = IsNull(whitelist, "")
-
     local healables = RoseWHM.GetHealableTargets(range, hp, whitelist, false)
     local lowest = nil
-
     for _, entity in pairs(healables) do
         if not lowest or entity.hp.percent < lowest.hp.percent then
             lowest = entity
         end
     end
-
     return lowest
 end
 
@@ -342,7 +285,6 @@ function RoseWHM.Targeting()
         if table.valid(llist) then
             for i, enemy in pairs(llist) do
                 if enemy.incombat then
-                    -- d("Targeting "..tostring(i))
                     Player:SetTarget(i)
                 end
             end
@@ -357,7 +299,7 @@ function RoseWHM.Targeting()
             if TimeSince(lastTargetCheck) > 100 then
                 lastTargetCheck = Now()
             end
-        elseif RoseWHM.lastEnemyTargetID then -- reset if you untarget something to prevent a hard lock with forced targeting
+        elseif RoseWHM.lastEnemyTargetID then
             RoseWHM.lastEnemyTarget = nil
             RoseWHM.lastEnemyTargetID = nil
         end
@@ -366,26 +308,19 @@ end
 
 function RoseWHM.GetPartyMembers()
     local partyMembers = MEntityList("alive,chartype=4,myparty,targetable,maxdistance=30") or {}
-
-    -- Add the Player to the partyMembers table
     partyMembers[Player.id] = Player
-
-    -- Add Trusts to the partyMembers table
     local trusts = MEntityList("alive,targetable,type=2,chartype=9,maxdistance2d=30")
     if table.valid(trusts) then
         for k, v in pairs(trusts) do
             partyMembers[k] = v
         end
     end
-
-    RoseWHM.Debug("party", "Found " .. tostring(table.size(partyMembers)) .. " party members")
     return partyMembers
 end
 
 function RoseWHM.LowestHealthPartyMember(partyMembers)
     local lowest = nil
     local lowestHealthPercentage = 101
-
     for _, member in pairs(partyMembers) do
         local hpPercentage = member.hp.percent
         if hpPercentage < lowestHealthPercentage then
@@ -397,51 +332,30 @@ function RoseWHM.LowestHealthPartyMember(partyMembers)
 end
 
 function RoseWHM.UseSprint()
-    local sprintId = 3 -- Sprint action ID
+    local sprintId = 3
     local sprintAction = ActionList:Get(1, sprintId)
     local playerIsMoving = Player:IsMoving()
-
     if sprintAction then
-        -- d("Sprint action found")
         local sprintRecastTime = sprintAction.cd
-
         if sprintRecastTime == 0 and sprintAction:IsReady() and playerIsMoving then
-            -- d("Casting Sprint")
             sprintAction:Cast(Player.id)
             return true
-        else
-            -- d("Sprint is on cooldown or player is not moving")
         end
-    else
-        -- d("Sprint action not found")
-    end
-
     return false
 end
 
 function RoseWHM.UseLucidDreaming()
-    local lucidDreamingId = 7562 -- Lucid Dreaming action ID
+    local lucidDreamingId = 7562
     local lucidDreamingAction = ActionList:Get(1, lucidDreamingId)
-
     if lucidDreamingAction then
-        -- d("Lucid Dreaming action found")
         local lucidDreamingRecastTime = lucidDreamingAction.cd
-
         if Player.mp.percent < 80 then
             if lucidDreamingRecastTime == 0 and lucidDreamingAction:IsReady() then
-                -- d("Casting Lucid Dreaming")
                 lucidDreamingAction:Cast(Player.id)
                 return true
-            else
-                -- d("Lucid Dreaming is on cooldown")
             end
-        else
-            -- d("MP is above 80%")
         end
-    else
-        -- d("Lucid Dreaming action not found")
     end
-
     return false
 end
 
@@ -451,9 +365,6 @@ function RoseWHM.HasBuff(target, buffID)
         if entity then
             for _, buff in ipairs(entity.buffs) do
                 if buff.id == buffID then
-                    if buffID == 418 then
-                        RoseWHM.Debug("cast", "Player has Transcendent buff, stopping all actions")
-                    end
                     return true
                 end
             end
@@ -466,32 +377,25 @@ function RoseWHM.Cast()
     if RoseWHM.HasBuff(Player, 418) then
         return false
     end
-
     local targetingResult = RoseWHM.Targeting()
     local enemies = RoseWHM.elist
     local shouldApplyDoT, targetforDoTApplication = RoseWHM.ShouldApplyDoT(enemies)
     local partyMembers = RoseWHM.GetPartyMembers()
-
     RoseWHM.HandleRaise()
     RoseWHM.UseSprint()
     RoseWHM.UseLucidDreaming()
-
     RoseWHM.AOEHealing(partyMembers)
     RoseWHM.SingleTargetHealing(targetingResult)
-
     if shouldApplyDoT and targetforDoTApplication then
         RoseWHM.SingleTargetDoT(targetforDoTApplication)
     end
-
     RoseWHM.AOEDamage()
     RoseWHM.SingleTargetDamage()
-
     return false
 end
 
 local lastHealTime = 0
 local healDelay = 3
-
 function RoseWHM.SingleTargetHealing(targetingResult)
     local currentTime = os.clock()
     if currentTime - lastHealTime < healDelay then return end
@@ -536,15 +440,12 @@ end
 
 function RoseWHM.AOEHealing(partyMembers, lowest)
     local currentTime = os.clock()
-
     if currentTime - lastHealTime < healDelay then
         return
     end
-
     local partyMembersBelow90Percent = 0
     local totalPartyMembers = 0
     local level = Player.level
-
     if table.valid(partyMembers) then
         for _, member in pairs(partyMembers) do
             local hpPercentage = member.hp.percent
@@ -553,9 +454,7 @@ function RoseWHM.AOEHealing(partyMembers, lowest)
             end
             totalPartyMembers = totalPartyMembers + 1
         end
-
         local halfPartySize = math.ceil(totalPartyMembers / 2)
-
         if partyMembersBelow90Percent >= halfPartySize then
             local aoeHealSpells = {
                 {spell = RoseWHM.Spells.LiturgyOfTheBell, target = Player.id},
@@ -565,7 +464,6 @@ function RoseWHM.AOEHealing(partyMembers, lowest)
                 {spell = RoseWHM.Spells.CureIII, target = lowest, condition = not Player:IsMoving()},
                 {spell = RoseWHM.Spells.Medica, target = Player.id, condition = not Player:IsMoving()}
             }
-
             for _, entry in ipairs(aoeHealSpells) do
                 local spell = entry.spell
                 if level >= spell.level and (entry.condition == nil or entry.condition) then
@@ -592,7 +490,6 @@ function RoseWHM.SingleTargetDamage()
         if level >= presenceOfMind.level and RoseWHM.CastSpellIfReady(presenceOfMind.id, Player.id) then
             d(string.format("Casting spell: %s", presenceOfMind.name))
         end
-
         local singleTargetDmgSpells = {
             {spell = RoseWHM.Spells.Assize, radius = 15, condition = currentTarget.distance2d <= 15},
             {spell = RoseWHM.Spells.GlareIII, condition = not Player:IsMoving()},
@@ -601,7 +498,6 @@ function RoseWHM.SingleTargetDamage()
             {spell = RoseWHM.Spells.StoneII, condition = not Player:IsMoving()},
             {spell = RoseWHM.Spells.Stone, condition = not Player:IsMoving()}
         }
-
         for _, entry in ipairs(singleTargetDmgSpells) do
             local spell = entry.spell
             if level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, currentTarget.id) then
@@ -616,14 +512,12 @@ end
 function RoseWHM.AOEDamage()
     RoseWHM.Targeting()
     local enemies = RoseWHM.elist
-
     if table.valid(enemies) and table.size(enemies) > 1 then
         local level = Player.level
         local aoeDmgSpells = {
             {spell = RoseWHM.Spells.HolyIII, radius = 8, condition = not Player:IsMoving()},
             {spell = RoseWHM.Spells.Holy, radius = 8, condition = not Player:IsMoving()}
         }
-
         for _, entry in ipairs(aoeDmgSpells) do
             local spell = entry.spell
             local nearbyEnemies = MEntityList("alive,attackable,maxdistance=" .. entry.radius)
@@ -633,7 +527,6 @@ function RoseWHM.AOEDamage()
             end
         end
     end
-
     return false
 end
 
@@ -647,7 +540,6 @@ function RoseWHM.SingleTargetDoT(targetforDoTApplication)
             {spell = RoseWHM.Spells.AeroII, buffId = 143},
             {spell = RoseWHM.Spells.Aero, buffId = 144}
         }
-
         for _, entry in ipairs(singleTargetDoTSpells) do
             local spell = entry.spell
             local buffId = entry.buffId
@@ -690,7 +582,6 @@ function RoseWHM.OnLoad()
 end
 
 function RoseWHM.OnClick(mouse,shiftState,controlState,altState,entity)
-    -- d(string.format("[RoseWHM] OnClick function called with parameters: mouse=%d,shiftState=%s, controlState=%s, altState=%s, entity=%s", mouse, tostring(shiftState), tostring(controlState), tostring(altState), tostring(entity)))
 end
 
 function RoseWHM.OnUpdate()
