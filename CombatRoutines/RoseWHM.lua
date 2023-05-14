@@ -1,25 +1,32 @@
 -- This is RoseWHM, a White Mage ACR for MMOMinion for FFXIV
+
+-- Define the RoseWHM table
 local RoseWHM = {}
 
+-- Set up RoseWHM settings
 RoseWHM.Settings = {
     AOE = true,
     Debug = true,
 }
 
+-- Set up RoseWHM GUI
 RoseWHM.GUI = {
     Open = false,
     Visible = false,
     Name = "RoseWHM",
     Height = 200,
-    Width = 200
+    Width = 200,
 }
 
+-- Set up RoseWHM classes
 RoseWHM.classes = {
     [FFXIV.JOBS.WHITEMAGE] = true,
     [FFXIV.JOBS.CONJURER] = true,
 }
 
+-- Define RoseWHM Spells
 RoseWHM.Spells = {
+    -- Define each spell with its properties
     Stone = {id = 119, level = 1, name = "Stone", cast = 1.5, recast = 2.5, mp = 200, range = 25, radius = 0, potency = 140},
     Cure = {id = 120, level = 2, name = "Cure", cast = 1.5, recast = 2.5, mp = 400, range = 30, radius = 0, potency = 500},
     Aero = {id = 121, level = 4, name = "Aero", cast = 0, recast = 2.5, mp = 200, range = 25, radius = 0, potency = 50, duration = 30},
@@ -55,14 +62,17 @@ RoseWHM.Spells = {
     LiturgyOfTheBell = {id = 25862, level = 90, name = "Liturgy of the Bell", cast = 0, recast = 180, mp = 0, range = 30, radius = 0, potency = 400, duration = 20}
 }
 
+-- Define Buff ID Table
 local buffIDTable = {
     Aero = 143,
     AeroII = 144,
     Dia = 1871,
 }
 
+-- Set up debug contexts
 local debugContexts = {}
 
+-- Define the Debug function
 function RoseWHM.Debug(context, message)
     if debugContexts[context] ~= message then
         d(message)
@@ -70,6 +80,7 @@ function RoseWHM.Debug(context, message)
     end
 end
 
+-- Define a function to check if a table contains a value
 function table.contains(table, value)
     for _, v in pairs(table) do
         if v == value then
@@ -79,6 +90,7 @@ function table.contains(table, value)
     return false
 end
 
+-- Define a function to get the role by job
 function RoseWHM.GetRoleByJob(job)
     local tankJobs = {1, 3, 19, 21, 32, 37}
     if table.contains(tankJobs, job) then
@@ -87,9 +99,11 @@ function RoseWHM.GetRoleByJob(job)
     return nil
 end
 
+-- Define a function to search for entities
 function RoseWHM.SearchEntities(searchString)
     local el = MEntityList(searchString)
     local validEntities = {}
+
     if table_valid(el) then
         for i, entity in pairs(el) do
             if (IsValidHealTarget(entity)) then
@@ -100,6 +114,7 @@ function RoseWHM.SearchEntities(searchString)
     return validEntities
 end
 
+-- Define a function to check if DoT should be applied
 function RoseWHM.ShouldApplyDoT(enemies)
     local playerId = Player.id
     local Aero = buffIDTable.Aero
@@ -125,6 +140,7 @@ function RoseWHM.ShouldApplyDoT(enemies)
     return false, nil
 end
 
+-- Define a function to check if an action is ready
 function RoseWHM.ActionIsReady(id)
     if (MIsLoading() or not ActionList:IsReady()) then
         return false
@@ -140,6 +156,7 @@ function RoseWHM.ActionIsReady(id)
     return false
 end
 
+-- Define a function to cast a spell if it's ready
 function RoseWHM.CastSpellIfReady(spellId, targetId)
     local action = ActionList:Get(1, spellId)
     if action and action.cd == 0 and action:IsReady(targetId) then
@@ -149,6 +166,7 @@ function RoseWHM.CastSpellIfReady(spellId, targetId)
     return false
 end
 
+-- Define a function to get the best revive target
 function RoseWHM.GetBestRevive(party, role)
     party = IsNull(party, false)
     role = role or ""
