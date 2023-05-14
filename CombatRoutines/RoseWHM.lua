@@ -422,6 +422,8 @@ function RoseWHM.SingleTargetHealing(targetingResult)
     local lowest = RoseWHM.GetBestPartyHealTarget(targetingResult)
     local level = Player.level
     local divineBenison = RoseWHM.Spells.DivineBenison
+    local partyMembers = RoseWHM.GetPartyMembers()  -- Ensure that partyMembers is defined in this scope
+
     if lowest and lowest.hp.percent < 80 then
         if level >= divineBenison.level and RoseWHM.CastSpellIfReady(divineBenison.id, lowest) then
             d(string.format("Casting spell: %s", divineBenison.name))
@@ -445,8 +447,8 @@ function RoseWHM.SingleTargetHealing(targetingResult)
         for _, entry in ipairs(singleTargetHealSpells) do
             local spell = entry.spell
             if level >= spell.level and (entry.condition == nil or entry.condition) then
-                if level >= thinAir.level and RoseWHM.CastSpellIfReady(thinAir.id, Player.id) then
-                    d(string.format("Casting spell: %s", thinAir.name))
+                if level >= RoseWHM.Spells.ThinAir.level and RoseWHM.CastSpellIfReady(RoseWHM.Spells.ThinAir.id, RoseWHM.Spells.ThinAir.id) then
+                    d(string.format("Casting spell: %s", RoseWHM.Spells.ThinAir.name))
                 end
                 if RoseWHM.CastSpellIfReady(spell.id, entry.target) then
                     d(string.format("Casting spell: %s", spell.name))
@@ -487,8 +489,8 @@ function RoseWHM.AOEHealing(partyMembers, lowest)
             for _, entry in ipairs(aoeHealSpells) do
                 local spell = entry.spell
                 if level >= spell.level and (entry.condition == nil or entry.condition) then
-                    if level >= thinAir.level and RoseWHM.CastSpellIfReady(thinAir.id, Player.id) then
-                        d(string.format("Casting spell: %s", thinAir.name))
+                    if level >= RoseWHM.Spells.ThinAir.level and RoseWHM.CastSpellIfReady(RoseWHM.Spells.ThinAir.id, RoseWHM.Spells.ThinAir.id) then
+                        d(string.format("Casting spell: %s", RoseWHM.Spells.ThinAir.name))
                     end
                     if RoseWHM.CastSpellIfReady(spell.id, entry.target) then
                         d(string.format("Casting spell: %s", spell.name))
