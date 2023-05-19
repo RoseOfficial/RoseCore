@@ -25,8 +25,8 @@ RoseWHM.classes = {
 }
 
 -- Define RoseWHM Spells
+-- TODO: Add all spells
 RoseWHM.Spells = {
-    -- Define each spell with its properties
     Stone = {id = 119, level = 1, name = "Stone", cast = 1.5, recast = 2.5, mp = 200, range = 25, radius = 0, potency = 140, gcd = 2.39},
     Cure = {id = 120, level = 2, name = "Cure", cast = 1.5, recast = 2.5, mp = 400, range = 30, radius = 0, potency = 500, gcd = 2.39},
     Aero = {id = 121, level = 4, name = "Aero", cast = 0, recast = 2.5, mp = 200, range = 25, radius = 0, potency = 50, duration = 30, gcd = 2.39},
@@ -63,7 +63,9 @@ RoseWHM.Spells = {
 }
 
 -- Define Buff ID Table
+-- TODO: Add more buffs
 local buffIDTable = {
+    -- Role Buffs
     Aero = 143,
     AeroII = 144,
     Dia = 1871,
@@ -74,148 +76,260 @@ local debugContexts = {}
 
 -- Define the Debug function
 function RoseWHM.Debug(context, message)
+    -- Check if the context has been used before
     if debugContexts[context] ~= message then
+        -- Print the message
         d(message)
+        -- Store the message
         debugContexts[context] = message
     end
 end
 
 -- Define a function to check if a table contains a value
 function table.contains(table, value)
+    -- Loop through the table
     for _, v in pairs(table) do
+        -- Check if the value matches
         if v == value then
+            -- Return true
             return true
         end
     end
+    -- Return false
     return false
 end
 
 -- Define a function to get the role by job
 function RoseWHM.GetRoleByJob(job)
+    -- Define the tank jobs
     local tankJobs = {1, 3, 19, 21, 32, 37}
+    -- Check if the job is a tank
     if table.contains(tankJobs, job) then
+        -- Return tank
         return "tank"
     end
-    return nil
+    -- Define the healer jobs
+    local healerJobs = {24, 28, 33, 34, 35, 36}
+    -- Check if the job is a healer
+    if table.contains(healerJobs, job) then
+        -- Return healer
+        return "healer"
+    end
+    -- Define the melee DPS jobs
+    local meleeDPSJobs = {4, 5, 6, 7, 29, 30, 31}
+    -- Check if the job is a melee DPS
+    if table.contains(meleeDPSJobs, job) then
+        -- Return melee DPS
+        return "melee"
+    end
+    -- Define the ranged DPS jobs
+    local rangedDPSJobs = {2, 22, 23, 38, 39}
+    -- Check if the job is a ranged DPS
+    if table.contains(rangedDPSJobs, job) then
+        -- Return ranged DPS
+        return "ranged"
+    end
+    -- Define the caster DPS jobs
+    local casterDPSJobs = {8, 9, 10, 11, 12, 13, 14, 15, 16, 27}
+    -- Check if the job is a caster DPS
+    if table.contains(casterDPSJobs, job) then
+        -- Return caster DPS
+        return "caster"
+    end
+    -- Return none
+    return "none"
 end
 
 -- Define a function to search for entities
-function RoseWHM.SearchEntities(searchString)
-    local el = MEntityList(searchString)
-    local validEntities = {}
-
-    if table_valid(el) then
-        for i, entity in pairs(el) do
-            if (IsValidHealTarget(entity)) then
-                validEntities[i] = entity
-            end
+function RoseWHM.SearchForEntities()
+    -- Define the entity table
+    local entityTable = {}
+    -- Define the entity count
+    local entityCount = 0
+    -- Loop through the entities
+    for _, entity in pairs(EntityList("alive,attackable,chartype=4,maxdistance=30")) do
+        -- Check if the entity is valid
+        if entity and entity.id ~= 0 and entity.distance <= 30 then
+            -- Increment the entity count
+            entityCount = entityCount + 1
+            -- Add the entity to the table
+            entityTable[entityCount] = entity
         end
     end
-    return validEntities
+    -- Return the entity table
+    return entityTable
 end
 
 -- Define a function to check if DoT should be applied
 function RoseWHM.ShouldApplyDoT(enemies)
+    -- Get the player
     local playerId = Player.id
+    -- Get the DoT IDs
     local Aero = buffIDTable.Aero
     local AeroII = buffIDTable.AeroII
     local Dia = buffIDTable.Dia
+    -- Check if there are no enemies
     if not enemies then
         return false, nil
     end
+    -- Loop through the enemies
     for _, enemy in pairs(enemies) do
         local hasDoTBuff = false
+        -- Loop through the enemy buffs
         for _, buff in pairs(enemy.buffs) do
+            -- Check if the enemy has the DoT buff
             if (buff.id == Aero or buff.id == AeroII or buff.id == Dia) and tonumber(buff.ownerid) == tonumber(playerId) then
+                -- Set the has DoT buff flag
                 hasDoTBuff = true
+                -- Check if the DoT buff is about to expire
                 if buff.duration <= 3 then
+                    -- Return true
                     return true, enemy
                 end
             end
         end
+        -- Check if the enemy doesn't have the DoT buff
         if not hasDoTBuff then
             return true, enemy
         end
     end
+    -- Return false
     return false, nil
 end
 
 -- Define a function to check if an action is ready
 function RoseWHM.ActionIsReady(id)
+    -- Check if the action is ready
     if (MIsLoading() or not ActionList:IsReady()) then
+        -- Return false
         return false
     end
-    local id = tonumber(id) or 0
-    local action = ActionList:Get(1, id)
+    -- Get the action
+    local ids = tonumber(id) or 0
+    local action = ActionList:Get(1, ids)
+    -- Check if the action is valid
     if (table.valid(action)) then
+        -- Check if the action is ready
         local isOffCooldown = action.cd <= 0
         local currentMP = Player.mp.current
         local hasEnoughResources = currentMP >= action.cost
+        -- Return if the action is ready
         return isOffCooldown and hasEnoughResources
     end
+    -- Return false
     return false
 end
 
 -- Define a function to cast a spell if it's ready
+-- Returns true if the spell was cast
+-- Returns false if the spell was not cast
+-- Returns nil if the spell is not valid
+-- Returns nil if the spell is not ready
+-- TODO: Add weaving support
 function RoseWHM.CastSpellIfReady(spellId, targetId)
+    -- Check if the spell is valid
+    if not spellId then
+        -- Return nil
+        return nil
+    end
+    -- Check if the target is valid
+    if not targetId then
+        -- Set the target to the player
+        targetId = Player.id
+    end
+    -- Check if the spell is ready
     local action = ActionList:Get(1, spellId)
+    -- Check if the action is valid
     if action and action.cd == 0 and RoseWHM.ActionIsReady(spellId) then
+        -- Cast the spell
         action:Cast(targetId)
+        -- Return true
         return true
     end
+    -- Return false
     return false
 end
 
 -- Define a function to get the best revive target
 function RoseWHM.GetBestRevive(party, role)
+    -- Check if the party is valid
     party = IsNull(party, false)
+    -- Check if the role is valid
     role = role or ""
+    -- Get the revive range
     range = 30
-    local el = nil
+    -- Get the entity list
+    local el
+    -- Check if the party is valid
     if (party) then
+        -- Get the party members
         el = MEntityList("myparty,friendly,chartype=4,targetable,dead,maxdistance=" .. tostring(range))
     else
+        -- Get the entity list
         el = MEntityList("friendly,dead,chartype=4,targetable,maxdistance=" .. tostring(range))
     end
+    -- Check if the entity list is valid
     if (table.valid(el)) then
+        -- Get the role table
         local roleTable = GetRoleTable(role)
-        for id, entity in pairs(el) do
+        -- Loop through the entities
+        for _, entity in pairs(el) do
+            -- Check if the entity is valid
             if (not HasBuffs(entity, "148") and (not roleTable or roleTable[entity.job])) then
-                -- d(string.format("Found valid revive target: %s", entity.name))
+                -- Return the entity
                 return entity
             end
         end
     end
+    -- Return nil
     return nil
 end
 
 -- Define a function to get dead party members
 function RoseWHM.GetDeadPartyMembers()
+    -- Define the dead members table
     local deadMembers = {}
+    -- Get the party members
     local party = EntityList("type=1,chartype=4")
+    -- Loop through the party members
     for _, member in pairs(party) do
+        -- Check if the member is dead
         if member.hp.percent == 0 then
+            -- Add the member to the table
             deadMembers[member.id] = member
         end
     end
+    -- Return the dead members table
     return deadMembers
 end
 
--- Define a function to handle rasies
+-- Define a function to handle raises
 function RoseWHM.HandleRaise()
+    -- Get the dead party members
     local PartyMembersDead = RoseWHM.GetDeadPartyMembers()
+    -- Check if there are dead party members
     if table.valid(PartyMembersDead) and Player.level >= 12 and Player.mp.percent >= 24 then
+        -- Get the raise ID
         local raiseId = RoseWHM.Spells.Raise.id
+        -- Get the swiftcast ID
         local swiftcastId = RoseWHM.Spells.SwiftCast.id
+        -- Get the best revive target
         local raiseTarget = RoseWHM.GetBestRevive(true, "")
-
+        -- Check if the raise target is valid
         if table.valid(raiseTarget) and MissingBuffs(raiseTarget, "148+1140") then
+            -- Get the current time
             local reztime = 0
+            -- Check if the player has swiftcast
             if Player.level >= 18 and RoseWHM.CastSpellIfReady(swiftcastId, Player.id) then
+                -- Cast swiftcast raise
                 return RoseWHM.SwiftcastRaise(raiseTarget)
+                -- Check if the player has raise
             elseif RoseWHM.CastSpellIfReady(raiseId, raiseTarget.id) then
+                -- Cast raise
                 if TimeSince(reztime) > 2000 then
+                    -- Set the rez time
                     reztime = Now()
+                    -- Cast raise
                     return RoseWHM.CastSpellIfReady(raiseId, raiseTarget.id)
                 end
             end
@@ -225,21 +339,34 @@ end
 
 -- Define a function to handle swiftcast raise
 function RoseWHM.SwiftcastRaise(target)
+    -- Check if the target is valid
     if target then
+        -- Get the swiftcast ID
         local swiftcastId = RoseWHM.Spells.SwiftCast.id
+        -- Get the raise ID
         local raiseId = RoseWHM.Spells.Raise.id
+        -- Cast swiftcast raise
         RoseWHM.CastSpellIfReady(swiftcastId, Player.id)
+        -- Wait for swiftcast to apply
         local swiftcastApplied = false
+        -- Get the current time
         local startTime = os.clock()
+        -- Loop until swiftcast is applied
         while not swiftcastApplied and os.clock() - startTime < 3 do
+            -- Check if the player has swiftcast
             local swiftcastBuff = HasBuff(Player,167)
+            -- Check if swiftcast is applied
             if swiftcastBuff then
+                -- Set swiftcast applied to true
                 swiftcastApplied = true
             else
+                -- Yield the coroutine
                 coroutine.yield()
             end
         end
+        -- Check if swiftcast is applied
         if swiftcastApplied then
+            -- Cast raise
             RoseWHM.CastSpellIfReady(raiseId, target.id)
         end
     end
@@ -247,17 +374,25 @@ end
 
 -- Define a function to check enemies for DoT debuffs
 function RoseWHM.CheckEnemiesForDoTDebuffs()
+    -- Define the debuff ID table
     local enemiesWithDebuffs = {}
+    -- Define the debuff ID table
     if table.valid(RoseWHM.elist) then
+        -- Define the debuff ID table
         for _, enemy in pairs(RoseWHM.elist) do
+            -- Define the debuff ID table
             for _, buff in pairs(enemy.buffs) do
+                -- Define the debuff ID table
                 if tonumber(buff.ownerid) == tonumber(Player.id) and buffIDTable[tonumber(buff.id)] then
+                    -- Define the debuff ID table
                     table.insert(enemiesWithDebuffs, enemy)
+                    -- Define the debuff ID table
                     break
                 end
             end
         end
     end
+    -- Return the debuff ID table
     return enemiesWithDebuffs
 end
 
@@ -291,7 +426,7 @@ function RoseWHM.GetBestPartyHealTarget()
     local hp = hp or 95
     local whitelist = IsNull(whitelist, "")
     local healables = RoseWHM.GetHealableTargets(range, hp, whitelist, false)
-    local lowest = nil
+    local lowest
     for _, entity in pairs(healables) do
         if not lowest or entity.hp.percent < lowest.hp.percent then
             lowest = entity
@@ -304,8 +439,15 @@ end
 local lastTargetCheck = 0
 function RoseWHM.Targeting()
     RoseWHM.elist = MEntityList("alive,attackable,incombat,maxdistance=30")
+    -- Define an entity list for striking dummy
+    RoseWHM.strikingDummy = MEntityList("alive,attackable,contentid=1010375,maxdistance=30")
+    -- Add striking dummy to entity list
+    if table.valid(RoseWHM.strikingDummy) then
+        for i, enemy in pairs(RoseWHM.strikingDummy) do
+            RoseWHM.elist[i] = enemy
+        end
+    end
     local target = MGetTarget()
-    local partyMembers = RoseWHM.GetPartyMembers()
     if not table.valid(target) then
         local llist = MEntityList("lowesthealth,alive,attackable,maxdistance=30")
         if table.valid(llist) then
@@ -327,9 +469,10 @@ function RoseWHM.Targeting()
             end
         elseif RoseWHM.lastEnemyTargetID then
             RoseWHM.lastEnemyTarget = nil
-            RoseWHM.lastEnemyTargetID = nil)
+            RoseWHM.lastEnemyTargetID = nil
         end
     end
+    return target
 end
 
 -- Define a function to get the party member list
@@ -347,7 +490,7 @@ end
 
 -- Define a function to get the lowest health party member
 function RoseWHM.LowestHealthPartyMember(partyMembers)
-    local lowest = nil
+    local lowest
     local lowestHealthPercentage = 101
     for _, member in pairs(partyMembers) do
         local hpPercentage = member.hp.percent
@@ -405,25 +548,41 @@ function RoseWHM.HasBuff(target, buffID)
     return false
 end
 
--- This is the main function, it will be called every tick
+-- This is the main function
+-- It will be called every tick
+-- It will return true if the bot should stop
+-- It will return false if the bot should continue
+-- It will return nil if the bot should do nothing
+-- Define the main function
 function RoseWHM.Cast()
+    -- Check if we are dead
     if RoseWHM.HasBuff(Player, 418) then
+        return false
+    end
+    -- Check if we are mounted or in a cutscene
+    if Player.ismounted or Player.incutscene then
         return false
     end
     local targetingResult = RoseWHM.Targeting()
     local enemies = RoseWHM.elist
     local shouldApplyDoT, targetforDoTApplication = RoseWHM.ShouldApplyDoT(enemies)
     local partyMembers = RoseWHM.GetPartyMembers()
+    -- Call the Raise function
     RoseWHM.HandleRaise()
+    -- Call the Sprint and Lucid Dreaming functions
     RoseWHM.UseSprint()
     RoseWHM.UseLucidDreaming()
+    -- Call the AOE healing and single target healing functions
     RoseWHM.AOEHealing(partyMembers)
     RoseWHM.SingleTargetHealing(targetingResult)
+    -- Call the DoT application function
     if shouldApplyDoT and targetforDoTApplication then
         RoseWHM.SingleTargetDoT(targetforDoTApplication)
     end
+    -- Call the AOE damage and single target damage functions
     RoseWHM.AOEDamage()
-    RoseWHM.SingleTargetDamage()
+    RoseWHM.SingleTargetDamage(targetingResult)
+    -- Return false to continue botting
     return false
 end
 
@@ -463,7 +622,7 @@ function RoseWHM.SingleTargetHealing(targetingResult)
         end
     end
 
-    local tank = nil
+    local tank
     for _, member in pairs(partyMembers) do
         if GetRoleByJob(member.job) ==
                 'Tank' then
@@ -551,15 +710,58 @@ function RoseWHM.AOEHealing(partyMembers, lowest)
     end
 end
 
-function RoseWHM.SingleTargetDamage(enemy)
-    RoseWHM.Targeting()
-    local enemies = RoseWHM.elist
-    if table.valid(enemies) then
-        local level = Player.level
-        local stone = RoseWHM.Spells.Stone
-        if level >= stone.level then
-            return ActionList:Get(1, stone.id):Cast(enemy.id)
-        end
+-- Define a function for single target damage
+function RoseWHM.SingleTargetDamage(target)
+    local level = Player.level
+    local stone = RoseWHM.Spells.Stone
+    local stoneII = RoseWHM.Spells.StoneII
+    local stoneIII = RoseWHM.Spells.StoneIII
+    local stoneIV = RoseWHM.Spells.StoneIV
+    local glare = RoseWHM.Spells.Glare
+    local glareIII = RoseWHM.Spells.GlareIII
+    local thinAir = RoseWHM.Spells.ThinAir
+    local assize = RoseWHM.Spells.Assize
+    local presenceOfMind = RoseWHM.Spells.PresenceOfMind
+    local afflatusMisery = RoseWHM.Spells.AfflatusMisery
+    if level >= thinAir.level and RoseWHM.CastSpellIfReady(thinAir.id, Player) then
+        d("Casting Thin Air")
+        return
+    end
+    if level >= presenceOfMind.level and RoseWHM.CastSpellIfReady(presenceOfMind.id, Player) then
+        d("Casting Presence of Mind")
+        return
+    end
+    if level >= assize.level and RoseWHM.CastSpellIfReady(assize.id, Player) then
+        d("Casting Assize")
+        return
+    end
+    if level >= afflatusMisery.level and RoseWHM.CastSpellIfReady(afflatusMisery.id, target.id) and Player.gauge[3] >= 3 then
+        d("Casting Afflatus Misery")
+        return
+    end
+    if level >= glareIII.level and RoseWHM.CastSpellIfReady(glareIII.id, target.id) then
+        d("Casting Glare III")
+        return
+    end
+    if level >= glare.level and RoseWHM.CastSpellIfReady(glare.id, target.id) then
+        d("Casting Glare")
+        return
+    end
+    if level >= stoneIV.level and RoseWHM.CastSpellIfReady(stoneIV.id, target.id) then
+        d("Casting Stone IV")
+        return
+    end
+    if level >= stoneIII.level and RoseWHM.CastSpellIfReady(stoneIII.id, target.id) then
+        d("Casting Stone III")
+        return
+    end
+    if level >= stoneII.level and RoseWHM.CastSpellIfReady(stoneII.id, target.id) then
+        d("Casting Stone II")
+        return
+    end
+    if level >= stone.level and RoseWHM.CastSpellIfReady(stone.id, target.id) then
+        d("Casting Stone")
+        return
     end
 end
 
@@ -641,9 +843,9 @@ function RoseWHM.OnLoad()
 end
 
 -- This function is called when a mouse click event occurs. It receives various parameters about the state of the mouse and keyboard at the time of the click, and the entity (if any) that was clicked.
-function RoseWHM.OnClick(mouse,shiftState,controlState,altState,entity)
+--[[function RoseWHM.OnClick(mouse,shiftState,controlState,altState,entity)
     -- Handle mouse click events here.
-end
+end]]
 
 -- This function is called periodically (usually every frame) to update the state of the module. It's typically used for ongoing updates that need to occur frequently, like moving characters, updating UI, etc.
 function RoseWHM.OnUpdate()
