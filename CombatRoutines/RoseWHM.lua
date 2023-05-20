@@ -440,13 +440,7 @@ local lastTargetCheck = 0
 function RoseWHM.Targeting()
     RoseWHM.elist = MEntityList("alive,attackable,incombat,maxdistance=30")
     -- Define an entity list for striking dummy
-    RoseWHM.strikingDummy = MEntityList("alive,attackable,contentid=1010375,maxdistance=30")
-    -- Add striking dummy to entity list
-    if table.valid(RoseWHM.strikingDummy) then
-        for i, enemy in pairs(RoseWHM.strikingDummy) do
-            RoseWHM.elist[i] = enemy
-        end
-    end
+    RoseWHM.strikingDummy = MEntityList("contentid=541")
     local target = MGetTarget()
     if not table.valid(target) then
         local llist = MEntityList("lowesthealth,alive,attackable,maxdistance=30")
@@ -581,14 +575,23 @@ function RoseWHM.Cast()
     end
     -- Call the AOE damage and single target damage functions
     RoseWHM.AOEDamage()
-    RoseWHM.SingleTargetDamage(targetingResult)
+    RoseWHM.SingleTargetDamage()
     -- Return false to continue botting
     return false
 end
 
+-- TODO: Create a function that lists all spells sorted by ogcd, instant, gcd
+
+-- Initialize the tables
+RoseWHM.ogcdSpells = {}
+RoseWHM.instantSpells = {}
+RoseWHM.gcdSpells = {}
+
 local lastHealTime = 0
 local healDelay = 3
 
+-- Define the single target healing function
+-- TODO: Make this more efficient
 function RoseWHM.SingleTargetHealing(targetingResult)
     local currentTime = os.clock()
     if currentTime - lastHealTime < healDelay then
@@ -649,19 +652,37 @@ function RoseWHM.SingleTargetHealing(targetingResult)
 
     for _, entry in ipairs(singleTargetHealSpells) do
         local spell = entry.spell
-        if level >= spell.level and (entry.condition == nil or entry.condition()) then
-            if level >= Spells.ThinAir.level and RoseWHM.CastSpellIfReady(Spells.ThinAir.id, Spells.ThinAir.id) then
-                RoseWHM.Debug(string.format("Casting spell: %s", Spells.ThinAir.name))
+        for _, spell in ipairs(singleTargetHealSpells) do
+            if spell.casttime == 0 and spell.recasttime == 2.5 then
+                table.insert(RoseWHM.ogcdSpells, spell)
+            elseif spell.casttime == 0 then
+                table.insert(RoseWHM.instantSpells, spell)
+            else
+                table.insert(RoseWHM.gcdSpells, spell)
             end
-            if RoseWHM.CastSpellIfReady(spell.id, ((tank and tank.hp.percent < 60) and tank.id) or (lowest and lowest.id or Player.id)) then
+        end
+
+        -- Try to cast the spells in the order of priority: ogcd, instant, gcd
+        for _, spell in ipairs(RoseWHM.ogcdSpells) do
+            if spell.condition() and RoseWHM.CastSpellIfReady(spell.id, lowest) then
                 RoseWHM.Debug(string.format("Casting spell: %s", spell.name))
                 lastHealTime = os.clock()
                 return
-            else
-                RoseWHM.Debug(string.format("Failed to cast spell: %s", spell.name))
             end
-        else
-            RoseWHM.Debug(string.format("Conditions not met to cast spell: %s", spell.name))
+        end
+        for _, spell in ipairs(RoseWHM.instantSpells) do
+            if spell.condition() and RoseWHM.CastSpellIfReady(spell.id, lowest) then
+                RoseWHM.Debug(string.format("Casting spell: %s", spell.name))
+                lastHealTime = os.clock()
+                return
+            end
+        end
+        for _, spell in ipairs(RoseWHM.gcdSpells) do
+            if spell.condition() and RoseWHM.CastSpellIfReady(spell.id, lowest) then
+                RoseWHM.Debug(string.format("Casting spell: %s", spell.name))
+                lastHealTime = os.clock()
+                return
+            end
         end
     end
 end
@@ -695,12 +716,33 @@ function RoseWHM.AOEHealing(partyMembers, lowest)
             }
             for _, entry in ipairs(aoeHealSpells) do
                 local spell = entry.spell
-                if level >= spell.level and (entry.condition == nil or entry.condition) then
-                    if level >= RoseWHM.Spells.ThinAir.level and RoseWHM.CastSpellIfReady(RoseWHM.Spells.ThinAir.id, RoseWHM.Spells.ThinAir.id) then
-                        -- d(string.format("Casting spell: %s", RoseWHM.Spells.ThinAir.name))
+                for _, spell in ipairs(aoeHealSpells) do
+                    if spell.casttime == 0 and spell.recasttime == 2.5 then
+                        table.insert(RoseWHM.ogcdSpells, spell)
+                    elseif spell.casttime == 0 then
+                        table.insert(RoseWHM.instantSpells, spell)
+                    else
+                        table.insert(RoseWHM.gcdSpells, spell)
                     end
-                    if RoseWHM.CastSpellIfReady(spell.id, entry.target) then
-                        -- d(string.format("Casting spell: %s", spell.name))
+                end
+                -- Try to cast the spells in the order of priority: ogcd, instant, gcd
+                for _, spell in ipairs(RoseWHM.ogcdSpells) do
+                    if level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, entry.target) then
+                        d(string.format("Casting spell: %s", spell.name))
+                        lastHealTime = os.clock()
+                        return
+                    end
+                end
+                for _, spell in ipairs(RoseWHM.instantSpells) do
+                    if level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, entry.target) then
+                        d(string.format("Casting spell: %s", spell.name))
+                        lastHealTime = os.clock()
+                        return
+                    end
+                end
+                for _, spell in ipairs(RoseWHM.gcdSpells) do
+                    if level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, entry.target) then
+                        d(string.format("Casting spell: %s", spell.name))
                         lastHealTime = os.clock()
                         return
                     end
@@ -712,59 +754,55 @@ end
 
 -- Define a function for single target damage
 function RoseWHM.SingleTargetDamage(target)
+    local target = target or Player:GetTarget()
     local level = Player.level
-    local stone = RoseWHM.Spells.Stone
-    local stoneII = RoseWHM.Spells.StoneII
-    local stoneIII = RoseWHM.Spells.StoneIII
-    local stoneIV = RoseWHM.Spells.StoneIV
-    local glare = RoseWHM.Spells.Glare
-    local glareIII = RoseWHM.Spells.GlareIII
-    local thinAir = RoseWHM.Spells.ThinAir
-    local assize = RoseWHM.Spells.Assize
-    local presenceOfMind = RoseWHM.Spells.PresenceOfMind
-    local afflatusMisery = RoseWHM.Spells.AfflatusMisery
-    if level >= thinAir.level and RoseWHM.CastSpellIfReady(thinAir.id, Player) then
-        d("Casting Thin Air")
-        return
+    local singleTargetDamageSpells = {
+        {spell = RoseWHM.Spells.PresenceOfMind, target = Player.id, condition = level >= RoseWHM.Spells.PresenceOfMind.level},
+        {spell = RoseWHM.Spells.Assize, target = Player.id, condition = level >= RoseWHM.Spells.Assize.level},
+        {spell = RoseWHM.Spells.AfflatusMisery, condition = level >= RoseWHM.Spells.AfflatusMisery.level and Player.gauge[3] >= 3},
+        {spell = RoseWHM.Spells.GlareIII, condition = level >= RoseWHM.Spells.GlareIII.level},
+        {spell = RoseWHM.Spells.Glare, condition = level >= RoseWHM.Spells.Glare.level},
+        {spell = RoseWHM.Spells.StoneIV, condition = level >= RoseWHM.Spells.StoneIV.level},
+        {spell = RoseWHM.Spells.StoneIII, condition = level >= RoseWHM.Spells.StoneIII.level},
+        {spell = RoseWHM.Spells.StoneII, condition = level >= RoseWHM.Spells.StoneII.level},
+        {spell = RoseWHM.Spells.Stone, condition = level >= RoseWHM.Spells.Stone.level}
+    }
+    for _, entry in ipairs(singleTargetDamageSpells) do
+        local spell = entry.spell
+        if spell.casttime == 0 and spell.recasttime == 2.5 then
+            table.insert(RoseWHM.ogcdSpells, entry)
+        elseif spell.casttime == 0 then
+            table.insert(RoseWHM.instantSpells, entry)
+        else
+            table.insert(RoseWHM.gcdSpells, entry)
+        end
     end
-    if level >= presenceOfMind.level and RoseWHM.CastSpellIfReady(presenceOfMind.id, Player) then
-        d("Casting Presence of Mind")
-        return
+    -- Try to cast the spells in the order of priority: ogcd, instant, gcd
+    for _, entry in ipairs(RoseWHM.ogcdSpells) do
+        local spell = entry.spell
+        if level >= spell.level and entry.condition and RoseWHM.CastSpellIfReady(spell.id, target.id) then
+            d(string.format("Casting spell: %s", spell.name))
+            return
+        end
     end
-    if level >= assize.level and RoseWHM.CastSpellIfReady(assize.id, Player) then
-        d("Casting Assize")
-        return
+    for _, entry in ipairs(RoseWHM.instantSpells) do
+        local spell = entry.spell
+        if level >= spell.level and entry.condition and RoseWHM.CastSpellIfReady(spell.id, target.id) then
+            d(string.format("Casting spell: %s", spell.name))
+            return
+        end
     end
-    if level >= afflatusMisery.level and RoseWHM.CastSpellIfReady(afflatusMisery.id, target.id) and Player.gauge[3] >= 3 then
-        d("Casting Afflatus Misery")
-        return
+    for _, entry in ipairs(RoseWHM.gcdSpells) do
+        local spell = entry.spell
+        if level >= spell.level and entry.condition and RoseWHM.CastSpellIfReady(spell.id, target.id) then
+            d(string.format("Casting spell: %s", spell.name))
+            return
+        end
     end
-    if level >= glareIII.level and RoseWHM.CastSpellIfReady(glareIII.id, target.id) then
-        d("Casting Glare III")
-        return
-    end
-    if level >= glare.level and RoseWHM.CastSpellIfReady(glare.id, target.id) then
-        d("Casting Glare")
-        return
-    end
-    if level >= stoneIV.level and RoseWHM.CastSpellIfReady(stoneIV.id, target.id) then
-        d("Casting Stone IV")
-        return
-    end
-    if level >= stoneIII.level and RoseWHM.CastSpellIfReady(stoneIII.id, target.id) then
-        d("Casting Stone III")
-        return
-    end
-    if level >= stoneII.level and RoseWHM.CastSpellIfReady(stoneII.id, target.id) then
-        d("Casting Stone II")
-        return
-    end
-    if level >= stone.level and RoseWHM.CastSpellIfReady(stone.id, target.id) then
-        d("Casting Stone")
-        return
-    end
+    return false
 end
 
+-- Define a function for AOE damage
 function RoseWHM.AOEDamage()
     RoseWHM.Targeting()
     local enemies = RoseWHM.elist
@@ -777,10 +815,37 @@ function RoseWHM.AOEDamage()
         }
         for _, entry in ipairs(aoeDmgSpells) do
             local spell = entry.spell
-            local nearbyEnemies = MEntityList("alive,attackable,maxdistance=" .. entry.radius)
-            if table.valid(nearbyEnemies) and table.size(nearbyEnemies) > 1 and level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, Player.id) then
-                d(string.format("Casting spell: %s", spell.name))
-                return true
+            if spell.casttime == 0 and spell.recasttime == 2.5 then
+                table.insert(RoseWHM.ogcdSpells, entry)
+            elseif spell.casttime == 0 then
+                table.insert(RoseWHM.instantSpells, entry)
+            else
+                table.insert(RoseWHM.gcdSpells, entry)
+            end
+            -- Try to cast the spells in the order of priority: ogcd, instant, gcd
+            for _, entry in ipairs(RoseWHM.ogcdSpells) do
+                local spell = entry.spell
+                local nearbyEnemies = MEntityList("alive,attackable,maxdistance=" .. entry.radius)
+                if table.valid(nearbyEnemies) and table.size(nearbyEnemies) > 1 and level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, Player.id) then
+                    d(string.format("Casting spell: %s", spell.name))
+                    return true
+                end
+            end
+            for _, entry in ipairs(RoseWHM.instantSpells) do
+                local spell = entry.spell
+                local nearbyEnemies = MEntityList("alive,attackable,maxdistance=" .. entry.radius)
+                if table.valid(nearbyEnemies) and table.size(nearbyEnemies) > 1 and level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, Player.id) then
+                    d(string.format("Casting spell: %s", spell.name))
+                    return true
+                end
+            end
+            for _, entry in ipairs(RoseWHM.gcdSpells) do
+                local spell = entry.spell
+                local nearbyEnemies = MEntityList("alive,attackable,maxdistance=" .. entry.radius)
+                if table.valid(nearbyEnemies) and table.size(nearbyEnemies) > 1 and level >= spell.level and (entry.condition == nil or entry.condition) and RoseWHM.CastSpellIfReady(spell.id, Player.id) then
+                    d(string.format("Casting spell: %s", spell.name))
+                    return true
+                end
             end
         end
     end
@@ -800,10 +865,12 @@ function RoseWHM.SingleTargetDoT(targetforDoTApplication)
         }
         for _, entry in ipairs(singleTargetDoTSpells) do
             local spell = entry.spell
-            local buffId = entry.buffId
-            if level >= spell.level and not RoseWHM.HasBuff(currentTarget, buffId) then
-                local castSuccess = RoseWHM.CastSpellIfReady(spell.id, currentTarget.id)
-                if castSuccess then
+            table.insert(RoseWHM.instantSpells, entry)
+            -- Try to cast the spells in the order of priority: instant
+            for _, entry in ipairs(RoseWHM.instantSpells) do
+                local spell = entry.spell
+                local buffId = entry.buffId
+                if level >= spell.level and not RoseWHM.HasBuff(currentTarget, buffId) and RoseWHM.CastSpellIfReady(spell.id, currentTarget.id) then
                     d(string.format("Casting spell: %s", spell.name))
                     return true
                 end
@@ -811,16 +878,6 @@ function RoseWHM.SingleTargetDoT(targetforDoTApplication)
         end
     end
     return false
-end
-
--- This function is called when an event occurs. The specific events that trigger this function will depend on how it's used in the context of MMOMinion and RoseWHM.
-function RoseWHM.OnEvent(event, damageEvent)
-    -- Check if the event is 'damage_taken'
-    if event == "damage_taken" then
-        -- If 'damage_taken' event is triggered, update the damage data with the information from 'damageEvent'
-        RoseWHM.UpdateDamageData(damageEvent)
-    end
-    -- Other event handling code can be added here.
 end
 
 -- Define a function to draw the GUI
