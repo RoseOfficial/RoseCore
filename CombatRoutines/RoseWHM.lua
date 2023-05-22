@@ -3,7 +3,7 @@
 -- Define the RoseWHM table
 local RoseWHM = {}
 
--- Set up RoseWHM settings blsdg sdg dsg
+-- Set up RoseWHM settings
 RoseWHM.Settings = {
     AOE = true,
     Debug = true,
