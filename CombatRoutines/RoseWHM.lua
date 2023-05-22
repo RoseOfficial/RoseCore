@@ -878,7 +878,7 @@ function RoseWHM.AOEDamage(target)
                             if instantUsed then
                                 instantUsed = false
                             end
-                            d(string.format("Casting spell: %s", spell.name))
+                            d(string.format("Casting spell: %s", spell.spell.name))
                             return
                         end
                     end
