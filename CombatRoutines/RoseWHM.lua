@@ -857,7 +857,7 @@ function RoseWHM.AOEDamage(target)
         }
 
         local aoeDamageInstant = {
-            {spell = RoseWHM.instant.AfflatusMisery, id = 16535, target = target, radius = RoseWHM.instant.AfflatusMisery.radius, condition = level >= RoseWHM.instant.AfflatusMisery.level and Player.gauge[3] == 3}
+            {spell = RoseWHM.instant.AfflatusMisery, id = 16535, target = target, radius = RoseWHM.instant.AfflatusMisery.radius, condition = level >= RoseWHM.instant.AfflatusMisery.level}
         }
 
         local aoeDamageGCD = {
@@ -885,12 +885,14 @@ function RoseWHM.AOEDamage(target)
                 end
             end
         end
-        for _, spell in ipairs(aoeDamageInstant) do
-            local nearbyEnemies = MEntityList("alive,attackable,maxdistance=" .. spell.radius)
-            if table.valid(nearbyEnemies) and table.size(nearbyEnemies) > 1 and (target.condition == nil or target.condition) and RoseWHM.CastSpellIfReady(spell.id, target.id) then
-                d(string.format("Casting spell: %s", spell.spell.name))
-                instantUsed = true
-                return
+        if Player.gauge[3] == 3 then
+            for _, spell in ipairs(aoeDamageInstant) do
+                local nearbyEnemies = MEntityList("alive,attackable,maxdistance=" .. spell.radius)
+                if table.valid(nearbyEnemies) and table.size(nearbyEnemies) > 1 and (target.condition == nil or target.condition) and RoseWHM.CastSpellIfReady(spell.id, target.id) then
+                    d(string.format("Casting spell: %s", spell.spell.name))
+                    instantUsed = true
+                    return
+                end
             end
         end
         for _, spell in ipairs(aoeDamageGCD) do
