@@ -587,6 +587,7 @@ local instantUsed = false
 -- Make sure it weaves like it should and all spells are weaving properly
 -- Define the single target healing function
 -- TODO: Make this more efficient
+-- TODO: Fix healing double castings
 function RoseWHM.SingleTargetHealing()
 
     -- search for the lowest HP party member
@@ -773,6 +774,7 @@ function RoseWHM.AOEHealing()
                 end
             end
             for _, spell in ipairs(aoeHealGCD) do
+                -- TODO: Fix buff condition for Medica II
                 if spell == RoseWHM.gcd.MedicaII and (spell.condition == nil or spell.condition) and partyMembersBelow90Percent >= halfPartySize and MissingBuffs(Player,"150") and not Player:IsMoving() then
                     if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                         d(string.format("Casting spell: %s", spell.spell.name))
