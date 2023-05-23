@@ -63,9 +63,9 @@ RoseWHM.gcd = {
     Stone = {id = 3566, level = 1, name = "Stone", cast = 1.5, recast = 2.5, mp = 100, range = 25, radius = 0, potency = 140},
     HolyIII = {id = 25860, level = 82, name = "Holy III", cast = 2.5, recast = 2.5, mp = 400, range = 0, radius = 8, potency = 150},
     Holy = {id = 3571, level = 45, name = "Holy", cast = 2.5, recast = 2.5, mp = 200, range = 0, radius = 8, potency = 140},
-    CureIII = {id = 3570, level = 40, name = "Cure III", cast = 2, recast = 2.5, mp = 800, range = 30, radius = 0, potency = 550},
-    CureII = {id = 3569, level = 30, name = "Cure II", cast = 2, recast = 2.5, mp = 600, range = 30, radius = 0, potency = 700},
-    Cure = {id = 3568, level = 2, name = "Cure", cast = 2, recast = 2.5, mp = 400, range = 30, radius = 0, potency = 450},
+    CureIII = {id = 131, level = 40, name = "Cure III", cast = 2, recast = 2.5, mp = 800, range = 30, radius = 0, potency = 550},
+    CureII = {id = 135, level = 30, name = "Cure II", cast = 2, recast = 2.5, mp = 600, range = 30, radius = 0, potency = 700},
+    Cure = {id = 120, level = 2, name = "Cure", cast = 2, recast = 2.5, mp = 400, range = 30, radius = 0, potency = 450},
     MedicaII = {id = 133, level = 50, name = "Medica II", cast = 2.5, recast = 2.5, mp = 1500, range = 30, radius = 15, potency = 200},
     Medica = {id = 124, level = 15, name = "Medica", cast = 2.5, recast = 2.5, mp = 900, range = 30, radius = 15, potency = 300},
     Raise = {id = 3574, level = 18, name = "Raise", cast = 8, recast = 2.5, mp = 2400, range = 30, radius = 0, potency = 200},
@@ -240,11 +240,13 @@ end
 function RoseWHM.CastSpellIfReady(spellId, targetId)
     -- Check if the spell is valid
     if not spellId then
+        d("Spell is not valid")
         -- Return nil
         return nil
     end
     -- Check if the target is valid
     if not targetId then
+        d("Target is not valid")
         -- Set the target to the player
         targetId = Player.id
     end
@@ -433,8 +435,8 @@ end
 
 -- Define a function to get the best party heal target
 function RoseWHM.GetBestPartyHealTarget()
-    -- Get the party members
-    local party = EntityList("myparty,chartype=4,alive")
+    -- Get the party members and trusts
+    local party = RoseWHM.GetPartyMembers()
     -- Define the best heal target
     local bestHealTarget
     -- Define the best heal target health
@@ -448,6 +450,7 @@ function RoseWHM.GetBestPartyHealTarget()
                 -- Set the best heal target
                 bestHealTarget = member
                 -- Set the best heal target health
+                d("bestHealTargetHealth: " .. tostring(bestHealTargetHealth) .. " member.hp.percent: " .. tostring(member.hp.percent))
                 bestHealTargetHealth = member.hp.percent
             end
         end
@@ -579,101 +582,87 @@ end
 
 -- Initialize a flag to track if an instant ability has been used
 local instantUsed = false
-local lastHealTime = 0
-local healDelay = 3
 
 -- Create a function for each spell type: SingleTargetHealing, AOEHealing, SingleTargetDamage, AOEDamage, SingleTargetDoT
 -- Make sure it weaves like it should and all spells are weaving properly
 -- Define the single target healing function
 -- TODO: Make this more efficient
-function RoseWHM.SingleTargetHealing(bestHealTarget)
-    local currentTime = os.clock()
-    if currentTime - lastHealTime < healDelay then
-        RoseWHM.Debug("Exiting early due to heal delay.")
-        return
+function RoseWHM.SingleTargetHealing()
+
+    -- search for the lowest HP party member
+    local bestHealTarget = nil
+    local bestHealTargetHealth = 100
+    local partyMembers = RoseWHM.GetPartyMembers()
+    for _, member in pairs(partyMembers) do
+        if member.hp.percent < bestHealTargetHealth then
+            bestHealTarget = member
+            bestHealTargetHealth = member.hp.percent
+        end
     end
 
     local level = Player.level
     local GetRoleByJob = RoseWHM.GetRoleByJob
-    local partyMembers = RoseWHM.GetPartyMembers()
-
-    if bestHealTarget then
-        RoseWHM.Debug(string.format("Lowest HP party member: %s, HP: %d%%", bestHealTarget.name, bestHealTarget.hp.percent))
-    else
-        RoseWHM.Debug("No party member with the lowest HP identified.")
-    end
 
     local tank
     for _, member in pairs(partyMembers) do
-        if GetRoleByJob(member.job) == 'Tank' then
+        if GetRoleByJob(member.job) == 'tank' then
             tank = member
             break
         end
     end
 
-    if tank then
-        RoseWHM.Debug(string.format("Tank identified: %s, HP: %d%%", tank.name, tank.hp.percent))
-    else
-        RoseWHM.Debug("No tank identified.")
-    end
-
     local singleTargetHealOGCD = {
-        {spell = RoseWHM.oGCD.Temperance, target = bestHealTarget, condition = level >= RoseWHM.oGCD.Temperance.level and bestHealTarget and bestHealTarget.hp.percent <= 50},
-        {spell = RoseWHM.oGCD.Benediction, target = bestHealTarget, condition = level >= RoseWHM.oGCD.Benediction.level and bestHealTarget and bestHealTarget.hp.percent < 10},
-        {spell = RoseWHM.oGCD.Tetragrammaton, target = bestHealTarget, condition = level >= RoseWHM.oGCD.Tetragrammaton.level and ((tank and tank.hp.percent < 60) or (bestHealTarget and bestHealTarget.hp.percent < 60))},
-        {spell = RoseWHM.oGCD.DivineBenison, target = bestHealTarget, condition = level >= RoseWHM.oGCD.DivineBenison.level and bestHealTarget and bestHealTarget.hp.percent < 80},
-        {spell = RoseWHM.oGCD.Aquaveil, target = tank, condition = level >= RoseWHM.oGCD.Aquaveil.level and tank and tank.hp.percent < 80}
+        {spell = RoseWHM.oGCD.Temperance, id = 16536, target = bestHealTarget, condition = level >= RoseWHM.oGCD.Temperance.level},
+        {spell = RoseWHM.oGCD.Benediction, id = 140, target = bestHealTarget, condition = level >= RoseWHM.oGCD.Benediction.level},
+        {spell = RoseWHM.oGCD.Tetragrammaton, id = 3570, target = bestHealTarget, condition = level >= RoseWHM.oGCD.Tetragrammaton.level},
+        {spell = RoseWHM.oGCD.DivineBenison, id = 7432, target = bestHealTarget, condition = level >= RoseWHM.oGCD.DivineBenison.level},
+        {spell = RoseWHM.oGCD.Aquaveil, id = 25861, target = tank, condition = level >= RoseWHM.oGCD.Aquaveil.level}
     }
 
     local singleTargetHealInstant = {
-        {spell = RoseWHM.instant.AfflatusSolace, target = bestHealTarget, condition = level >= RoseWHM.instant.AfflatusSolace.level and Player.gauge[2] >= 1 and ((tank and tank.hp.percent < 60) or (bestHealTarget and bestHealTarget.hp.percent < 60))},
-        {spell = RoseWHM.instant.Regen, target = bestHealTarget, condition = level >= RoseWHM.instant.Regen.level and bestHealTarget and MissingBuff(bestHealTarget, RoseWHM.instant.Regen.id)}
+        {spell = RoseWHM.instant.AfflatusSolace, id = 16531, target = bestHealTarget, condition = level >= RoseWHM.instant.AfflatusSolace.level},
+        {spell = RoseWHM.instant.Regen, id = 137, target = bestHealTarget, condition = level >= RoseWHM.instant.Regen.level}
     }
 
     local singleTargetHealGCD = {
-        {spell = RoseWHM.gcd.CureII, target = bestHealTarget, condition = level >= RoseWHM.gcd.CureII.level and ((tank and tank.hp.percent < 60) or (bestHealTarget and bestHealTarget.hp.percent < 60)) and not Player:IsMoving()},
-        {spell = RoseWHM.gcd.Cure, target = bestHealTarget, condition = level >= RoseWHM.gcd.Cure.level and ((tank and tank.hp.percent < 60) or (bestHealTarget and bestHealTarget.hp.percent < 60)) and not Player:IsMoving()}
+        {spell = RoseWHM.gcd.CureII, id = 135, target = bestHealTarget, condition = level >= RoseWHM.gcd.CureII.level},
+        {spell = RoseWHM.gcd.Cure, id = 120, target = bestHealTarget, condition = level >= RoseWHM.gcd.Cure.level}
     }
 
     -- Try to cast the spells in the order of priority: ogcd, instant, gcd
     for _, spell in ipairs(singleTargetHealOGCD) do
         if instantUsed then
             if spell == RoseWHM.oGCD.Temperance and bestHealTarget and bestHealTarget.hp.percent <= 50 then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+                if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
-                    lastHealTime = os.clock()
                     instantUsed = false
                     return
                 end
             end
             if spell == RoseWHM.oGCD.Benediction and bestHealTarget and bestHealTarget.hp.percent < 10 then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+                if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
-                    lastHealTime = os.clock()
                     instantUsed = false
                     return
                 end
             end
             if spell == RoseWHM.oGCD.Tetragrammaton and ((tank and tank.hp.percent < 60) or (bestHealTarget and bestHealTarget.hp.percent < 60)) then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+                if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
-                    lastHealTime = os.clock()
                     instantUsed = false
                     return
                 end
             end
             if spell == RoseWHM.oGCD.divineBenison and bestHealTarget and bestHealTarget.hp.percent < 80 then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+                if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
-                    lastHealTime = os.clock()
                     instantUsed = false
                     return
                 end
             end
             if spell == RoseWHM.oGCD.aquaveil and tank and tank.hp.percent < 80 then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+                if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
-                    lastHealTime = os.clock()
                     instantUsed = false
                     return
                 end
@@ -681,36 +670,32 @@ function RoseWHM.SingleTargetHealing(bestHealTarget)
         end
     end
     for _, spell in ipairs(singleTargetHealInstant) do
-        if spell == RoseWHM.instant.AfflatusSolace and Player.gauge[2] >= 1 and ((tank and tank.hp.percent < 60) or (bestHealTarget and bestHealTarget.hp.percent < 60)) then
-            if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+        if spell == RoseWHM.instant.AfflatusSolace and Player.gauge[2] >= 1 or (bestHealTarget and bestHealTarget.hp.percent < 60) then
+            if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                 d(string.format("Casting spell: %s", spell.spell.name))
-                lastHealTime = os.clock()
                 instantUsed = true
                 return
             end
         end
         if spell == RoseWHM.instant.Regen and bestHealTarget and MissingBuff(bestHealTarget, RoseWHM.instant.Regen.id) then
-            if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+            if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                 d(string.format("Casting spell: %s", spell.spell.name))
-                lastHealTime = os.clock()
                 instantUsed = true
                 return
             end
         end
     end
     for _, spell in ipairs(singleTargetHealGCD) do
-        if spell == RoseWHM.gcd.CureII and ((tank and tank.hp.percent < 60) or (bestHealTarget and bestHealTarget.hp.percent < 60)) and not Player:IsMoving() then
-            if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+        if spell == RoseWHM.gcd.CureII or (bestHealTarget and bestHealTarget.hp.percent < 60) and not Player:IsMoving() then
+            if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                 d(string.format("Casting spell: %s", spell.spell.name))
-                lastHealTime = os.clock()
                 instantUsed = false
                 return
             end
         end
         if spell == RoseWHM.gcd.Cure and ((tank and tank.hp.percent < 60) or (bestHealTarget and bestHealTarget.hp.percent < 60)) and not Player:IsMoving() then
-            if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+            if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
                 d(string.format("Casting spell: %s", spell.spell.name))
-                lastHealTime = os.clock()
                 instantUsed = false
                 return
             end
@@ -719,56 +704,88 @@ function RoseWHM.SingleTargetHealing(bestHealTarget)
 end
 
 -- Define a function for AOE healing
-function RoseWHM.AOEHealing(partyMembers, bestHealTarget)
-    local currentTime = os.clock()
-    if currentTime - lastHealTime < healDelay then
-        return
+function RoseWHM.AOEHealing()
+
+    local bestHealTarget = nil
+    local bestHealTargetHealth = 100
+    local partyMembers = RoseWHM.GetPartyMembers()
+    for _, member in pairs(partyMembers) do
+        if member.hp.percent < bestHealTargetHealth then
+            bestHealTarget = member
+            bestHealTargetHealth = member.hp.percent
+        end
     end
+
+    local party = RoseWHM.GetPartyMembers()
     local partyMembersBelow90Percent = 0
+    local halfPartySize = 0
     local totalPartyMembers = 0
     local level = Player.level
-    if table.valid(partyMembers) then
-        for _, member in pairs(partyMembers) do
-            if type(member) == "table" and type(member.hp) == "table" then
-                local hpPercentage = member.hp.percent
-                if hpPercentage < 90 then
+    -- count half of the party members
+    if table.valid(party) then
+        for _, member in pairs(party) do
+            if member then
+                halfPartySize = halfPartySize + 1
+            end
+        end
+    end
+    if table.valid(party) then
+        for _, member in pairs(party) do
+            if member then
+                totalPartyMembers = totalPartyMembers + 1
+                if member.hp.percent < 90 then
                     partyMembersBelow90Percent = partyMembersBelow90Percent + 1
                 end
-            else
-                print("Unexpected member type: ", type(member))
             end
-            totalPartyMembers = totalPartyMembers + 1
-        end
-        local halfPartySize = math.ceil(totalPartyMembers / 2)
-        if partyMembersBelow90Percent >= halfPartySize then
 
             local aoeHealOGCD = {
-                {spell = RoseWHM.oGCD.LiturgyOfTheBell, target = Player.id, condition = level >= RoseWHM.oGCD.LiturgyOfTheBell.level},
-                {spell = RoseWHM.oGCD.AfflatusRapture, target = bestHealTarget, condition = level >= RoseWHM.oGCD.AfflatusRapture.level and Player.gauge[2] >= 1},
-                {spell = RoseWHM.oGCD.Asylum, target = Player.id, condition = level >= RoseWHM.oGCD.Asylum.level}
+                {spell = RoseWHM.oGCD.LiturgyOfTheBell, id = 25862, target = Player, condition = level >= RoseWHM.oGCD.LiturgyOfTheBell.level},
+                {spell = RoseWHM.oGCD.Asylum, id = 3569, target = Player, condition = level >= RoseWHM.oGCD.Asylum.level}
+            }
+
+            local aoeHealInstant = {
+                {spell = RoseWHM.instant.AfflatusRapture, id = 16534, target = bestHealTarget, condition = level >= RoseWHM.instant.AfflatusRapture.level},
             }
 
             local aoeHealGCD = {
-                {spell = RoseWHM.gcd.MedicaII, target = Player.id, condition = level >= RoseWHM.gcd.MedicaII and MissingBuff(Player,150) and not Player:IsMoving()},
-                {spell = RoseWHM.gcd.CureIII, target = bestHealTarget, condition = level >= RoseWHM.gcd.CureIII.level and not Player:IsMoving()},
-                {spell = RoseWHM.gcd.Medica, target = Player.id, condition = level >= RoseWHM.gcd.Medica.level and not Player:IsMoving()}
+                {spell = RoseWHM.gcd.MedicaII, id = 133, target = Player, condition = level >= RoseWHM.gcd.MedicaII.level},
+                {spell = RoseWHM.gcd.CureIII, id = 131, target = bestHealTarget, condition = level >= RoseWHM.gcd.CureIII.level},
+                {spell = RoseWHM.gcd.Medica, id = 124, target = Player, condition = level >= RoseWHM.gcd.Medica.level}
             }
 
             -- Try to cast the spells in the order of priority: ogcd, instant, gcd
             for _, spell in ipairs(aoeHealOGCD) do
-                if (spell.condition == nil or spell.condition) and RoseWHM.CastSpellIfReady(spell.id, target.id) and instantUsed then
-                    d(string.format("Casting spell: %s", spell.spell.name))
-                    lastHealTime = os.clock()
-                    instantUsed = false
-                    return
+                if (spell.condition == nil or spell.condition) and instantUsed and partyMembersBelow90Percent >= halfPartySize then
+                    if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        return
+                    end
+                end
+            end
+            for _, spell in ipairs(aoeHealInstant) do
+                if (spell.condition == nil or spell.condition) and instantUsed and partyMembersBelow90Percent >= halfPartySize and Player.gauge[2] >= 1 then
+                    if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = true
+                        return
+                    end
                 end
             end
             for _, spell in ipairs(aoeHealGCD) do
-                if (spell.condition == nil or spell.condition) and RoseWHM.CastSpellIfReady(spell.id, target.id) then
-                    d(string.format("Casting spell: %s", spell.spell.name))
-                    lastHealTime = os.clock()
-                    instantUsed = false
-                    return
+                if spell == RoseWHM.gcd.MedicaII and (spell.condition == nil or spell.condition) and partyMembersBelow90Percent >= halfPartySize and MissingBuffs(Player,"150") and not Player:IsMoving() then
+                    if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        return
+                    end
+                end
+                if (spell.condition == nil or spell.condition) and not Player:IsMoving() and partyMembersBelow90Percent >= halfPartySize then
+                    if RoseWHM.CastSpellIfReady(spell.id, spell.target.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        return
+                    end
                 end
             end
         end
