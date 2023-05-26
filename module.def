@@ -2,5 +2,5 @@
 Name=RoseCore
 Dependencies=minionlib
 Version=1
-Files=RoseCore.lua
+Files=RoseCore.lua,RoseCore_Debug.lua,RoseCore_Interface.lua,RoseCore_Events.lua,RoseCore_Settings.lua
 enabled=1
