@@ -174,7 +174,7 @@ function RoseWHM.CastSpellIfReady(spellId, targetId)
     end
     local action = ActionList:Get(1, spellId)
     if action then
-        if action.cd == 0 then
+        if action.cd <= 1 then
             if RoseWHM.ActionIsReady(spellId) then
                 action:Cast(targetId)
                 return true
@@ -234,24 +234,16 @@ function RoseWHM.HandleRaise()
             local swiftcastId = RoseWHM.oGCD.Swiftcast.id
             if target.distance2d <= 30 then
                 if RoseWHM.ActionIsReady(swiftcastId) then
-                    d("Swiftcast is ready")
                     RoseWHM.CastSpellIfReady(swiftcastId, targetId)
-                    d("Casting Swiftcast")
                     local swiftcastApplied = false
                     while not swiftcastApplied do
-                        d("Checking for Swiftcast buff")
                         local swiftcastBuff = HasBuff(Player,167)
-                        d("Swiftcast buff: " .. tostring(swiftcastBuff))
                         if swiftcastBuff then
-                            d("Swiftcast buff applied")
                             swiftcastApplied = true
-                            d("Casting Raise")
                             RoseWHM.CastSpellIfReady(raiseId, targetId)
                         end
-                        Sleep(100)
                     end
                 else
-                    d("Swiftcast is not ready")
                     RoseWHM.CastSpellIfReady(raiseId, targetId)
                 end
             end
