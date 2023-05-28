@@ -603,7 +603,7 @@ function RoseWHM.AOEHealing()
         { spell = RoseWHM.gcd.CureIII, id = 131, target = bestHealTarget, condition = level >= RoseWHM.gcd.CureIII.level },
         { spell = RoseWHM.gcd.Medica, id = 124, target = Player, condition = level >= RoseWHM.gcd.Medica.level }
     }
-
+    
     for _, spell in ipairs(aoeHealOGCD) do
         if instantUsed then
             if partyMembersBelow80Percent >= halfPartySize then
@@ -618,9 +618,9 @@ function RoseWHM.AOEHealing()
             end
         end
     end
-    if lastSpellWasHeal then
+    if lastSpellWasHeal == false then
         for _, spell in ipairs(aoeHealInstant) do
-            if partyMembersBelow80Percent >= halfPartySize and Player.gauge[2] >= 1 and level >= RoseWHM.instant.AfflatusRapture.level then
+            --if partyMembersBelow80Percent >= halfPartySize and Player.gauge[2] >= 1 and level >= RoseWHM.instant.AfflatusRapture.level then
                 if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
                     instantUsed = true
@@ -628,7 +628,7 @@ function RoseWHM.AOEHealing()
                     lastSpellWasHeal = true
                     return true
                 end
-            end
+            --end
         end
         if TimeSince(lastInstant) > 2000 then
             for _, spell in ipairs(aoeHealGCD) do
