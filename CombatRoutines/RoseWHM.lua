@@ -380,8 +380,6 @@ function RoseWHM.HasBuff(target, buffID)
     return false
 end
 
-local lastSpellWasHeal = false
-
 -- This is the main function
 -- It will be called every tick
 -- It will return true if the bot should stop
@@ -400,13 +398,11 @@ function RoseWHM.Cast()
     local shouldApplyDoT, targetforDoTApplication = RoseWHM.ShouldApplyDoT(enemies)
     RoseWHM.HandleRaise()
     RoseWHM.UseSprint()
-    if lastSpellWasHeal == false then
-        if RoseWHM.AOEHealing(target) then
-            return false
-        end
-        if RoseWHM.SingleTargetHealing(target) then
-            return false
-        end
+    if RoseWHM.AOEHealing(target) then
+        return false
+    end
+    if RoseWHM.SingleTargetHealing(target) then
+        return false
     end
     if shouldApplyDoT and targetforDoTApplication then
         RoseWHM.SingleTargetDoT(targetforDoTApplication)
@@ -425,6 +421,7 @@ end
 -- Initialize a flag to track if an instant ability has been used
 local instantUsed = false
 local lastInstant = 0
+local lastSpellWasHeal = false
 
 -- Create a function for each spell type: SingleTargetHealing, AOEHealing, SingleTargetDamage, AOEDamage, SingleTargetDoT
 -- Make sure it weaves like it should and all spells are weaving properly
@@ -464,100 +461,102 @@ function RoseWHM.SingleTargetHealing()
     }
 
     -- Try to cast the spells in the order of priority: ogcd, instant, gcd
-    for _, spell in ipairs(singleTargetHealOGCD) do
-        if instantUsed then
-            if spell.spell == RoseWHM.oGCD.LucidDreaming and Player.mp.percent <= 75 then
-                if level >= RoseWHM.oGCD.LucidDreaming.level then
-                    if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
-                        instantUsed = false
-                        lastSpellWasHeal = true
-                        d(string.format("Casting spell: %s", spell.spell.name))
-                        return true
-                    end
-                end
-            end
-            if spell.spell == RoseWHM.oGCD.Aquaveil then
-                if level >= RoseWHM.oGCD.Aquaveil.level then
-                    if bestHealTarget then
-                        if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
-                            d(string.format("Casting spell: %s", spell.spell.name))
+    if lastSpellWasHeal == false then
+        for _, spell in ipairs(singleTargetHealOGCD) do
+            if instantUsed then
+                if spell.spell == RoseWHM.oGCD.LucidDreaming and Player.mp.percent <= 75 then
+                    if level >= RoseWHM.oGCD.LucidDreaming.level then
+                        if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
                             instantUsed = false
                             lastSpellWasHeal = true
+                            d(string.format("Casting spell: %s", spell.spell.name))
                             return true
                         end
                     end
                 end
+                if spell.spell == RoseWHM.oGCD.Aquaveil then
+                    if level >= RoseWHM.oGCD.Aquaveil.level then
+                        if bestHealTarget then
+                            if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                                d(string.format("Casting spell: %s", spell.spell.name))
+                                instantUsed = false
+                                lastSpellWasHeal = true
+                                return true
+                            end
+                        end
+                    end
+                end
+                if spell.spell == RoseWHM.oGCD.Temperance and level >= RoseWHM.oGCD.Temperance.level and bestHealTarget then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
+                end
+                if spell.spell == RoseWHM.oGCD.DivineBenison and level >= RoseWHM.oGCD.DivineBenison.level and bestHealTarget then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
+                end
+                if spell.spell == RoseWHM.oGCD.Tetragrammaton and level >= RoseWHM.oGCD.Tetragrammaton.level and bestHealTarget then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
+                end
+                if spell.spell == RoseWHM.oGCD.Benediction and level >= RoseWHM.oGCD.Benediction.level and bestHealTarget then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
+                end
             end
-            if spell.spell == RoseWHM.oGCD.Temperance and level >= RoseWHM.oGCD.Temperance.level and bestHealTarget then
+        end
+        for _, spell in ipairs(singleTargetHealInstant) do
+            if spell.spell == RoseWHM.instant.AfflatusSolace and Player.gauge[2] >= 1 and bestHealTarget and level >= RoseWHM.instant.AfflatusSolace.level then
                 if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
+                    instantUsed = true
+                    lastInstant = Now()
                     lastSpellWasHeal = true
                     return true
                 end
             end
-            if spell.spell == RoseWHM.oGCD.DivineBenison and level >= RoseWHM.oGCD.DivineBenison.level and bestHealTarget then
+            if spell.spell == RoseWHM.instant.Regen and MissingBuffs(bestHealTarget,"158+897+1330") and bestHealTarget and level >= RoseWHM.instant.Regen.level then
                 if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
-                    lastSpellWasHeal = true
-                    return true
-                end
-            end
-            if spell.spell == RoseWHM.oGCD.Tetragrammaton and level >= RoseWHM.oGCD.Tetragrammaton.level and bestHealTarget then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
-                    d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
-                    lastSpellWasHeal = true
-                    return true
-                end
-            end
-            if spell.spell == RoseWHM.oGCD.Benediction and level >= RoseWHM.oGCD.Benediction.level and bestHealTarget then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
-                    d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
+                    instantUsed = true
+                    lastInstant = Now()
                     lastSpellWasHeal = true
                     return true
                 end
             end
         end
-    end
-    for _, spell in ipairs(singleTargetHealInstant) do
-        if spell.spell == RoseWHM.instant.AfflatusSolace and Player.gauge[2] >= 1 and bestHealTarget and level >= RoseWHM.instant.AfflatusSolace.level then
-            if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
-                d(string.format("Casting spell: %s", spell.spell.name))
-                instantUsed = true
-                lastInstant = Now()
-                lastSpellWasHeal = true
-                return true
-            end
-        end
-        if spell.spell == RoseWHM.instant.Regen and MissingBuffs(bestHealTarget,"158+897+1330") and bestHealTarget and level >= RoseWHM.instant.Regen.level then
-            if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
-                d(string.format("Casting spell: %s", spell.spell.name))
-                instantUsed = true
-                lastInstant = Now()
-                lastSpellWasHeal = true
-                return true
-            end
-        end
-    end
-    if TimeSince(lastInstant) > 2000 then
-        for _, spell in pairs(singleTargetHealGCD) do
-            if spell.spell == RoseWHM.gcd.CureII and not Player:IsMoving() and bestHealTarget and level >= RoseWHM.gcd.CureII.level then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
-                    d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
-                    lastSpellWasHeal = true
-                    return true
+        if TimeSince(lastInstant) > 2000 then
+            for _, spell in pairs(singleTargetHealGCD) do
+                if spell.spell == RoseWHM.gcd.CureII and not Player:IsMoving() and bestHealTarget and level >= RoseWHM.gcd.CureII.level then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
                 end
-            end
-            if spell.spell == RoseWHM.gcd.Cure and not Player:IsMoving() and bestHealTarget and level >= RoseWHM.gcd.Cure.level then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
-                    d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
-                    lastSpellWasHeal = true
-                    return true
+                if spell.spell == RoseWHM.gcd.Cure and not Player:IsMoving() and bestHealTarget and level >= RoseWHM.gcd.Cure.level then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
                 end
             end
         end
@@ -614,50 +613,56 @@ function RoseWHM.AOEHealing()
     }
 
     for _, spell in ipairs(aoeHealOGCD) do
-        if instantUsed and partyMembersBelow80Percent >= halfPartySize then
-            if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
-                d(string.format("Casting spell: %s", spell.spell.name))
-                instantUsed = false
-                lastSpellWasHeal = true
-                return true
+        if instantUsed then
+            if partyMembersBelow80Percent >= halfPartySize then
+                if bestHealTarget then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
+                end
             end
         end
     end
-    for _, spell in ipairs(aoeHealInstant) do
-        if partyMembersBelow80Percent >= halfPartySize and Player.gauge[2] >= 1 and level >= RoseWHM.instant.AfflatusRapture.level then
-            if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
-                d(string.format("Casting spell: %s", spell.spell.name))
-                instantUsed = true
-                lastInstant = Now()
-                lastSpellWasHeal = true
-                return true
-            end
-        end
-    end
-    if TimeSince(lastInstant) > 2000 then
-        for _, spell in ipairs(aoeHealGCD) do
-            if spell == RoseWHM.gcd.CureIII and partyMembersBelow80Percent >= halfPartySize and not Player:IsMoving() then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+    if lastSpellWasHeal then
+        for _, spell in ipairs(aoeHealInstant) do
+            if partyMembersBelow80Percent >= halfPartySize and Player.gauge[2] >= 1 and level >= RoseWHM.instant.AfflatusRapture.level then
+                if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
+                    instantUsed = true
+                    lastInstant = Now()
                     lastSpellWasHeal = true
                     return true
                 end
             end
-            if spell == RoseWHM.gcd.MedicaII and (spell.condition == nil or spell.condition) and partyMembersBelow80Percent >= halfPartySize and MissingBuff(Player, 150) and not Player:IsMoving() then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
-                    d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
-                    lastSpellWasHeal = true
-                    return true
+        end
+        if TimeSince(lastInstant) > 2000 then
+            for _, spell in ipairs(aoeHealGCD) do
+                if spell == RoseWHM.gcd.CureIII and partyMembersBelow80Percent >= halfPartySize and not Player:IsMoving() then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
                 end
-            end
-            if (spell.condition == nil or spell.condition) and not Player:IsMoving() and partyMembersBelow80Percent >= halfPartySize then
-                if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
-                    d(string.format("Casting spell: %s", spell.spell.name))
-                    instantUsed = false
-                    lastSpellWasHeal = true
-                    return true
+                if spell == RoseWHM.gcd.MedicaII and (spell.condition == nil or spell.condition) and partyMembersBelow80Percent >= halfPartySize and MissingBuff(Player, 150) and not Player:IsMoving() then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
+                end
+                if (spell.condition == nil or spell.condition) and not Player:IsMoving() and partyMembersBelow80Percent >= halfPartySize then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
+                        d(string.format("Casting spell: %s", spell.spell.name))
+                        instantUsed = false
+                        lastSpellWasHeal = true
+                        return true
+                    end
                 end
             end
         end
