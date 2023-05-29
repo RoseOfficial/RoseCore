@@ -174,7 +174,7 @@ function RoseWHM.CastSpellIfReady(spellId, targetId)
     end
     local action = ActionList:Get(1, spellId)
     if action then
-        if action.cd <= 1 then
+        if action.cd <= 0 then
             if RoseWHM.ActionIsReady(spellId) then
                 action:Cast(targetId)
                 return true
@@ -249,48 +249,6 @@ function RoseWHM.HandleRaise()
             end
         end
     end
-    --[[local deadMembers = RoseWHM.GetDeadPartyMembers()
-    if table.valid(deadMembers) then
-        local target = RoseWHM.GetBestRevive(true)
-        if target then
-            local targetId = target.id
-            local raiseId = RoseWHM.gcd.Raise.id
-            local swiftcastId = RoseWHM.oGCD.Swiftcast.id
-            if target.distance2d <= 30 then
-                if RoseWHM.ActionIsReady(swiftcastId) then
-                    d("Swiftcast is ready")
-                    RoseWHM.CastSpellIfReady(swiftcastId, targetId)
-                    d("Casting Swiftcast")
-                    local swiftcastApplied = false
-                    while not swiftcastApplied do
-                        d("Checking for Swiftcast buff")
-                        local swiftcastBuff = HasBuff(Player,167)
-                        d("Swiftcast buff: " .. tostring(swiftcastBuff))
-                        if swiftcastBuff then
-                            d("Swiftcast buff applied")
-                            swiftcastApplied = true
-                            d("Swiftcast applied: " .. tostring(swiftcastApplied))
-                        end
-                    end
-                    d("Swiftcast applied: " .. tostring(swiftcastApplied))
-                else
-                    d("Casting Raise")
-                    RoseWHM.CastSpellIfReady(raiseId, targetId)
-                    d("Waiting for Raise to apply")
-                    local raiseApplied = false
-                    while not raiseApplied do
-                        d("Checking for Raise buff")
-                        if target.hp.percent > 0 then
-                            d("Target is alive")
-                            raiseApplied = true
-                            d("Raise applied: " .. tostring(raiseApplied))
-                        end
-                    end
-                    d("Raise applied: " .. tostring(raiseApplied))
-                end
-            end
-        end
-    end]]--
 end
 
 local lastTargetCheck = 0
@@ -328,10 +286,16 @@ function RoseWHM.Targeting()
 end
 
 -- Define a function to get the party member list
+-- Add a separate list for trusts
 -- Insert player into the party member list
+-- Only count player once
 function RoseWHM.GetPartyMembers()
     local partyMembers = MEntityList("alive,chartype=4,myparty,targetable,maxdistance=30") or {}
-    table.insert(partyMembers, Player)
+    if table.valid(partyMembers) then
+        for k, v in pairs(partyMembers) do
+            partyMembers[k] = v
+        end
+    end
     local trusts = MEntityList("alive,targetable,type=2,chartype=9,maxdistance2d=30")
     if table.valid(trusts) then
         for k, v in pairs(trusts) do
@@ -423,11 +387,13 @@ local lastSpellWasHeal = false
 function RoseWHM.SingleTargetHealing()
 
     -- Add player to the party members list
-    local bestHealTarget
     local partyMembers = RoseWHM.GetPartyMembers()
-    for _, member in pairs(partyMembers) do
-        if member.hp.percent < 75 then
-            bestHealTarget = member
+    local bestHealTarget
+    if table.valid(partyMembers) then
+        for _, member in pairs(partyMembers) do
+            if member.hp.percent < 75 then
+                bestHealTarget = member
+            end
         end
     end
 
@@ -451,7 +417,6 @@ function RoseWHM.SingleTargetHealing()
         {spell = RoseWHM.gcd.CureII, id = 135, target = bestHealTarget, condition = level >= RoseWHM.gcd.CureII.level},
         {spell = RoseWHM.gcd.Cure, id = 120, target = bestHealTarget, condition = level >= RoseWHM.gcd.Cure.level}
     }
-
     -- Try to cast the spells in the order of priority: ogcd, instant, gcd
     if lastSpellWasHeal == false then
         for _, spell in ipairs(singleTargetHealOGCD) do
@@ -558,24 +523,26 @@ end
 -- Define a function for AOE healing
 function RoseWHM.AOEHealing()
 
-    local bestHealTarget
     local partyMembers = RoseWHM.GetPartyMembers()
-    for _, member in pairs(partyMembers) do
-        if member.hp.percent < 80 then
-            if not bestHealTarget then
-                bestHealTarget = member
+    local bestHealTarget
+    if table.valid(partyMembers) then
+        table.insert(partyMembers, Player)
+        for _, member in pairs(partyMembers) do
+            if member.hp.percent < 80 then
+                if not bestHealTarget then
+                    bestHealTarget = member
+                end
             end
         end
     end
 
-    local party = RoseWHM.GetPartyMembers()
     local partyMembersBelow80Percent = 0
     local halfPartySize = 0
-    local totalPartyMembers = 1
+    local totalPartyMembers = 0
     local level = Player.level
 
-    if table.valid(party) then
-        for _, member in pairs(party) do
+    if table.valid(partyMembers) then
+        for _, member in pairs(partyMembers) do
             if member then
                 totalPartyMembers = totalPartyMembers + 1
                 if member.hp.percent < 80 then
@@ -603,12 +570,12 @@ function RoseWHM.AOEHealing()
         { spell = RoseWHM.gcd.CureIII, id = 131, target = bestHealTarget, condition = level >= RoseWHM.gcd.CureIII.level },
         { spell = RoseWHM.gcd.Medica, id = 124, target = Player, condition = level >= RoseWHM.gcd.Medica.level }
     }
-    
+
     for _, spell in ipairs(aoeHealOGCD) do
         if instantUsed then
             if partyMembersBelow80Percent >= halfPartySize then
                 if bestHealTarget then
-                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
                         d(string.format("Casting spell: %s", spell.spell.name))
                         instantUsed = false
                         lastSpellWasHeal = true
@@ -620,7 +587,7 @@ function RoseWHM.AOEHealing()
     end
     if lastSpellWasHeal == false then
         for _, spell in ipairs(aoeHealInstant) do
-            --if partyMembersBelow80Percent >= halfPartySize and Player.gauge[2] >= 1 and level >= RoseWHM.instant.AfflatusRapture.level then
+            if partyMembersBelow80Percent >= halfPartySize and Player.gauge[2] >= 1 and level >= RoseWHM.instant.AfflatusRapture.level then
                 if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
                     d(string.format("Casting spell: %s", spell.spell.name))
                     instantUsed = true
@@ -628,7 +595,7 @@ function RoseWHM.AOEHealing()
                     lastSpellWasHeal = true
                     return true
                 end
-            --end
+            end
         end
         if TimeSince(lastInstant) > 2000 then
             for _, spell in ipairs(aoeHealGCD) do
