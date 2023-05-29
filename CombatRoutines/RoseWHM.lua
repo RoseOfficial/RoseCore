@@ -163,6 +163,34 @@ end
 -- Returns false if the spell was not cast
 -- Returns nil if the spell is not valid
 -- Returns nil if the spell is not ready
+--[[function RoseWHM.CastSPellIfReady(action,target)
+    if not action then
+        d("Spell is not valid")
+        return nil
+    end
+    if not target then
+        d("Target is not valid")
+        target = Player.id
+    end
+
+    if type(action) == "number" then
+        action = ActionList:Get(1,action)
+    end
+
+    if table.valid(action) then
+        if table.valid(target) then
+            if target.x then
+                if Distance2DT(Player.pos,target) <= action.range then
+                    return action:Cast(target.x,target.y,target.z)
+                end
+            else
+                if target.distance2d <= action.range then
+                    return action:Cast(target.id)
+                end
+            end
+        end
+    end
+end]]--
 function RoseWHM.CastSpellIfReady(spellId, targetId)
     if not spellId then
         d("Spell is not valid")
@@ -176,8 +204,12 @@ function RoseWHM.CastSpellIfReady(spellId, targetId)
     if action then
         if action.cd <= 0 then
             if RoseWHM.ActionIsReady(spellId) then
-                action:Cast(targetId)
-                return true
+                if spellId == RoseWHM.oGCD.LiturgyOfTheBell.id or spellId == RoseWHM.oGCD.Asylum.id then
+                    d("Casting " .. action.name .. " on " .. targetId .. " at " .. tostring(Player.pos.x) .. ", " .. tostring(Player.pos.y) .. ", " .. tostring(Player.pos.z))
+                    return action:Cast(Player.pos.x,Player.pos.y,Player.pos.z)
+                else
+                    return action:Cast(targetId)
+                end
             end
         end
         return false
@@ -575,7 +607,7 @@ function RoseWHM.AOEHealing()
         if instantUsed then
             if partyMembersBelow80Percent >= halfPartySize then
                 if bestHealTarget then
-                    if RoseWHM.CastSpellIfReady(spell.spell.id, Player.id) then
+                    if RoseWHM.CastSpellIfReady(spell.spell.id, bestHealTarget.id) then
                         d(string.format("Casting spell: %s", spell.spell.name))
                         instantUsed = false
                         lastSpellWasHeal = true
@@ -615,7 +647,7 @@ function RoseWHM.AOEHealing()
                         return true
                     end
                 end
-                if (spell.condition == nil or spell.condition) and not Player:IsMoving() and partyMembersBelow80Percent >= halfPartySize then
+                if spell == RoseWHM.gcd.Medica and (spell.condition == nil or spell.condition) and not Player:IsMoving() and partyMembersBelow80Percent >= halfPartySize then
                     if RoseWHM.CastSpellIfReady(spell.spell.id, spell.target.id) then
                         d(string.format("Casting spell: %s", spell.spell.name))
                         instantUsed = false
