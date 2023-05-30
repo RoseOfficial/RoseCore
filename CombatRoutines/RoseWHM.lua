@@ -163,34 +163,6 @@ end
 -- Returns false if the spell was not cast
 -- Returns nil if the spell is not valid
 -- Returns nil if the spell is not ready
---[[function RoseWHM.CastSPellIfReady(action,target)
-    if not action then
-        d("Spell is not valid")
-        return nil
-    end
-    if not target then
-        d("Target is not valid")
-        target = Player.id
-    end
-
-    if type(action) == "number" then
-        action = ActionList:Get(1,action)
-    end
-
-    if table.valid(action) then
-        if table.valid(target) then
-            if target.x then
-                if Distance2DT(Player.pos,target) <= action.range then
-                    return action:Cast(target.x,target.y,target.z)
-                end
-            else
-                if target.distance2d <= action.range then
-                    return action:Cast(target.id)
-                end
-            end
-        end
-    end
-end]]--
 function RoseWHM.CastSpellIfReady(spellId, targetId)
     if not spellId then
         d("Spell is not valid")
