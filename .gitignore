@@ -6,3 +6,9 @@ Old Stuff/oldRoseWHM.lua
 Old Stuff/oldRoseWHM_aoe_heal.lua
 Old Stuff/oldRoseWHM_dps.lua
 Old Stuff/oldRoseWHM_single_heal.lua
+CombatRoutines/RoseCore_utils.lua
+RoseCore_Events.lua
+RoseCore.lua
+RoseCore_Interface.lua
+RoseCore_Settings.lua
+RoseCore.lua

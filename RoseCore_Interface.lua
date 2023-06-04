@@ -19,25 +19,12 @@ self.tabs = {
             height = 180,
         },
         tooltip = "General Settings",
-        moduleName = self.moduleName,
         options = {
             {
-                label = "Toggle-Button Options",
+                label = "Button Options",
                 type = "group",
-                items = {
-                    {
-                        type = "row",
-                        items= {
-                            {
-                                label = "Enable Toggle-Buttons",
-                                id = "enableToggleButtons",
-                                type = "checkbox",
-                                default = true,
-                            }
-                        }
-                    },
-                }
-            },
+                items = {}
+            }
         }
     },
 }
@@ -98,6 +85,15 @@ local function log (...)
     end
 end
 
+local function logWarning (...)
+    local message = Rose.Debug.Console.parse(arg)
+    if(Rose.Debug ~= nil) then
+        if(Rose.Debug.Console.warning ~= nil) then
+            Rose.Debug.Console.warning(message, self.moduleName)
+        end
+    end
+end
+
 function self.parseOptionCheckbox(checkbox, moduleName)
         local enableOption, changeOption = GUI:Checkbox(checkbox.label, getSetting(moduleName, checkbox.id, checkbox.default))
         if(changeOption) then
@@ -144,13 +140,13 @@ function self.parseOptionKeybind(keybind, moduleName)
     end
 end
 
-function self.parseOptionLabel(label, _)
+function self.parseOptionLabel(label, moduleName)
     if(label.label ~= nil) then
         GUI:Text(label.label)
     end
 end
 
-function self.parseOptionBlank(_, _)
+function self.parseOptionBlank(blank, moduleName)
     GUI:Text("")
 end
 
@@ -170,47 +166,38 @@ function self.parseOptionSlider(slider, moduleName)
     end
 end
 
-function self.parseOption(item, moduleName)
-    if(item.type == "checkbox") then
-        self.parseOptionCheckbox(item, moduleName)
-    end
-    if(item.type == "keybind") then
-        self.parseOptionKeybind(item, moduleName)
-    end
-    if(item.type == "label") then
-        self.parseOptionLabel(item, moduleName)
-    end
-    if(item.type == "blank") then
-        self.parseOptionBlank(item, moduleName)
-    end
-    if(item.type == "slider") then
-        self.parseOptionSlider(item, moduleName)
-    end
-end
-
 function self.parseOptionRow(row, moduleName)
     local columnWidth = self.getColumnWidth() * 4
     local rowItems = row.items
     if(rowItems ~= nil and #rowItems > 0) then
         local columnCount = #rowItems
-        if(columnCount ~= 1) then
-            GUI:Columns(columnCount)
-            for k, item in pairsByKeys(rowItems) do
-                if(item.span ~= nil and type(item.span) == "number") then
-                    GUI:SetColumnWidth( -1, columnWidth * item.span )
-                else
-                    GUI:SetColumnWidth( -1, columnWidth )
-                end
-                self.parseOption(item, moduleName)
-                if(columnCount ~= k) then
-                    GUI:NextColumn()
-                else
-                    GUI:Columns(1)
-                end
+        GUI:Columns(columnCount)
+        for k, item in pairsByKeys(rowItems) do
+            if(item.span ~= nil and type(item.span) == "number") then
+                GUI:SetColumnWidth( -1, columnWidth * item.span )
+            else
+                GUI:SetColumnWidth( -1, columnWidth )
             end
-        else
-            local item = rowItems[1]
-            self.parseOption(item, moduleName)
+            if(item.type == "checkbox") then
+                self.parseOptionCheckbox(item, moduleName)
+            end
+            if(item.type == "keybind") then
+                self.parseOptionKeybind(item, moduleName)
+            end
+            if(item.type == "label") then
+                self.parseOptionLabel(item, moduleName)
+            end
+            if(item.type == "blank") then
+                self.parseOptionBlank(item, moduleName)
+            end
+            if(item.type == "slider") then
+                self.parseOptionSlider(item, moduleName)
+            end
+            if(columnCount ~= k) then
+                GUI:NextColumn()
+            else
+                GUI:Columns(1)
+            end
         end
     end
 end
@@ -220,11 +207,6 @@ function self.parseOptionGroup(group, moduleName)
     if(groupItems ~= nil and #groupItems > 0) then
         if(group.label ~= nil) then
             GUI:Text(group.label)
-            if(group.tooltip ~= nil) then
-                if(GUI:IsItemHovered()) then
-                    GUI:SetTooltip(group.tooltip)
-                end
-            end
         end
         for _, item in pairsByKeys(groupItems) do
             if(item.type == "row") then
@@ -294,47 +276,11 @@ function self.socialIcons()
 end
 
 -- A function that creates a block of GUI:Button
---function self.quickToggles(buttonList)
---    for _, button in ipairs(buttonList) do
---        if(button.icon ~= nil) then
---            if(_ ~= 1) then
---                GUI:SameLine(0, 5)
---            end
---            if(GUI:ImageButton("##RoseCore_" .. button.name .. "Button", button.icon.path, button.icon.width, button.icon.height, 0, 0, 1, 1, 0, 0, 0, 0)) then
---                if(button.tooltip ~= nil) then
---                    if(GUI:IsItemHovered()) then
---                        GUI:SetTooltip(button.tooltip)
---                    end
---                end
---                if(button.onClick ~= nil) then
---                    button.onClick()
---                end
---            end
---        end
---    end
---end
-
---function self.quickTogglesWindow()
---    GUI:SetNextWindowSize(200, 200)
---    local visible, open = GUI:Begin("##RoseCore_QuickToggles", false, GUI.WindowFlags_NoCollapse + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoScrollWithMouse + GUI.WindowFlags_NoTitleBar)
---    GUI:End()
---end
-
 function self.quickToggles(buttonList)
     for _, button in ipairs(buttonList) do
         if(button.icon ~= nil) then
             if(_ ~= 1) then
                 GUI:SameLine(0, 5)
-            end
-            if(GUI:Button("##RoseCore_" .. button.name .. "Button", button.icon.path, button.icon.width, button.icon.height)) then
-                if(button.tooltip ~= nil) then
-                    if(GUI:IsItemHovered()) then
-                        GUI:SetTooltip(button.tooltip)
-                    end
-                end
-                if(button.onClick ~= nil) then
-                    button.onClick()
-                end
             end
             if(GUI:ImageButton("##RoseCore_" .. button.name .. "Button", button.icon.path, button.icon.width, button.icon.height, 0, 0, 1, 1, 0, 0, 0, 0)) then
                 if(button.tooltip ~= nil) then
@@ -412,9 +358,6 @@ function self.onDraw(_, ...)
                 GUI:EndChild()
 
         GUI:End()
-    end
-    if(getSetting(self.moduleName, 'enableToggleButtons', false)) then
-        self.quickTogglesWindow()
     end
 end
 

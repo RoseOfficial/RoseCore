@@ -14,7 +14,7 @@ Rose.Core = {
 }
 local self = Rose.Core
 local dispatch = function(...)
-    local callDispatch
+    local callDispatch = nil
     if(callDispatch == nil) then
         if(Rose.Events) then
             if(Rose.Events.dispatch) then

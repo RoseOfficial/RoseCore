@@ -1,0 +1,6 @@
+[Module]
+Name=RoseCore
+Dependencies=minionlib
+Version=1
+Files=RoseCore.lua,RoseCore_Debug.lua,RoseCore_Events.lua,RoseCore_Interface.lua,RoseCore_Settings.lua,CombatRoutines/RoseWHM.lua
+enabled=1
