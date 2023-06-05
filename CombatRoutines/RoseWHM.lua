@@ -16,7 +16,6 @@ RoseWHM.classes = {
     [FFXIV.JOBS.CONJURER] = true,
 }
 
--- Set up RoseWHM ogcd table
 RoseWHM.oGCD = {
     PresenceOfMind = {id = 136, level = 30, name = "Presence of Mind", cast = 0, recast = 150, mp = 0, range = 0, radius = 0},
     Assize = {id = 3571, level = 56, name = "Assize", cast = 0, recast = 40, mp = 0, range = 0, radius = 15},
@@ -26,15 +25,14 @@ RoseWHM.oGCD = {
     Aquaveil = {id = 25861, level = 86, name = "Aquaveil", cast = 0, recast = 60, mp = 0, range = 30, radius = 0},
     Asylum = {id = 3569, level = 52, name = "Asylum", cast = 0, recast = 90, mp = 0, range = 30, radius = 5},
     PlenaryIndulgence = {id = 7433, level = 70, name = "Plenary Indulgence", cast = 0, recast = 60, mp = 0, range = 0, radius = 20},
-    Temperance = {id = 16536, level = 80, name = "Temperance", cast = 0, recast = 120, mp = 0, range = 0, radius = 0},
-    LiturgyOfTheBell = {id = 25862, level = 90, name = "Liturgy of the Bell", cast = 0, recast = 180, mp = 0, range = 30, radius = 0},
+    Temperance = {id = 16536, level = 80, name = "Temperance", cast = 0, recast = 120, mp = 0, range = 0, radius = 50},
+    LiturgyOfTheBell = {id = 25862, level = 90, name = "Liturgy of the Bell", cast = 0, recast = 180, mp = 0, range = 30, radius = 20},
     ThinAir = {id = 3573, level = 52, name = "Thin Air", cast = 0, recast = 120, mp = 0, range = 0, radius = 0},
     Swiftcast = {id = 7561, level = 18, name = "Swiftcast", cast = 0, recast = 60, mp = 0, range = 0, radius = 0},
     Surecast = {id = 7562, level = 44, name = "Surecast", cast = 0, recast = 30, mp = 0, range = 0, radius = 0},
     LucidDreaming = {id = 7562, level = 24, name = "Lucid Dreaming", cast = 0, recast = 60, mp = 0, range = 0, radius = 0}
 }
 
--- Set up RoseWHM instant table
 RoseWHM.instant = {
     Dia = {id = 16532, level = 72, name = "Dia", cast = 0, recast = 2.5, mp = 400, range = 25, radius = 0, potency = 60, duration = 30},
     AeroII = {id = 132, level = 52, name = "Aero II", cast = 0, recast = 2.5, mp = 400, range = 25, radius = 0, potency = 50, duration = 24},
@@ -45,7 +43,6 @@ RoseWHM.instant = {
     AfflatusRapture = {id = 16534, level = 76, name = "Afflatus Rapture", cast = 0, recast = 2.5, mp = 0, range = 0, radius = 20, potency = 400},
 }
 
--- Set up RoseWHM gcd table
 RoseWHM.gcd = {
     GlareIII = {id = 25859, level = 82, name = "Glare III", cast = 1.5, recast = 2.5, mp = 400, range = 25, radius = 0, potency = 310},
     Glare = {id = 16533, level = 72, name = "Glare", cast = 1.5, recast = 2.5, mp = 400, range = 25, radius = 0, potency = 290},
@@ -55,11 +52,11 @@ RoseWHM.gcd = {
     Stone = {id = 119, level = 1, name = "Stone", cast = 1.5, recast = 2.5, mp = 100, range = 25, radius = 0, potency = 140},
     HolyIII = {id = 25860, level = 82, name = "Holy III", cast = 2.5, recast = 2.5, mp = 400, range = 0, radius = 8, potency = 150},
     Holy = {id = 139, level = 45, name = "Holy", cast = 2.5, recast = 2.5, mp = 200, range = 0, radius = 8, potency = 140},
-    CureIII = {id = 131, level = 40, name = "Cure III", cast = 2, recast = 2.5, mp = 800, range = 30, radius = 0, potency = 550},
+    CureIII = {id = 131, level = 40, name = "Cure III", cast = 2, recast = 2.5, mp = 1500, range = 30, radius = 10, potency = 600},
     CureII = {id = 135, level = 30, name = "Cure II", cast = 2, recast = 2.5, mp = 600, range = 30, radius = 0, potency = 700},
     Cure = {id = 120, level = 2, name = "Cure", cast = 2, recast = 2.5, mp = 400, range = 30, radius = 0, potency = 450},
-    MedicaII = {id = 133, level = 50, name = "Medica II", cast = 2.5, recast = 2.5, mp = 1500, range = 30, radius = 15, potency = 200},
-    Medica = {id = 124, level = 15, name = "Medica", cast = 2.5, recast = 2.5, mp = 900, range = 30, radius = 15, potency = 300},
+    MedicaII = {id = 133, level = 50, name = "Medica II", cast = 2, recast = 2.5, mp = 1500, range = 0, radius = 20, potency = 150},
+    Medica = {id = 124, level = 15, name = "Medica", cast = 2, recast = 2.5, mp = 900, range = 0, radius = 15, potency = 400},
     Raise = {id = 125, level = 18, name = "Raise", cast = 8, recast = 2.5, mp = 2400, range = 30, radius = 0, potency = 200},
     Esuna = {id = 3575, level = 22, name = "Esuna", cast = 1.5, recast = 2.5, mp = 600, range = 30, radius = 0, potency = 0},
 }
@@ -147,13 +144,15 @@ function RoseWHM.Action(action, target)
         action = ActionList:Get(1, action)
     end
     if table.valid(action) and table.valid(target) then
-        if target.x and Distance2DT(Player.pos, target) <= action.range then
-            d("Casting: " .. action.name)
-            return action:Cast(target.x, target.y, target.z)
-        else
-            if target.distance2d <= action.range then
+        if target.attackable then
+            if target.x and Distance2DT(Player.pos, target) <= action.range then
                 d("Casting: " .. action.name)
-                return action:Cast(target.id)
+                return action:Cast(target.x, target.y, target.z)
+            else
+                if target.distance2d <= action.range then
+                    d("Casting: " .. action.name)
+                    return action:Cast(target.id)
+                end
             end
         end
     end
@@ -171,9 +170,17 @@ function RoseWHM.Cast()
     local party = GetParty()
     local lowest = Player
     local lowestHP = 100
-    local AOECount = 0
     local count = 0
     local revive = GetBestRevive(party, role)
+    local temperanceCount = 0
+    local liturgyOfTheBellCount = 0
+    local afflatusRaptureCount = 0
+    local medicaIICount = 0
+    local medicaCount = 0
+    local assizeCount = 0
+    local cureIIICount = 0
+    local lightParty = true
+
 
     if revive then
         local spell = RoseWHM.oGCD.ThinAir
@@ -202,164 +209,236 @@ function RoseWHM.Cast()
     for i, member in pairs(party) do
         count = count + 1
         if member.hp.percent < 90 then
-            AOECount = AOECount + 1
-        end
-    end
-
-    if Player.mp.percent <= 75 then
-        local spell = RoseWHM.oGCD.LucidDreaming
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
-            end
-        end
-    end
-
-    local spell = RoseWHM.oGCD.Temperance
-    if level >= spell.level then
-        local action = ActionList:Get(1, spell.id)
-        if RoseWHM.IsReady(spell) then
-            return RoseWHM.Action(action, lowest)
-        end
-    end
-
-    if ((AOECount * 100) / count) >= 50 then
-        local spell = RoseWHM.oGCD.LiturgyOfTheBell
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
-            end
-        end
-
-        local spell = RoseWHM.oGCD.Asylum
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
-            end
-        end
-
-        local spell = RoseWHM.oGCD.PlenaryIndulgence
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
-            end
-        end
-
-        local spell = RoseWHM.instant.AfflatusRapture
-        if level >= spell.level then
-            if Player.gauge[2] >= 1 then
-                local action = ActionList:Get(1, spell.id)
-                if RoseWHM.IsReady(spell) then
-                    return RoseWHM.Action(action, lowest)
+            local distance = Distance2D(Player.pos, member.pos)
+            if distance <= 50 then
+                temperanceCount = temperanceCount + 1
+                if distance <= 20 then
+                    liturgyOfTheBellCount = liturgyOfTheBellCount + 1
+                    afflatusRaptureCount = afflatusRaptureCount + 1
+                    medicaIICount = medicaIICount + 1
+                    if distance <= 15 then
+                        assizeCount = assizeCount + 1
+                        medicaCount = medicaCount + 1
+                        if distance <= 10 then
+                            cureIIICount = cureIIICount + 1
+                        end
+                    end
                 end
             end
         end
-
-        local spell = RoseWHM.gcd.CureIII
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
-            end
-        end
-
-        local spell = RoseWHM.gcd.MedicaII
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
-            end
-        end
-
-        local spell = RoseWHM.gcd.Medica
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
-            end
-        end
     end
 
-    if lowestHP <= 75 then
-        if lowestHP <= 25 then
-            local spell = RoseWHM.oGCD.Benediction
+    local aoeCount = count / 2
+
+    if instantCast then
+        if Player.mp.percent <= 75 then
+            local spell = RoseWHM.oGCD.LucidDreaming
             if level >= spell.level then
                 local action = ActionList:Get(1, spell.id)
                 if RoseWHM.IsReady(spell) then
+                    instantCast = false
                     return RoseWHM.Action(action, lowest)
                 end
             end
         end
+    end
 
-        local spell = RoseWHM.oGCD.Temperance
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
+    if lastSpellWasHeal == false then
+        if instantCast then
+            if temperanceCount >= aoeCount then
+                local spell = RoseWHM.oGCD.Temperance
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = false
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
             end
-        end
 
-        local spell = RoseWHM.oGCD.aquaveil
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
+            if liturgyOfTheBellCount >= aoeCount then
+                local spell = RoseWHM.oGCD.LiturgyOfTheBell
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = false
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
             end
-        end
 
-        local spell = RoseWHM.oGCD.DivineBenison
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
+            if assizeCount >= aoeCount then
+                local spell = RoseWHM.oGCD.Asylum
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = false
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
             end
-        end
 
-        local spell = RoseWHM.oGCD.Tetragrammaton
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
-            end
-        end
-
-        if Player.gauge[2] > 0 then
-            local spell = RoseWHM.instant.AfflatusSolace
+            --[[local spell = RoseWHM.oGCD.PlenaryIndulgence
             if level >= spell.level then
                 local action = ActionList:Get(1, spell.id)
                 if RoseWHM.IsReady(spell) then
-                    return RoseWHM.Action(action, lowest)
+                    instantCast = false
+                    lastSpellWasHeal = false
+                    return RoseWHM.Action(action, Player)
+                end
+            end]]--
+        end
+
+        if afflatusRaptureCount >= aoeCount then
+            local spell = RoseWHM.instant.AfflatusRapture
+            if level >= spell.level then
+                if Player.gauge[2] >= 1 then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = true
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
                 end
             end
         end
 
-        if not HasBuff(lowest, 158) then
-            local spell = RoseWHM.instant.Regen
+        if cureIIICount >= aoeCount then
+            local spell = RoseWHM.gcd.CureIII
             if level >= spell.level then
                 local action = ActionList:Get(1, spell.id)
                 if RoseWHM.IsReady(spell) then
+                    instantCast = false
+                    lastSpellWasHeal = true
                     return RoseWHM.Action(action, lowest)
                 end
             end
         end
 
-        local spell = RoseWHM.gcd.CureII
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
+        if medicaIICount >= aoeCount then
+            local spell = RoseWHM.gcd.MedicaII
+            if level >= spell.level then
+                local action = ActionList:Get(1, spell.id)
+                if RoseWHM.IsReady(spell) then
+                    instantCast = false
+                    lastSpellWasHeal = true
+                    return RoseWHM.Action(action, lowest)
+                end
             end
         end
 
-        local spell = RoseWHM.gcd.Cure
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, lowest)
+        if medicaCount >= aoeCount then
+            local spell = RoseWHM.gcd.Medica
+            if level >= spell.level then
+                local action = ActionList:Get(1, spell.id)
+                if RoseWHM.IsReady(spell) then
+                    instantCast = false
+                    lastSpellWasHeal = true
+                    return RoseWHM.Action(action, lowest)
+                end
+            end
+        end
+
+        if lowestHP <= 75 then
+            if instantCast then
+                if lowestHP <= 25 then
+                    local spell = RoseWHM.oGCD.Benediction
+                    if level >= spell.level then
+                        local action = ActionList:Get(1, spell.id)
+                        if RoseWHM.IsReady(spell) then
+                            instantCast = false
+                            lastSpellWasHeal = true
+                            return RoseWHM.Action(action, lowest)
+                        end
+                    end
+                end
+
+                local spell = RoseWHM.oGCD.Temperance
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = false
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
+
+                local spell = RoseWHM.oGCD.Aquaveil
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = false
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
+
+                local spell = RoseWHM.oGCD.DivineBenison
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = false
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
+
+                local spell = RoseWHM.oGCD.Tetragrammaton
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = false
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
+            end
+
+            if Player.gauge[2] > 0 then
+                local spell = RoseWHM.instant.AfflatusSolace
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = true
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
+            end
+
+            if not HasBuff(lowest, 158) then
+                local spell = RoseWHM.instant.Regen
+                if level >= spell.level then
+                    local action = ActionList:Get(1, spell.id)
+                    if RoseWHM.IsReady(spell) then
+                        instantCast = true
+                        lastSpellWasHeal = true
+                        return RoseWHM.Action(action, lowest)
+                    end
+                end
+            end
+
+            local spell = RoseWHM.gcd.CureII
+            if level >= spell.level then
+                local action = ActionList:Get(1, spell.id)
+                if RoseWHM.IsReady(spell) then
+                    instantCast = false
+                    lastSpellWasHeal = true
+                    return RoseWHM.Action(action, lowest)
+                end
+            end
+
+            local spell = RoseWHM.gcd.Cure
+            if level >= spell.level then
+                local action = ActionList:Get(1, spell.id)
+                if RoseWHM.IsReady(spell) then
+                    instantCast = false
+                    lastSpellWasHeal = true
+                    return RoseWHM.Action(action, lowest)
+                end
             end
         end
     end
@@ -383,11 +462,15 @@ function RoseWHM.Cast()
     end
 
     if closeEnemy >= 3 then
-        local spell = RoseWHM.oGCD.Assize
-        if level >= spell.level then
-            local action = ActionList:Get(1, spell.id)
-            if RoseWHM.IsReady(spell) then
-                return RoseWHM.Action(action, target)
+        if instantCast then
+            local spell = RoseWHM.oGCD.Assize
+            if level >= spell.level then
+                local action = ActionList:Get(1, spell.id)
+                if RoseWHM.IsReady(spell) then
+                    instantCast = false
+                    lastSpellWasHeal = false
+                    return RoseWHM.Action(action, target)
+                end
             end
         end
 
@@ -396,6 +479,8 @@ function RoseWHM.Cast()
             if Player.gauge[3] == 3 then
                 local action = ActionList:Get(1, spell.id)
                 if RoseWHM.IsReady(spell) then
+                    instantCast = true
+                    lastSpellWasHeal = false
                     return RoseWHM.Action(action, target)
                 end
             end
@@ -405,6 +490,8 @@ function RoseWHM.Cast()
         if level >= spell.level then
             local action = ActionList:Get(1, spell.id)
             if RoseWHM.IsReady(spell) then
+                instantCast = false
+                lastSpellWasHeal = false
                 return RoseWHM.Action(action, Player)
             end
         end
@@ -413,6 +500,8 @@ function RoseWHM.Cast()
         if level >= spell.level then
             local action = ActionList:Get(1, spell.id)
             if RoseWHM.IsReady(spell) then
+                instantCast = false
+                lastSpellWasHeal = false
                 return RoseWHM.Action(action, Player)
             end
         end
@@ -425,6 +514,8 @@ function RoseWHM.Cast()
             if level >= spell.level then
                 local action = ActionList:Get(1, spell.id)
                 if RoseWHM.IsReady(spell) then
+                    instantCast = true
+                    lastSpellWasHeal = false
                     return RoseWHM.Action(action, targetforDoTApplication)
                 end
             end
@@ -435,6 +526,8 @@ function RoseWHM.Cast()
             if level >= spell.level then
                 local action = ActionList:Get(1, spell.id)
                 if RoseWHM.IsReady(spell) then
+                    instantCast = true
+                    lastSpellWasHeal = false
                     return RoseWHM.Action(action, targetforDoTApplication)
                 end
             end
@@ -445,6 +538,8 @@ function RoseWHM.Cast()
             if level >= spell.level then
                 local action = ActionList:Get(1, spell.id)
                 if RoseWHM.IsReady(spell) then
+                    instantCast = true
+                    lastSpellWasHeal = false
                     return RoseWHM.Action(action, targetforDoTApplication)
                 end
             end
@@ -452,19 +547,27 @@ function RoseWHM.Cast()
         return false
     end
 
-    local spell = RoseWHM.oGCD.PresenceOfMind
-    if level >= spell.level then
-        local action = ActionList:Get(1, spell.id)
-        if RoseWHM.IsReady(spell) then
-            return RoseWHM.Action(action, target)
+    if instantCast then
+        local spell = RoseWHM.oGCD.PresenceOfMind
+        if level >= spell.level then
+            local action = ActionList:Get(1, spell.id)
+            if RoseWHM.IsReady(spell) then
+                instantCast = false
+                lastSpellWasHeal = false
+                return RoseWHM.Action(action, target)
+            end
         end
-    end
 
-    local spell = RoseWHM.oGCD.Assize
-    if level >= spell.level then
-        local action = ActionList:Get(1, spell.id)
-        if RoseWHM.IsReady(spell) then
-            return RoseWHM.Action(action, target)
+        d("instant cast")
+
+        local spell = RoseWHM.oGCD.Assize
+        if level >= spell.level then
+            local action = ActionList:Get(1, spell.id)
+            if RoseWHM.IsReady(spell) then
+                instantCast = false
+                lastSpellWasHeal = false
+                return RoseWHM.Action(action, target)
+            end
         end
     end
 
@@ -473,15 +576,20 @@ function RoseWHM.Cast()
         if level >= spell.level then
             local action = ActionList:Get(1, spell.id)
             if RoseWHM.IsReady(spell) then
+                instantCast = true
+                lastSpellWasHeal = false
                 return RoseWHM.Action(action, target)
             end
         end
     end
 
+    -- Check if target is a valid enemy
     local spell = RoseWHM.gcd.GlareIII
     if level >= spell.level then
         local action = ActionList:Get(1, spell.id)
         if RoseWHM.IsReady(spell) then
+            instantCast = false
+            lastSpellWasHeal = false
             return RoseWHM.Action(action, target)
         end
     end
@@ -490,6 +598,8 @@ function RoseWHM.Cast()
     if level >= spell.level then
         local action = ActionList:Get(1, spell.id)
         if RoseWHM.IsReady(spell) then
+            instantCast = false
+            lastSpellWasHeal = false
             return RoseWHM.Action(action, target)
         end
     end
@@ -498,6 +608,8 @@ function RoseWHM.Cast()
     if level >= spell.level then
         local action = ActionList:Get(1, spell.id)
         if RoseWHM.IsReady(spell) then
+            instantCast = false
+            lastSpellWasHeal = false
             return RoseWHM.Action(action, target)
         end
     end
@@ -506,6 +618,8 @@ function RoseWHM.Cast()
     if level >= spell.level then
         local action = ActionList:Get(1, spell.id)
         if RoseWHM.IsReady(spell) then
+            instantCast = false
+            lastSpellWasHeal = false
             return RoseWHM.Action(action, target)
         end
     end
@@ -514,6 +628,8 @@ function RoseWHM.Cast()
     if level >= spell.level then
         local action = ActionList:Get(1, spell.id)
         if RoseWHM.IsReady(spell) then
+            instantCast = false
+            lastSpellWasHeal = false
             return RoseWHM.Action(action, target)
         end
     end
@@ -522,6 +638,8 @@ function RoseWHM.Cast()
     if level >= spell.level then
         local action = ActionList:Get(1, spell.id)
         if RoseWHM.IsReady(spell) then
+            instantCast = false
+            lastSpellWasHeal = false
             return RoseWHM.Action(action, target)
         end
     end
